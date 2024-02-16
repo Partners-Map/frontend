@@ -1,11 +1,28 @@
-import { Container } from '@mui/material';
+import { useEffect } from 'react';
 import { PlacesList } from '../../components/places-list';
+import { SearchField } from '../../components/search-field';
+import { useGetPlacesQuery } from '../../data/services/place';
 
 export const MainPage = () => {
+  const { isError, data } = useGetPlacesQuery();
+
   return (
-    <Container maxWidth="md">
-      {/* <SerchField /> */}
-      <PlacesList />
-    </Container>
+    <>
+      {data ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            paddingTop: '40px'
+          }}
+        >
+          <SearchField />
+          <PlacesList data={data} />
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
