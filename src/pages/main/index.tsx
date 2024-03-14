@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { PlacesList } from '../../components/places-list';
 import { SearchField } from '../../components/search-field';
-import { useGetPlacesQuery } from '../../data/services/place';
+import { useGetPlacesQuery } from '../../__data__/services/place';
 
 export const MainPage = () => {
   const { isError, data } = useGetPlacesQuery();

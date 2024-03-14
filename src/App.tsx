@@ -12,9 +12,10 @@ export function App(): JSX.Element {
       <Routes>
         <Route path={'/'}>
           <Route index element={<MainPage />} />
-          <Route path={'auth'}>
-            <Route index element={<Navigate to={'/auth/login'} />} />
+          <Route path={'admin'}>
+            <Route index element={<Navigate to={'/admin/login'} />} />
             <Route path='login' element={<LoginPage />} />
+            <Route path='dashboard' element={<></>} />
           </Route>
 
           <Route path='*' element={<Navigate to='/' replace={true} />} />
