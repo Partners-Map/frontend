@@ -15,7 +15,7 @@ export function App(): JSX.Element {
           <Route path={'admin'}>
             <Route index element={<Navigate to={'/admin/login'} />} />
             <Route path='login' element={<LoginPage />} />
-            <Route path='dashboard' element={<></>} />
+            <Route path='dashboard' element={<MainPage />} />
           </Route>
 
           <Route path='*' element={<Navigate to='/' replace={true} />} />

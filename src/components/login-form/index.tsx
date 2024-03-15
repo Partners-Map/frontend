@@ -22,12 +22,15 @@ export const LoginForm: FunctionComponent = () => {
     setFormData(prevState => ({ ...prevState, [event.target.type]: event.target.value }));
   };
 
-  const hendlerSubmit = (event: FormEvent<HTMLFormElement>): void => {
+  const hendlerSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     if (formData.email.trim().length > 0 && formData.password.trim().length > 0) {
-      login(formData).then(() => {
-        navigate('/admin/dashboard');
-      });
+      await login(formData)
+        .unwrap()
+        .then(() => {
+          navigate('/admin/dashboard');
+        })
+        .catch();
     }
   };
 
