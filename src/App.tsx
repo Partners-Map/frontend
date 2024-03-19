@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { SberLine } from './components/sber-line';
 import { MainPage } from './pages/main';
 import ResetStyles from './styles/reset';
+import { NewPlace } from './pages/new-place';
 
 export function App(): JSX.Element {
   return (
@@ -11,6 +12,7 @@ export function App(): JSX.Element {
       <Routes>
         <Route path={'/'}>
           <Route index element={<MainPage />} />
+          <Route path="newPlace" element={<NewPlace />} />
 
           <Route path="*" element={<Navigate to="/" replace={true} />} />
         </Route>
