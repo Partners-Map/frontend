@@ -15,7 +15,7 @@ export const PlacesList = ({ data }: any) => {
   return (
     <div>
       <input
-        type="text"
+        type='text'
         style={{
           marginBottom: '10px',
           width: '62vw',
