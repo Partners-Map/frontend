@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { FunctionComponent } from 'react';
+import { useGetPlacesQuery } from '../../__data__/services/place';
 import { PlacesList } from '../../components/places-list';
 import { SearchField } from '../../components/search-field';
-import { useGetPlacesQuery } from '../../__data__/services/place';
 
-export const MainPage = () => {
+export const MainPage: FunctionComponent = (): JSX.Element => {
   const { isError, data } = useGetPlacesQuery();
 
   return (
