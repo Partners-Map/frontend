@@ -1,6 +1,11 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, Key } from 'react';
+import { TCategory } from '../../@types/models/category';
 
-export const TagCloud: FunctionComponent = (): JSX.Element => {
+type TagCloudPrps = {
+  categories: TCategory[];
+};
+
+export const TagCloud: FunctionComponent<TagCloudPrps> = ({ categories }): JSX.Element => {
   return (
     <div
       style={{
@@ -10,16 +15,16 @@ export const TagCloud: FunctionComponent = (): JSX.Element => {
         justifyItems: 'center'
       }}
     >
-      {tagsData.map((tag, index) => (
+      {categories.map((category: TCategory, index: number) => (
         <span
-          key={index}
+          key={category.id}
           style={{
-            fontSize: `${tag.weight * 10}px`, // Увеличиваем размер шрифта в зависимости от веса
-            cursor: 'pointer'
+            cursor: 'pointer',
+            border: '1px solid #000'
           }}
-          onClick={() => console.log(`Clicked on ${tag.text}`)}
+          onClick={() => console.log(`Clicked on ${category.title}`)}
         >
-          {tag.text}
+          {category.title}
         </span>
       ))}
     </div>
