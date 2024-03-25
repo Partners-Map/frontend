@@ -9,7 +9,7 @@ export function App(): JSX.Element {
   return (
     <BrowserRouter>
       <ResetStyles />
-      <SberLine />
+      {/* <SberLine /> */}
       <Routes>
         <Route path={'/'}>
           <Route index element={<MainPage />} />
