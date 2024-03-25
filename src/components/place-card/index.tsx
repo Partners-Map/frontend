@@ -14,21 +14,14 @@ export const PlaceCard = ({ data }: any) => {
           margin: '4px'
         }}
       >
-        {data?.name}
+        {data?.title}
       </h2>
-      {data?.conditions.map((cond: any, index: number) => (
-        <h3
-          style={{
-            margin: '2px'
-          }}
-        >{`${index + 1}. ${cond} `}</h3>
-      ))}
       <h3
         style={{
           margin: '4px'
         }}
       >
-        {data?.description ? data?.description : 'нет доп. инф.'}
+        {data?.description ? data.description : 'нет доп. инф.'}
       </h3>
       <h3
         style={{
