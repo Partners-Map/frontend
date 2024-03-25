@@ -1,6 +1,8 @@
-import { ChangeEvent, FormEvent, FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../__data__/services/auth';
+import { RoutesList } from '../../routers';
 import { LoginButtonS, LoginFormS, LoginInputWrapperS } from '../../styles/login-form';
 import { AuthIcon } from '../auth-icon';
 import { LoginInput } from '../login-input';
@@ -10,44 +12,41 @@ type TFormData = {
   password: string;
 };
 
-export const LoginForm: FunctionComponent = () => {
+export const LoginForm: FunctionComponent = (): JSX.Element => {
   const [login] = useLoginMutation();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<TFormData>({
-    email: '',
-    password: ''
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<TFormData>();
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setFormData(prevState => ({ ...prevState, [event.target.type]: event.target.value }));
-  };
-
-  const hendlerSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault();
-    if (formData.email.trim().length > 0 && formData.password.trim().length > 0) {
-      await login(formData)
+  const onSubmit: SubmitHandler<TFormData> = async (data: TFormData): Promise<void> => {
+    if (data.email.trim().length > 0 && data.password.trim().length > 0) {
+      await login(data)
         .unwrap()
         .then(() => {
-          navigate('/admin/dashboard');
-        })
-        .catch();
+          navigate(RoutesList.DashboardPage);
+        });
     }
   };
 
   return (
-    <LoginFormS onSubmit={hendlerSubmit}>
+    <LoginFormS onSubmit={handleSubmit(onSubmit)}>
       <AuthIcon />
       <LoginInputWrapperS>
-        <LoginInput type='email' name='email' value={formData.email} onChange={handleChange} />
+        <LoginInput type='text' name={'email'} register={register} placeholder='Email' />
+        {errors.email && <p>Это поле обязательно</p>}
         <LoginInput
           type='password'
-          name='password'
-          value={formData.password}
-          onChange={handleChange}
+          name={'password'}
+          register={register}
+          placeholder='Пароль'
           style={{
             marginTop: '4vh'
           }}
         />
+        {errors.password && <p>Это поле обязательно</p>}
       </LoginInputWrapperS>
       <LoginButtonS type='submit'>Отправить</LoginButtonS>
     </LoginFormS>
