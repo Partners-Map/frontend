@@ -10,7 +10,7 @@ export const LogoIcon: FunctionComponent = () => {
         justifyContent: 'center',
         width: '10vw',
         height: '10vw',
-        padding: '3vw',
+        marginRight: '2vw',
         borderRadius: '100%'
       }}
     >
