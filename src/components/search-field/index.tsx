@@ -5,7 +5,7 @@ import SearchIcon from '/public/icons/search.svg?react';
 export const SearchField: FunctionComponent = (): JSX.Element => {
   return (
     <SearchFieldContainerS>
-      <SearchFieldInputS type='text' />
+      <SearchFieldInputS type='text' placeholder='Название или описание...' />
       <SearchFieldButtonS name='найти заведения'>
         <SearchIcon width='15' height='15' />
       </SearchFieldButtonS>

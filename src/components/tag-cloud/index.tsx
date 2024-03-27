@@ -1,5 +1,6 @@
-import { FunctionComponent, Key } from 'react';
+import { FunctionComponent } from 'react';
 import { TCategory } from '../../@types/models/category';
+import { TagCloudContainerS, TagS } from '../../styles/tag-cloud';
 
 type TagCloudPrps = {
   categories: TCategory[];
@@ -7,26 +8,12 @@ type TagCloudPrps = {
 
 export const TagCloud: FunctionComponent<TagCloudPrps> = ({ categories }): JSX.Element => {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-        gap: '10px',
-        justifyItems: 'center'
-      }}
-    >
-      {categories.map((category: TCategory, index: number) => (
-        <span
-          key={category.id}
-          style={{
-            cursor: 'pointer',
-            border: '1px solid #000'
-          }}
-          onClick={() => console.log(`Clicked on ${category.title}`)}
-        >
+    <TagCloudContainerS>
+      {categories.map((category: TCategory) => (
+        <TagS key={category.id} onClick={() => console.log(`Clicked on ${category.title}`)}>
           {category.title}
-        </span>
+        </TagS>
       ))}
-    </div>
+    </TagCloudContainerS>
   );
 };

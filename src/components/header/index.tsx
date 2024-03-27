@@ -11,17 +11,24 @@ export const Header: FunctionComponent = (): JSX.Element => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '2vh 4vw 2vh 4vw'
+        padding: '2vh 0 0 0'
       }}
     >
       <div
         style={{
           display: 'flex',
           flexDirection: 'row',
-          alignItems: 'center'
+          alignItems: 'center',
+          justifyContent: 'space-between'
         }}
       >
-        <LogoIcon width='30' height='30' />
+        <LogoIcon
+          width='30'
+          height='30'
+          style={{
+            margin: '0 2vw 0 0'
+          }}
+        />
         <TitleS>ИТ порт Сочи</TitleS>
       </div>
 

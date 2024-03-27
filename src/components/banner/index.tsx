@@ -1,21 +1,15 @@
 import { FunctionComponent } from 'react';
+import { BunnerContainerS, BunnerTextS, BunnerTitleS } from '../../styles/banner';
 
 export const Banner: FunctionComponent = (): JSX.Element => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '1vh'
-      }}
-    >
-      <h2>Система лояльности</h2>
-      <p>
+    <BunnerContainerS>
+      <BunnerTitleS>Система лояльности</BunnerTitleS>
+      <BunnerTextS>
         Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а
         также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации
         "Здесь ваш текст..
-      </p>
-    </div>
+      </BunnerTextS>
+    </BunnerContainerS>
   );
 };
