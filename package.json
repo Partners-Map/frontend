@@ -12,15 +12,11 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "2.0.1",
-    "@salutejs/plasma-icons": "^1.188.0",
-    "@salutejs/plasma-web": "^1.299.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.51.1",
     "react-redux": "9.0.4",
-    "react-router-dom": "6.21.0",
-    "react-select": "^5.8.0",
-    "styled-components": "^5.1.1"
+    "react-router-dom": "6.21.0"
   },
   "devDependencies": {
     "@svgr/plugin-jsx": "^8.1.0",
@@ -35,6 +31,7 @@
     "eslint": "8.55.0",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-refresh": "0.4.5",
+    "styled-components": "^5.3.11",
     "typescript": "5.2.2",
     "vite": "5.0.12",
     "vite-plugin-svgr": "^4.2.0"
