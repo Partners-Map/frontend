@@ -1,5 +1,4 @@
-import { FunctionComponent, useState } from 'react';
-import { FiltersSelectS } from '../../styles/filters';
+import { FunctionComponent } from 'react';
 import { Select } from '../select';
 
 const priceVariances = [
@@ -17,26 +16,29 @@ const priceVariances = [
   }
 ];
 
-export const Filters: FunctionComponent = (): JSX.Element => {
-  const [selectFilter, setSelectFilter] = useState<string>();
+const openVariances = [
+  {
+    value: 'open',
+    label: 'Открыто'
+  },
+  {
+    value: 'close',
+    label: 'Закрыто'
+  }
+];
 
+export const Filters: FunctionComponent = (): JSX.Element => {
   return (
     <div
       style={{
-        margin: '4vh 0 0 0'
+        margin: '4vh 0 0 0',
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '1vw'
       }}
     >
       <Select options={priceVariances} />
-
-      {/* <FiltersSelectS>
-        <div style={{}}>Р</div>
-        <div style={{}}>РР</div>
-        <div style={{}}>РРР</div>
-      </FiltersSelectS>
-      <FiltersSelectS defaultValue='open'>
-        <option value='open'>Открыто</option>
-        <option value='all'>Все</option>
-      </FiltersSelectS> */}
+      <Select options={openVariances} />
     </div>
   );
 };
