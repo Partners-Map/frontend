@@ -1,34 +1,18 @@
-import { useState } from 'react';
+import { FunctionComponent } from 'react';
+import { TPlaceWithAddress } from '../../@types/models/place';
+import { PlaceListContainerS } from '../../styles/place-list';
 import { PlaceCard } from '../place-card';
 
-export const PlacesList = ({ data }: any) => {
-  const [searchValue, setSearchValue] = useState('');
+type PlacesListProps = {
+  data: TPlaceWithAddress[];
+};
 
-  const handleSearch = (event: any) => {
-    setSearchValue(event.target.value);
-  };
-  const filteredData: any =
-    searchValue !== '' && typeof data !== 'undefined'
-      ? data.filter((dataEl: any) => dataEl.name.includes(searchValue))
-      : data;
-
+export const PlacesList: FunctionComponent<PlacesListProps> = ({ data }): JSX.Element => {
   return (
-    <div>
-      <input
-        type='text'
-        style={{
-          marginBottom: '10px',
-          width: '62vw',
-          height: '4vh',
-          border: '1px solid #4d4d4d',
-          borderRadius: '8px'
-        }}
-        value={searchValue}
-        onChange={handleSearch}
-      />
-      {filteredData.map((dataEl: any) => (
-        <PlaceCard data={dataEl} />
+    <PlaceListContainerS>
+      {data.map(place => (
+        <PlaceCard data={place} />
       ))}
-    </div>
+    </PlaceListContainerS>
   );
 };

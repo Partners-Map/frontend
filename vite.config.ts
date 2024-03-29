@@ -8,7 +8,7 @@ export default defineConfig({
     svgr({
       svgrOptions: {
         svgo: true,
-        plugins: ['@svgr/plugin-svgo'],
+        plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
         svgoConfig: {
           floatPrecision: 2
         }
