@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SelectContainer = styled.div`
-  width: 20vw;
+  width: 40vw;
   max-width: 150px;
   position: relative;
   display: flex;
