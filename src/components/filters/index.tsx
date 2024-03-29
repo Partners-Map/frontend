@@ -1,5 +1,7 @@
-import { FunctionComponent } from 'react';
-import { Select } from '../select';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { useGetCategoriesQuery } from '../../__data__/services/category';
+import { FiltersContainerS } from '../../styles/filters';
+import { Select, SelectOption } from '../select';
 
 const priceVariances = [
   {
@@ -27,18 +29,30 @@ const openVariances = [
   }
 ];
 
-export const Filters: FunctionComponent = (): JSX.Element => {
+type FiltersPrps = {
+  inMapPage?: boolean;
+};
+
+export const Filters: FunctionComponent<FiltersPrps> = ({ inMapPage }): JSX.Element => {
+  const { data: categories, isLoading } = useGetCategoriesQuery();
+  const [categoriesVariances, setCategoriesVariances] = useState<SelectOption[]>([]);
+
+  useEffect(() => {
+    if (inMapPage && categories && !isLoading) {
+      setCategoriesVariances(
+        categories.map(item => ({
+          value: item.id,
+          label: item.title
+        }))
+      );
+    }
+  }, [categories, inMapPage, isLoading]);
+
   return (
-    <div
-      style={{
-        margin: '4vh 0 0 0',
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '1vw'
-      }}
-    >
+    <FiltersContainerS>
+      {inMapPage && <Select options={categoriesVariances} styleContainer={{ width: '60vw' }} />}
       <Select options={priceVariances} />
       <Select options={openVariances} />
-    </div>
+    </FiltersContainerS>
   );
 };
