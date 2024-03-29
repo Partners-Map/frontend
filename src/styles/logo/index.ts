@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
-export const HeaderContainerS = styled.div`
+export const LogoContainerS = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 2vh 0 0 0;
+`;
+
+export const TitleS = styled.h1`
+  color: #010736;
+  font-size: 20px;
+  width: 90%;
 `;

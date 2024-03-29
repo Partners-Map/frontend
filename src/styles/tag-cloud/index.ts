@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const TagCloudContainerS = styled.div`
+export const CategoryCloudContainerS = styled.div`
   margin: 4vh 0 0 0;
   display: flex;
   flex-wrap: wrap;

@@ -6,7 +6,7 @@ import { Button } from '../../components/button';
 import { Filters } from '../../components/filters';
 import { Header } from '../../components/header';
 import { PlacesList } from '../../components/places-list';
-import { TagCloud } from '../../components/tag-cloud';
+import { CategoryCloud } from '../../components/category-cloud';
 import { ButtonContainerS, PageContainerS } from '../../styles/page-container';
 import { useNavigate } from 'react-router-dom';
 import { RoutesList } from '../../routers';
@@ -24,7 +24,7 @@ export const MainPage: FunctionComponent = (): JSX.Element => {
     <PageContainerS>
       <Header />
       <Banner />
-      {categories && <TagCloud categories={categories} />}
+      {categories && <CategoryCloud categories={categories} />}
       <Filters />
       {placesWithAddress && <PlacesList data={placesWithAddress} />}
       <ButtonContainerS>

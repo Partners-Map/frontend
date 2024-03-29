@@ -1,19 +1,19 @@
 import { FunctionComponent } from 'react';
 import { TCategory } from '../../@types/models/category';
-import { TagCloudContainerS, TagS } from '../../styles/tag-cloud';
+import { CategoryCloudContainerS, TagS } from '../../styles/tag-cloud';
 
-type TagCloudPrps = {
+type CategoryCloudPrps = {
   categories: TCategory[];
 };
 
-export const TagCloud: FunctionComponent<TagCloudPrps> = ({ categories }): JSX.Element => {
+export const CategoryCloud: FunctionComponent<CategoryCloudPrps> = ({ categories }): JSX.Element => {
   return (
-    <TagCloudContainerS>
+    <CategoryCloudContainerS>
       {categories.map((category: TCategory) => (
         <TagS key={category.id} onClick={() => console.log(`Clicked on ${category.title}`)}>
           {category.title}
         </TagS>
       ))}
-    </TagCloudContainerS>
+    </CategoryCloudContainerS>
   );
 };
