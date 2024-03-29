@@ -1,5 +1,7 @@
 import { FunctionComponent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TPlaceWithAddress } from '../../@types/models/place';
+import { RoutesList } from '../../routers';
 import {
   PlaceCardAddressS,
   PlaceCardContainerS,
@@ -14,10 +16,15 @@ type PlacesCardProps = {
 };
 
 export const PlaceCard: FunctionComponent<PlacesCardProps> = ({ data }): JSX.Element => {
+  const navigate = useNavigate();
   const firstAddress = data.address[0];
 
+  const handlerClickPlace = (): void => {
+    navigate(RoutesList.PlacePage + data.id);
+  };
+
   return (
-    <PlaceCardContainerS>
+    <PlaceCardContainerS onClick={handlerClickPlace}>
       <PlaceCardTitleS>{data.title}</PlaceCardTitleS>
       <PlaceCardAddressS>{`${firstAddress?.city}, ${firstAddress?.street}, ${firstAddress?.house}`}</PlaceCardAddressS>
       <PlaceCardDescriptionS>{data.description}</PlaceCardDescriptionS>
