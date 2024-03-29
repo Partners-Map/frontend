@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { DetailedPage } from './pages/detailed';
+import { PlacePage } from './pages/place';
 import { LoginPage } from './pages/login';
 import { MainPage } from './pages/main';
 import { RoutesList } from './routers';
@@ -12,7 +12,7 @@ export function App(): JSX.Element {
       <Routes>
         <Route path={'/'}>
           <Route index element={<MainPage />} />
-          <Route path='detailed' element={<DetailedPage />} />
+          <Route path='place/:id' element={<PlacePage />} />
           <Route path={'admin'}>
             <Route index element={<Navigate to={RoutesList.LoginPage} />} />
             <Route path='login' element={<LoginPage />} />
