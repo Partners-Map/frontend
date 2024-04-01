@@ -22,7 +22,13 @@ export const MapPage: FunctionComponent = (): JSX.Element => {
     <PageContainerS>
       <Header />
       <Filters inMapPage={true} />
-      <MapWrapper />
+      <div
+        style={{
+          height: '70vh'
+        }}
+      >
+        <MapWrapper />
+      </div>
     </PageContainerS>
   );
 };
