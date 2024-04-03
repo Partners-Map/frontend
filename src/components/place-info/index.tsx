@@ -1,3 +1,4 @@
+import { load } from '@2gis/mapgl';
 import { FunctionComponent, useEffect } from 'react';
 import { TPlace } from '../../@types/models/place';
 import {
@@ -12,7 +13,7 @@ import {
   PlaceInfoTitle
 } from '../../styles/place-info';
 import { MapWrapper } from '../map-wrapper';
-import { load } from '@2gis/mapgl';
+import { useGetPlacesWithAddressQuery } from '../../__data__/services/place';
 
 type PlaceInfoProps = {
   data: TPlace;

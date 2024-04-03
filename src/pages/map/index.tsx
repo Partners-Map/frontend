@@ -1,22 +1,28 @@
 import { FunctionComponent, useEffect } from 'react';
+import { useGetPlacesWithAddressQuery } from '../../__data__/services/place';
 import { Filters } from '../../components/filters';
 import { Header } from '../../components/header';
-import { PageContainerS } from '../../styles/page-container';
-import { load } from '@2gis/mapgl';
 import { MapWrapper } from '../../components/map-wrapper';
+import { useMap } from '../../hooks/map';
+import { PageContainerS } from '../../styles/page-container';
 
 export const MapPage: FunctionComponent = (): JSX.Element => {
+  const { data: placesWithAddress } = useGetPlacesWithAddressQuery();
+
+  const map = useMap({
+    options: {
+      center: [39.7257, 43.5992],
+      zoom: 10
+    }
+  });
+
   useEffect(() => {
-    let map: any;
-    load().then(mapglAPI => {
-      map = new mapglAPI.Map('map-container', {
-        center: [39.7257, 43.5992],
-        zoom: 10,
-        key: 'ab751225-efc7-4674-abc5-9d2a5f7f233b'
+    if (map) {
+      const marker = new map.mapglAPI.Marker(map.map, {
+        coordinates: [39.7257, 43.5992]
       });
-    });
-    return () => map && map.destroy();
-  }, []);
+    }
+  }, [map]);
 
   return (
     <PageContainerS>
