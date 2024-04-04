@@ -1,6 +1,6 @@
 import { load } from '@2gis/mapgl';
 import { useEffect, useState } from 'react';
-import mapglAPI from '../../../node_modules/@2gis/mapgl/types/index';
+import mapglAPI from '@2gis/mapgl/types/index';
 
 export type MapInstance = {
   map: mapglAPI.Map;
