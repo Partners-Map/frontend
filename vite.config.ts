@@ -23,17 +23,17 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: true,
-    rollupOptions: {
-      external: ['react', 'react-dom'],
-      output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM'
-        },
-        entryFileNames: '[name]-[hash].js',
-        chunkFileNames: 'chunks/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]'
-      }
-    }
+    // rollupOptions: {
+    //   external: ['react', 'react-dom'],
+    //   output: {
+    //     globals: {
+    //       react: 'React',
+    //       'react-dom': 'ReactDOM'
+    //     },
+    //     entryFileNames: '[name]-[hash].js',
+    //     chunkFileNames: 'chunks/[name]-[hash].js',
+    //     assetFileNames: 'assets/[name]-[hash][extname]'
+    //   }
+    // }
   }
 });

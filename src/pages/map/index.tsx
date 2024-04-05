@@ -10,11 +10,13 @@ import { PageContainerS } from '../../styles/page-container';
 
 export const MapPage: FunctionComponent = (): JSX.Element => {
   const { data: placesWithAddress } = useGetPlacesWithAddressQuery();
+  const baseLongitude = 39.7257;
+  const baseLatitude = 43.5992;
   const navigate = useNavigate();
 
   const map = useMap({
     options: {
-      center: [39.7257, 43.5992],
+      center: [baseLongitude, baseLatitude],
       zoom: 9
     }
   });

@@ -1,6 +1,6 @@
 import { load } from '@2gis/mapgl';
-import { useEffect, useState } from 'react';
 import mapglAPI from '@2gis/mapgl/types/index';
+import { useEffect, useState } from 'react';
 
 export type MapInstance = {
   map: mapglAPI.Map;
@@ -20,7 +20,7 @@ export const useMap = ({ options, containerId = 'map-container' }: useMapProps):
       const mapglAPI = await load();
       const mapInstance = new mapglAPI.Map(containerId, {
         ...options,
-        key: 'ab751225-efc7-4674-abc5-9d2a5f7f233b'
+        key: String(import.meta.env.VITE_API_KEY)
       });
       setMapInstance({ map: mapInstance, mapglAPI });
     };

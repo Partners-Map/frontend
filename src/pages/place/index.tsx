@@ -10,10 +10,12 @@ import { PageContainerS } from '../../styles/page-container';
 export const PlacePage: FunctionComponent = (): JSX.Element => {
   const { id } = useParams();
   const { data: place } = useGetPlaceByIdWithAddressQuery(id ?? '');
+  const baseLongitude = 39.7257;
+  const baseLatitude = 43.5992;
 
   const map = useMap({
     options: {
-      center: [39.7257, 43.5992],
+      center: [baseLongitude, baseLatitude],
       zoom: 9
     }
   });
