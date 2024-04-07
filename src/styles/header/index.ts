@@ -12,4 +12,5 @@ export const HeaderContainerS = styled.div<HeaderProps>`
 export const HeaderTextS = styled.h1`
   font-size: 14px;
   color: #010736;
+  padding: 1vh 0 1vh 0;
 `;
