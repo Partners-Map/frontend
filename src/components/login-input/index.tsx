@@ -1,22 +1,28 @@
-import { CSSProperties, ChangeEvent, FunctionComponent, HTMLInputTypeAttribute } from 'react';
+import { CSSProperties, FunctionComponent, HTMLInputTypeAttribute } from 'react';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 import { LoginInputS } from '../../styles/login-form';
 
-type TLoginInputProps = {
+type TLoginInputProps<T extends FieldValues> = {
   type: HTMLInputTypeAttribute;
-  name: string;
-  value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  name: keyof T;
+  placeholder: string;
+  register: UseFormRegister<T>;
   style?: CSSProperties;
 };
 
-export const LoginInput: FunctionComponent<TLoginInputProps> = ({ type, name, value, onChange, style }) => (
+export const LoginInput: FunctionComponent<TLoginInputProps<any>> = ({
+  type,
+  name,
+  placeholder,
+  register,
+  style
+}): JSX.Element => (
   <LoginInputS
     type={type}
-    name={name}
+    {...register(name as string, { required: true })}
     style={{
       ...style
     }}
-    value={value}
-    onChange={onChange}
+    placeholder={placeholder}
   />
 );

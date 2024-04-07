@@ -1,33 +1,30 @@
-export const PlaceCard = ({ data }: any) => {
+import { FunctionComponent } from 'react';
+import { TPlaceWithAddress } from '../../@types/models/place';
+import {
+  PlaceCardAddressS,
+  PlaceCardContainerS,
+  PlaceCardDescriptionS,
+  PlaceCardOtherInfoContainerS,
+  PlaceCardOtherInfoTextS,
+  PlaceCardTitleS
+} from '../../styles/place-card';
+
+type PlacesCardProps = {
+  data: TPlaceWithAddress;
+};
+
+export const PlaceCard: FunctionComponent<PlacesCardProps> = ({ data }): JSX.Element => {
+  const firstAddress = data.address[0];
+
   return (
-    <div
-      style={{
-        backgroundColor: '#1f1f1f11',
-        width: '60vw',
-        padding: '0.5rem',
-        borderRadius: '10px',
-        marginBottom: '10px'
-      }}
-    >
-      <h2
-        style={{
-          margin: '4px'
-        }}
-      >
-        {data?.title}
-      </h2>
-      <h3
-        style={{
-          margin: '4px'
-        }}
-      >
-        {data?.description ? data.description : 'нет доп. инф.'}
-      </h3>
-      <h3
-        style={{
-          margin: '2px'
-        }}
-      >{`г. ${data?.Address?.city} ул. ${data?.Address?.street} д. ${data?.Address?.house}`}</h3>
-    </div>
+    <PlaceCardContainerS>
+      <PlaceCardTitleS>{data.title}</PlaceCardTitleS>
+      <PlaceCardAddressS>{`${firstAddress?.city}, ${firstAddress?.street}, ${firstAddress?.house}`}</PlaceCardAddressS>
+      <PlaceCardDescriptionS>{data.description}</PlaceCardDescriptionS>
+      <PlaceCardOtherInfoContainerS>
+        <PlaceCardOtherInfoTextS>{'Время работы: 09:00 - 23:00'}</PlaceCardOtherInfoTextS>
+        <PlaceCardOtherInfoTextS>{`Ср. чек: ${data.avgReceipt}`}</PlaceCardOtherInfoTextS>
+      </PlaceCardOtherInfoContainerS>
+    </PlaceCardContainerS>
   );
 };
