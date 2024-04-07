@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { PlacePage } from './pages/place';
 import { LoginPage } from './pages/login';
 import { MainPage } from './pages/main';
 import { CreatePage } from './pages/new-place';
@@ -13,6 +14,7 @@ export function App(): JSX.Element {
       <Routes>
         <Route path={'/'}>
           <Route index element={<MainPage />} />
+          <Route path='place/:id' element={<PlacePage />} />
           <Route path='map' element={<MapPage />} />
           <Route path={'admin'}>
             <Route index element={<Navigate to={RoutesList.LoginPage} />} />
@@ -20,7 +22,6 @@ export function App(): JSX.Element {
             <Route path='dashboard' element={<MainPage />} />
             <Route path='create/:step' element={<CreatePage />} />
           </Route>
-
           <Route path='*' element={<Navigate to='/' replace={true} />} />
         </Route>
       </Routes>

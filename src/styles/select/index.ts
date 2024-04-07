@@ -24,7 +24,9 @@ export const SelectOptions = styled.div<{ isOpen: boolean }>`
   z-index: 1;
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(-10px)')};
-  transition: opacity 0.1ms ease-in-out, transform 0.4s ease-in-out;
+  transition:
+    opacity 0.1ms ease-in-out,
+    transform 0.4s ease-in-out;
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 `;
 

@@ -1,13 +1,31 @@
 import { FunctionComponent } from 'react';
-import { HeaderContainerS } from '../../styles/header';
+import { useNavigate } from 'react-router-dom';
+import { RoutesList } from '../../routers';
+import { HeaderContainerS, HeaderTextS } from '../../styles/header';
 import { Logo } from '../logo';
 import { Search } from '../search';
 
-export const Header: FunctionComponent = (): JSX.Element => {
+export type HeaderProps = {
+  isAdmin?: boolean;
+  v2?: boolean;
+};
+
+export const Header: FunctionComponent<HeaderProps> = ({ isAdmin, v2 = false }): JSX.Element => {
+  const navigate = useNavigate();
+
+  const handlerBack = (): void => {
+    navigate(RoutesList.MainPage);
+  };
+
   return (
-    <HeaderContainerS>
+    <HeaderContainerS v2={v2}>
       <Logo />
-      <Search />
+      {!v2 &&
+        (isAdmin ? (
+          <HeaderTextS onClick={handlerBack}>Перейти на главную</HeaderTextS>
+        ) : (
+          <Search />
+        ))}
     </HeaderContainerS>
   );
 };

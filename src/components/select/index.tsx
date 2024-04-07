@@ -12,7 +12,10 @@ export type SelectProps = {
   styleContainer?: CSSProperties;
 };
 
-export const Select: FunctionComponent<SelectProps> = ({ options, styleContainer }): JSX.Element => {
+export const Select: FunctionComponent<SelectProps> = ({
+  options,
+  styleContainer
+}): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOption>();
 
