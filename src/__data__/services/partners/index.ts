@@ -1,9 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { TPartner } from '../../../@types/models/partner';
+import { baseQuery } from '../../config';
 
 export const partnerApi = createApi({
   reducerPath: 'partnerApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3002/api/v1' }),
+  baseQuery,
   endpoints: builder => ({
     getPartners: builder.query<TPartner[], void>({
       query: () => '/partners'

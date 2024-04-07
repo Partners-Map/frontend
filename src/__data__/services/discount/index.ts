@@ -1,9 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { TDiscount } from '../../../@types/models/discount';
+import { baseQuery } from '../../config';
 
 export const discountApi = createApi({
   reducerPath: 'discountApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3002/api/v1' }),
+  baseQuery,
   endpoints: builder => ({
     getDiscounts: builder.query<TDiscount[], void>({
       query: () => '/discounts'
