@@ -1,13 +1,18 @@
 import { FunctionComponent } from 'react';
-import { HeaderContainerS } from '../../styles/header';
+import { HeaderContainerS, HeaderTextS } from '../../styles/header';
 import { Logo } from '../logo';
 import { Search } from '../search';
 
-export const Header: FunctionComponent = (): JSX.Element => {
+export type HeaderProps = {
+  isAdmin?: boolean;
+  v2?: boolean;
+};
+
+export const Header: FunctionComponent<HeaderProps> = ({ isAdmin, v2 = false }): JSX.Element => {
   return (
-    <HeaderContainerS>
+    <HeaderContainerS v2={v2}>
       <Logo />
-      <Search />
+      {!v2 && (isAdmin ? <HeaderTextS>Перейти на главную</HeaderTextS> : <Search />)}
     </HeaderContainerS>
   );
 };

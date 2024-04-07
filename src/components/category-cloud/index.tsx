@@ -6,7 +6,9 @@ type CategoryCloudPrps = {
   categories: TCategory[];
 };
 
-export const CategoryCloud: FunctionComponent<CategoryCloudPrps> = ({ categories }): JSX.Element => {
+export const CategoryCloud: FunctionComponent<CategoryCloudPrps> = ({
+  categories
+}): JSX.Element => {
   return (
     <CategoryCloudContainerS>
       {categories.map((category: TCategory) => (
