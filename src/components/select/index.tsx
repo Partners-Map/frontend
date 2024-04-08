@@ -29,7 +29,7 @@ export const Select: FunctionComponent<SelectProps> = ({
   };
 
   return (
-    <SelectContainer onClick={toggleOpen} style={{ ...styleContainer }}>
+    <SelectContainer onClick={toggleOpen} style={styleContainer}>
       {selectedOption ? selectedOption.label : options[0]?.label}
       <SelectLine height='15' width='15' />
       <SelectOptions isOpen={isOpen}>

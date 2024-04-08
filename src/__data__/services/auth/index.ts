@@ -8,7 +8,7 @@ export const authApi = createApi({
   endpoints: builder => ({
     login: builder.mutation<TLoginData, TLoginParams>({
       query: loginData => ({
-        url: '/login',
+        url: '/auth/login',
         method: 'POST',
         body: {
           email: loginData.email,

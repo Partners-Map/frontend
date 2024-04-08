@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
 export const SelectContainer = styled.div`
-  width: 40vw;
+  /* width: 40vw; */
+  min-width: 60px;
   max-width: 150px;
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 10px;
+  padding: 6px;
   border: 1px solid #ccc;
   border-radius: 4px;
 `;

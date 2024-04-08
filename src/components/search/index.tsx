@@ -3,7 +3,7 @@ import SearchIcon from '/public/icons/search.svg?react';
 import { SearchButtonS, SearchContainerS, SearchInputS } from '../../styles/search';
 
 type SearchProps = {
-  style: CSSProperties;
+  style?: CSSProperties;
 };
 
 export const Search: FunctionComponent<SearchProps> = ({ style }): JSX.Element => {
