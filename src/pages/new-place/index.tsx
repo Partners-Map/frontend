@@ -1,50 +1,45 @@
 import { FunctionComponent, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AddressForm } from '../../components/address-form';
-import { DiscountFrom } from '../../components/discount-form';
+import { Button } from '../../components/button';
+import { Header } from '../../components/header';
 import { PartnerForm } from '../../components/partner-form';
 import { PlaceForm } from '../../components/place-form';
+import { PresendNewPlace } from '../../components/presend-new-place';
 import { Stepper } from '../../components/stepper';
+import { ButtonsContainerS } from '../../styles/new-place';
+import { PageContainerS } from '../../styles/page-container';
 
 export const CreatePage: FunctionComponent = (): JSX.Element => {
   const { step } = useParams();
+  const currentStep = Number(step);
   const navigate = useNavigate();
 
-  const handlerNextStep = () => {
-    navigate(`/admin/create/${Number(step) + 1}`);
+  const handlerNextStep = (): void => {
+    navigate(`/admin/create/${currentStep + 1}`);
+  };
+
+  const stepsComponents: { [key: number]: JSX.Element } = {
+    1: <PartnerForm />,
+    2: <PlaceForm />,
+    3: <AddressForm />,
+    4: <PresendNewPlace />
   };
 
   useEffect(() => {
-    if (Number(step) < 1 || Number(step) > 4) {
-      navigate('/admin/dashboard');
+    if (!Object.keys(stepsComponents).includes(currentStep.toString())) {
+      navigate('/admin/places');
     }
   });
 
   return (
-    <>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-      >
-        <Stepper step={Number(step)} />
-        {Number(step) === 1 && <PartnerForm />}
-        {Number(step) === 2 && <DiscountFrom />}
-        {Number(step) === 3 && <PlaceForm />}
-        {Number(step) === 4 && <AddressForm />}
-        <button
-          style={{
-            width: '20vw',
-            marginTop: '2vh',
-            padding: '1vh'
-          }}
-          onClick={handlerNextStep}
-        >
-          Далее
-        </button>
-      </div>
-    </>
+    <PageContainerS>
+      <Header isAdmin />
+      <Stepper step={currentStep} />
+      {stepsComponents[currentStep]}
+      <ButtonsContainerS>
+        <Button onClick={handlerNextStep} title={'Следующий шаг'} />
+      </ButtonsContainerS>
+    </PageContainerS>
   );
 };
