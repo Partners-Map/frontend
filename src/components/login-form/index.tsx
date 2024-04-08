@@ -32,7 +32,7 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
       })
         .unwrap()
         .then(() => {
-          navigate(RoutesList.DashboardPage);
+          navigate(RoutesList.PlacesPage);
         });
     }
   };
