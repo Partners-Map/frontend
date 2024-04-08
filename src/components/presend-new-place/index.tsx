@@ -1,3 +1,3 @@
-export const PresendNewPlace = () => {
-    return <></>
-}
+export const PresendNewPlace = (): JSX.Element => {
+  return <></>;
+};
