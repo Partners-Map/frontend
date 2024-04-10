@@ -10,6 +10,10 @@ import { Stepper } from '../../components/stepper';
 import { ButtonsContainerS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/page-container';
 
+type TSteps = {
+  [key: number]: JSX.Element;
+};
+
 export const CreatePage: FunctionComponent = (): JSX.Element => {
   const { step } = useParams();
   const currentStep = Number(step);
@@ -19,7 +23,11 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
     navigate(`/admin/create/${currentStep + 1}`);
   };
 
-  const stepsComponents: { [key: number]: JSX.Element } = {
+  const isLastStep = (): boolean => {
+    return currentStep === 4;
+  };
+
+  const stepsComponents: TSteps = {
     1: <PartnerForm />,
     2: <PlaceForm />,
     3: <AddressForm />,
@@ -38,7 +46,7 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
       <Stepper step={currentStep} />
       {stepsComponents[currentStep]}
       <ButtonsContainerS>
-        <Button onClick={handlerNextStep} title={'Следующий шаг'} />
+        <Button onClick={handlerNextStep} title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'} />
       </ButtonsContainerS>
     </PageContainerS>
   );

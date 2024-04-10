@@ -1,17 +1,33 @@
 import { FunctionComponent } from 'react';
 
-type TStepperProps = {
+type StepperProps = {
   step: number;
 };
 
-export const Stepper: FunctionComponent<TStepperProps> = ({ step }): JSX.Element => {
+type TStepsText = {
+  [key: number]: string;
+};
+
+export const Stepper: FunctionComponent<StepperProps> = ({ step }): JSX.Element => {
+  const stepsText: TStepsText = {
+    1: 'Добавление партнера',
+    2: 'Добавление места',
+    3: 'Добавление адреса',
+    4: 'Итого'
+  };
+
   return (
     <div
       style={{
-        paddingTop: '10vh'
+        margin: '4vh 0 0 0',
+        width: '100%'
       }}
     >
-      {step}
+      <h1
+        style={{
+          fontSize: '20px'
+        }}
+      >{`Шаг ${step} - ${stepsText[step]}`}</h1>
     </div>
   );
 };
