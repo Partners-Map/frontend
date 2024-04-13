@@ -1,6 +1,6 @@
 import { CSSProperties, FunctionComponent, useState } from 'react';
-import { SelectContainer, SelectOption, SelectOptions } from '../../styles/select';
-import SelectLine from '/public/icons/select-line.svg?react';
+import { SelectContainerS, SelectOptionS, SelectOptionsS, SelectValue } from '../../styles/select';
+import SelectLineIcon from '/public/icons/select-line.svg?react';
 
 export type SelectOption = {
   value: string;
@@ -10,11 +10,13 @@ export type SelectOption = {
 export type SelectProps = {
   options: SelectOption[];
   styleContainer?: CSSProperties;
+  placeholder: string;
 };
 
 export const Select: FunctionComponent<SelectProps> = ({
   options,
-  styleContainer
+  styleContainer,
+  placeholder
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOption>();
@@ -29,16 +31,20 @@ export const Select: FunctionComponent<SelectProps> = ({
   };
 
   return (
-    <SelectContainer onClick={toggleOpen} style={styleContainer}>
-      {selectedOption ? selectedOption.label : options[0]?.label}
-      <SelectLine height='15' width='15' />
-      <SelectOptions isOpen={isOpen}>
+    <SelectContainerS onClick={toggleOpen} style={styleContainer}>
+      {selectedOption ? (
+        <SelectValue>{selectedOption.label}</SelectValue>
+      ) : (
+        <SelectValue placeholder>{placeholder}</SelectValue>
+      )}
+      <SelectLineIcon height='15' width='15' />
+      <SelectOptionsS isOpen={isOpen}>
         {options.map((option, index) => (
-          <SelectOption key={index} onClick={() => onOptionClick(option)}>
+          <SelectOptionS key={index} onClick={() => onOptionClick(option)}>
             {option.label}
-          </SelectOption>
+          </SelectOptionS>
         ))}
-      </SelectOptions>
-    </SelectContainer>
+      </SelectOptionsS>
+    </SelectContainerS>
   );
 };

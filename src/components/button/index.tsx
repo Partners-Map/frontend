@@ -1,12 +1,13 @@
 import { CSSProperties, FunctionComponent, SVGProps } from 'react';
 import { ButtonS } from '../../styles/button';
 
-type ButtonProps = {
-  title: string;
+export type ButtonProps = {
+  title?: string;
   onClick?: () => void;
   style?: CSSProperties;
   icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
   iconSize?: number;
+  backgroundColor?: 'blue' | 'white';
 };
 
 export const Button: FunctionComponent<ButtonProps> = ({
@@ -14,10 +15,11 @@ export const Button: FunctionComponent<ButtonProps> = ({
   onClick,
   style,
   icon: IconComponent,
-  iconSize
+  iconSize,
+  backgroundColor = 'blue'
 }): JSX.Element => {
   return (
-    <ButtonS onClick={onClick} style={style}>
+    <ButtonS onClick={onClick} style={style} backgroundColor={backgroundColor}>
       {IconComponent && <IconComponent width={iconSize} height={iconSize} />}
       {title}
     </ButtonS>

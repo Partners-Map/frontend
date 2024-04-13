@@ -16,7 +16,7 @@ export const PartnerContainerS = styled.div<{ firstItem: boolean; selected: bool
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1vh 1vw 1vh 1vw;
+  padding: 1vh 2vw 1vh 2vw;
   margin: ${({ firstItem }): string => (firstItem ? '0' : '1vh')} 0 1vh 0;
   background-color: ${({ selected }): string => (selected ? '#010837' : '#fff')};
   border: 1px solid #fff;

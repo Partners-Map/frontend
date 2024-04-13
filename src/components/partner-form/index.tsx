@@ -18,6 +18,7 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
   const [isSelectedId, setIsSelectedId] = useState<string>('');
 
   const handlerSelectPartner = (partner: TPartner): void => {
+    // TODO: redux стейт
     setIsSelectedId(partner.id);
     console.log(partner);
   };
@@ -39,12 +40,13 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
             key={partner.id}
             firstItem={index === 0}
             selected={isSelectedId === partner.id}
+            onClick={() => handlerSelectPartner(partner)}
           >
             <PartnerTitleS selected={isSelectedId === partner.id}>{partner.name}</PartnerTitleS>
             {isSelectedId === partner.id ? (
-              <WhitePlusIcon onClick={() => handlerSelectPartner(partner)} width={24} height={24} />
+              <WhitePlusIcon width={24} height={24} />
             ) : (
-              <BlackPlusIcon onClick={() => handlerSelectPartner(partner)} width={24} height={24} />
+              <BlackPlusIcon width={24} height={24} />
             )}
           </PartnerContainerS>
         ))}

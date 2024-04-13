@@ -7,8 +7,10 @@ import { PartnerForm } from '../../components/partner-form';
 import { PlaceForm } from '../../components/place-form';
 import { PresendNewPlace } from '../../components/presend-new-place';
 import { Stepper } from '../../components/stepper';
+import { RoutesList } from '../../routers';
 import { ButtonsContainerS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/page-container';
+import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
 
 type TSteps = {
   [key: number]: JSX.Element;
@@ -19,8 +21,16 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
   const currentStep = Number(step);
   const navigate = useNavigate();
 
+  const haveBackButton = (): boolean => {
+    return currentStep !== 1;
+  };
+
   const handlerNextStep = (): void => {
-    navigate(`/admin/create/${currentStep + 1}`);
+    navigate(RoutesList.NewPlace + (currentStep + 1));
+  };
+
+  const handlerBackStep = (): void => {
+    navigate(RoutesList.NewPlace + (currentStep - 1));
   };
 
   const isLastStep = (): boolean => {
@@ -36,7 +46,7 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
 
   useEffect(() => {
     if (!Object.keys(stepsComponents).includes(currentStep.toString())) {
-      navigate('/admin/places');
+      navigate(RoutesList.PlacesPage);
     }
   });
 
@@ -46,6 +56,16 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
       <Stepper step={currentStep} />
       {stepsComponents[currentStep]}
       <ButtonsContainerS>
+        {haveBackButton() ? (
+          <Button
+            icon={ArrowLeftIcon}
+            iconSize={20}
+            backgroundColor='white'
+            onClick={handlerBackStep}
+          />
+        ) : (
+          <div></div>
+        )}
         <Button onClick={handlerNextStep} title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'} />
       </ButtonsContainerS>
     </PageContainerS>

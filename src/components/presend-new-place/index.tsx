@@ -1,3 +1,3 @@
 export const PresendNewPlace = () => {
-    return <></>
-}
+  return <></>;
+};
