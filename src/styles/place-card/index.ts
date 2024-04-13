@@ -4,6 +4,7 @@ export const PlaceCardContainerS = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin: 1.4vh 0 0 0;
 `;
 
 export const PlaceCardTitleS = styled.h1`

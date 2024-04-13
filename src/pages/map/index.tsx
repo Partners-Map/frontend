@@ -1,28 +1,54 @@
 import { FunctionComponent, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGetPlacesWithAddressQuery } from '../../__data__/services/place';
 import { Filters } from '../../components/filters';
 import { Header } from '../../components/header';
-import { PageContainerS } from '../../styles/page-container';
-import { load } from '@2gis/mapgl';
 import { MapWrapper } from '../../components/map-wrapper';
+import { useMap } from '../../hooks/map';
+import { RoutesList } from '../../routers';
+import { PageContainerS } from '../../styles/page-container';
 
 export const MapPage: FunctionComponent = (): JSX.Element => {
+  const { data: placesWithAddress } = useGetPlacesWithAddressQuery();
+  const baseLongitude = 39.7257;
+  const baseLatitude = 43.5992;
+  const navigate = useNavigate();
+
+  const map = useMap({
+    options: {
+      center: [baseLongitude, baseLatitude],
+      zoom: 9
+    }
+  });
+
   useEffect(() => {
-    let map: any;
-    load().then(mapglAPI => {
-      map = new mapglAPI.Map('map-container', {
-        center: [39.7257, 43.5992],
-        zoom: 10,
-        key: 'ab751225-efc7-4674-abc5-9d2a5f7f233b'
+    if (!map || !placesWithAddress) return;
+
+    placesWithAddress.forEach(place => {
+      if (place.address.length === 0) return;
+
+      place.address.forEach(adds => {
+        new map.mapglAPI.Marker(map.map, {
+          coordinates: [Number(adds.longitude), Number(adds.latitude)]
+        }).on('click', () => {
+          navigate(RoutesList.PlacePage + place.id);
+        });
       });
     });
-    return () => map && map.destroy();
-  }, []);
+  }, [map, placesWithAddress]);
 
   return (
     <PageContainerS>
       <Header />
       <Filters inMapPage={true} />
-      <MapWrapper />
+      <div
+        style={{
+          height: '70vh',
+          margin: '4vh 0 0 0'
+        }}
+      >
+        <MapWrapper />
+      </div>
     </PageContainerS>
   );
 };

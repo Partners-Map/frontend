@@ -10,8 +10,14 @@ export const placeApi = createApi({
     }),
     getPlacesWithAddress: builder.query<TPlaceWithAddress[], void>({
       query: () => '/places/addresses'
+    }),
+    getPlaceById: builder.query<TPlace, string>({
+      query: id => `/place/${id}`
+    }),
+    getPlaceByIdWithAddress: builder.query<TPlaceWithAddress, string>({
+      query: id => `/place/${id}/address`
     })
   })
 });
 
-export const { useGetPlacesQuery, useGetPlacesWithAddressQuery } = placeApi;
+export const { useGetPlacesQuery, useGetPlacesWithAddressQuery, useGetPlaceByIdQuery, useGetPlaceByIdWithAddressQuery } = placeApi;
