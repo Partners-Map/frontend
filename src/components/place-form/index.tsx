@@ -10,6 +10,7 @@ import {
   InputWrapperS,
   PlaceFormContainerS
 } from '../../styles/place-form';
+import { DiscountForm } from '../discount-form';
 
 type TPlaceData = {
   title: string;
@@ -80,9 +81,9 @@ export const PlaceForm: FunctionComponent = (): JSX.Element => {
       </FieldContainerS>
       <FieldContainerS>
         <FieldLabelS>Описание</FieldLabelS>
-
         <DescriptionTextareaS {...register('description')} placeholder='Описание' />
       </FieldContainerS>
+      <DiscountForm />
     </PlaceFormContainerS>
   );
 };

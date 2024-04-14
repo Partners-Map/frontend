@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 
 export const GlobalFonts = createGlobalStyle`
@@ -12,6 +13,7 @@ type TextBaseProps = {
   weight?: number;
   italic?: boolean;
   size?: string;
+  children?: ReactNode;
 };
 
 const TextBase = styled.h1<TextBaseProps>`

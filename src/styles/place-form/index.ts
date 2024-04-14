@@ -4,12 +4,14 @@ export const PlaceFormContainerS = styled.div`
   margin: 2vh 0 0 0;
   display: flex;
   flex-direction: column;
+  gap: 20px;
 `;
 
 export const FieldContainerS = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 400px;
+  gap: 4px;
 `;
 
 export const FieldLabelS = styled.div`
