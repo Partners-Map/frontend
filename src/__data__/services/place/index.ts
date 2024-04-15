@@ -1,9 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { TPlace, TPlaceWithAddress } from '../../../@types/models/place';
+import { baseQuery } from '../../config';
 
 export const placeApi = createApi({
   reducerPath: 'placeApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3002/api/v1' }),
+  baseQuery,
   endpoints: builder => ({
     getPlaces: builder.query<TPlace[], void>({
       query: () => '/places'
@@ -20,4 +21,9 @@ export const placeApi = createApi({
   })
 });
 
-export const { useGetPlacesQuery, useGetPlacesWithAddressQuery, useGetPlaceByIdQuery, useGetPlaceByIdWithAddressQuery } = placeApi;
+export const {
+  useGetPlacesQuery,
+  useGetPlacesWithAddressQuery,
+  useGetPlaceByIdQuery,
+  useGetPlaceByIdWithAddressQuery
+} = placeApi;
