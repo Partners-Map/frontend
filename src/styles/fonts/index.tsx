@@ -23,28 +23,12 @@ const TextBase = styled.h1<TextBaseProps>`
   font-size: ${({ size }): string => size || '1rem'};
 `;
 
-export const UbuntuLight = (props: TextBaseProps): JSX.Element => (
-  <TextBase {...props} weight={300} />
-);
-export const UbuntuRegular = (props: TextBaseProps): JSX.Element => (
-  <TextBase {...props} weight={400} />
-);
-export const UbuntuMedium = (props: TextBaseProps): JSX.Element => (
-  <TextBase {...props} weight={500} />
-);
-export const UbuntuBold = (props: TextBaseProps): JSX.Element => (
-  <TextBase {...props} weight={700} />
-);
+export const UbuntuLight = styled(TextBase).attrs({ weight: 300 })``;
+export const UbuntuRegular = styled(TextBase).attrs({ weight: 400 })``;
+export const UbuntuMedium = styled(TextBase).attrs({ weight: 500 })``;
+export const UbuntuBold = styled(TextBase).attrs({ weight: 700 })``;
 
-export const UbuntuLightItalic = (props: TextBaseProps): JSX.Element => (
-  <TextBase {...props} weight={300} italic />
-);
-export const UbuntuRegularItalic = (props: TextBaseProps): JSX.Element => (
-  <TextBase {...props} weight={400} italic />
-);
-export const UbuntuMediumItalic = (props: TextBaseProps): JSX.Element => (
-  <TextBase {...props} weight={500} italic />
-);
-export const UbuntuBoldItalic = (props: TextBaseProps): JSX.Element => (
-  <TextBase {...props} weight={700} italic />
-);
+export const UbuntuLightItalic = styled(TextBase).attrs({ weight: 300, italic: true })``;
+export const UbuntuRegularItalic = styled(TextBase).attrs({ weight: 400, italic: true })``;
+export const UbuntuMediumItalic = styled(TextBase).attrs({ weight: 500, italic: true })``;
+export const UbuntuBoldItalic = styled(TextBase).attrs({ weight: 700, italic: true })``;

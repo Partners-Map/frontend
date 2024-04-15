@@ -13,7 +13,7 @@ export const InputS = styled.input<{ error?: boolean; maxWidth?: string }>`
   border-radius: 6px;
 
   &::placeholder {
-    font-size: 10px;
+    font-size: 14px;
     color: #cccccc;
   }
 

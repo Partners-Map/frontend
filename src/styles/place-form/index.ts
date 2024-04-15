@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { UbuntuRegular } from '../fonts';
 
 export const PlaceFormContainerS = styled.div`
   margin: 2vh 0 0 0;
@@ -14,14 +15,8 @@ export const FieldContainerS = styled.div`
   gap: 4px;
 `;
 
-export const FieldLabelS = styled.div`
-  font-size: 14px;
+export const FieldLabelS = styled(UbuntuRegular)`
   color: #010736dd;
-  font-family: Ubuntu;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 13.79px;
-  text-align: left;
 `;
 
 export const InputWrapperS = styled.div`

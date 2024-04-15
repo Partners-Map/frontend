@@ -1,8 +1,7 @@
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useGetCategoriesQuery } from '../../__data__/services/category';
 import { InputS } from '../../styles/input';
-import { Select } from '../select';
-import { WorkingHours } from '../working-hours';
 import {
   DescriptionTextareaS,
   FieldContainerS,
@@ -11,8 +10,10 @@ import {
   PlaceFormContainerS
 } from '../../styles/place-form';
 import { DiscountForm } from '../discount-form';
+import { Select, SelectOption } from '../select';
+import { WorkingHours } from '../working-hours';
 
-type TPlaceData = {
+export type TPlaceData = {
   title: string;
   category: string;
   workingHours: {
@@ -23,12 +24,25 @@ type TPlaceData = {
 };
 
 export const PlaceForm: FunctionComponent = (): JSX.Element => {
+  const [transformedArray, setTransformedArray] = useState<SelectOption[]>([]);
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors }
   } = useForm<TPlaceData>();
+  const { data: categories } = useGetCategoriesQuery();
+
+  useEffect(() => {
+    if (categories) {
+      const newTransformedArray = categories.map(discountType => ({
+        value: discountType.id,
+        label: discountType.title
+      }));
+      setTransformedArray(newTransformedArray);
+    }
+  }, [categories]);
 
   useEffect(() => {
     console.log(watch());
@@ -52,11 +66,10 @@ export const PlaceForm: FunctionComponent = (): JSX.Element => {
           styleContainer={{
             maxWidth: 'none'
           }}
-          options={[
-            { value: '1', label: 'Категория 1' },
-            { value: '2', label: 'Категория 2' }
-          ]}
+          options={transformedArray}
           placeholder={'Выберите'}
+          selecteOption={setValue}
+          fieldName={'category'}
         />
       </FieldContainerS>
       <FieldContainerS>
@@ -68,7 +81,7 @@ export const PlaceForm: FunctionComponent = (): JSX.Element => {
       </FieldContainerS>
       <FieldContainerS>
         <FieldLabelS>Средний чек</FieldLabelS>
-        <Select
+        {/* <Select
           styleContainer={{
             maxWidth: 'none'
           }}
@@ -77,7 +90,8 @@ export const PlaceForm: FunctionComponent = (): JSX.Element => {
             { value: '2', label: 'Средний чек 2' }
           ]}
           placeholder={'Выберите'}
-        />
+          selecteOption={}
+        /> */}
       </FieldContainerS>
       <FieldContainerS>
         <FieldLabelS>Описание</FieldLabelS>

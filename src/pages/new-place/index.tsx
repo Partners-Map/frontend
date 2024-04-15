@@ -8,7 +8,7 @@ import { PlaceForm } from '../../components/place-form';
 import { PresendNewPlace } from '../../components/presend-new-place';
 import { Stepper } from '../../components/stepper';
 import { RoutesList } from '../../routers';
-import { ButtonsContainerS } from '../../styles/new-place';
+import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/page-container';
 import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
 
@@ -52,22 +52,29 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
 
   return (
     <PageContainerS>
-      <Header isAdmin />
-      <Stepper step={currentStep} />
-      {stepsComponents[currentStep]}
-      <ButtonsContainerS>
-        {haveBackButton() ? (
+      <ContentWrapperS>
+        <MainContentWrapperS>
+          <Header isAdmin />
+          <Stepper step={currentStep} />
+          {stepsComponents[currentStep]}
+        </MainContentWrapperS>
+        <ButtonsContainerS>
+          {haveBackButton() ? (
+            <Button
+              icon={ArrowLeftIcon}
+              iconSize={19}
+              backgroundColor='white'
+              onClick={handlerBackStep}
+            />
+          ) : (
+            <div></div>
+          )}
           <Button
-            icon={ArrowLeftIcon}
-            iconSize={20}
-            backgroundColor='white'
-            onClick={handlerBackStep}
+            onClick={handlerNextStep}
+            title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'}
           />
-        ) : (
-          <div></div>
-        )}
-        <Button onClick={handlerNextStep} title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'} />
-      </ButtonsContainerS>
+        </ButtonsContainerS>
+      </ContentWrapperS>
     </PageContainerS>
   );
 };

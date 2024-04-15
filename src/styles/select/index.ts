@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+type SelectOptionsProps = {
+  isOpen: boolean;
+};
+
 export const SelectContainerS = styled.div`
   min-width: 60px;
   max-width: 150px;
@@ -8,12 +12,12 @@ export const SelectContainerS = styled.div`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 10px;
+  padding: 1vh;
   border: 1px solid #ccc;
   border-radius: 6px;
 `;
 
-export const SelectOptionsS = styled.div<{ isOpen: boolean }>`
+export const SelectOptionsS = styled.div<SelectOptionsProps>`
   position: absolute;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -31,7 +35,7 @@ export const SelectOptionsS = styled.div<{ isOpen: boolean }>`
 `;
 
 export const SelectOptionS = styled.div`
-  padding: 10px;
+  padding: 1vh;
   cursor: pointer;
   &:hover {
     background-color: #f0f0f0;
