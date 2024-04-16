@@ -13,7 +13,7 @@ type TFormData = {
 };
 
 export const LoginForm: FunctionComponent = (): JSX.Element => {
-  const [login] = useLoginMutation();
+  const [login, { error: loginError }] = useLoginMutation();
   const navigate = useNavigate();
   const {
     register,
@@ -22,8 +22,14 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
   } = useForm<TFormData>();
 
   const onSubmit: SubmitHandler<TFormData> = async (data: TFormData): Promise<void> => {
-    if (data.email.trim().length > 0 && data.password.trim().length > 0) {
-      await login(data)
+    const clearEmail = data.email.trim();
+    const clearPassword = data.email.trim();
+
+    if (clearEmail.length > 0 && clearPassword.length > 0) {
+      await login({
+        email: clearEmail,
+        password: clearPassword
+      })
         .unwrap()
         .then(() => {
           navigate(RoutesList.DashboardPage);
@@ -35,20 +41,25 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
     <LoginFormS onSubmit={handleSubmit(onSubmit)}>
       <AuthIcon />
       <LoginInputWrapperS>
-        <LoginInput type='text' name={'email'} register={register} placeholder='Email' />
-        {errors.email && <p>Это поле обязательно</p>}
+        <LoginInput
+          type='text'
+          name={'email'}
+          register={register}
+          placeholder='Email'
+          errorStatus={Boolean(errors.email) || Boolean(loginError)}
+        />
         <LoginInput
           type='password'
           name={'password'}
           register={register}
           placeholder='Пароль'
           style={{
-            marginTop: '4vh'
+            marginTop: '2vh'
           }}
+          errorStatus={Boolean(errors.password) || Boolean(loginError)}
         />
-        {errors.password && <p>Это поле обязательно</p>}
       </LoginInputWrapperS>
-      <LoginButtonS type='submit'>Отправить</LoginButtonS>
+      <LoginButtonS type='submit'>Войти</LoginButtonS>
     </LoginFormS>
   );
 };
