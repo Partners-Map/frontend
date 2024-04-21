@@ -1,11 +1,9 @@
 import { load } from '@2gis/mapgl';
-import { useEffect } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { MapWrapper } from '../map-wrapper';
 import { Map } from '@2gis/mapgl/types';
 
-export const AddressForm = () => {
-  console.log('AddressForm render');
-
+export const AddressForm: FunctionComponent = (): JSX.Element => {
   useEffect(() => {
     let map: Map;
     load().then(mapglAPI => {
@@ -15,8 +13,6 @@ export const AddressForm = () => {
         key: 'Your API access key'
       });
     });
-    console.log('useEffect render');
-
     return () => map && map.destroy();
   }, []);
 

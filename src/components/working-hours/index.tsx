@@ -1,15 +1,19 @@
-import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form';
 import { InputS } from '../../styles/input';
 
-type WorkingHoursProps<T extends FieldValues> = {
-  register: UseFormRegister<T>;
-  errorStatus: boolean;
+type TWorkingHoursData = {
+  from: string;
+  to: string;
 };
 
-export const WorkingHours = <T extends FieldValues>({
-  register,
-  errorStatus
-}: WorkingHoursProps<T>): JSX.Element => {
+export const WorkingHours = (): JSX.Element => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors }
+  } = useForm<TWorkingHoursData>();
+
   return (
     <div
       style={{
@@ -20,18 +24,22 @@ export const WorkingHours = <T extends FieldValues>({
       }}
     >
       <InputS
-        type='number'
-        {...register('workingHours.from' as Path<T>)}
+        type='time'
+        {...register('from', {
+          required: true
+        })}
         placeholder='От'
         maxWidth='194px'
-        error={Boolean(errorStatus)}
+        error={Boolean(errors.from)}
       />
       <InputS
-        type='number'
-        {...register('workingHours.to' as Path<T>)}
+        type='text'
+        {...register('to', {
+          required: true
+        })}
         placeholder='До'
         maxWidth='194px'
-        error={Boolean(errorStatus)}
+        error={Boolean(errors.to)}
       />
     </div>
   );

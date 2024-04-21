@@ -1,38 +1,26 @@
-import { CSSProperties, HTMLInputTypeAttribute } from 'react';
-import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { CSSProperties, FunctionComponent, HTMLInputTypeAttribute, useState } from 'react';
 import { InputS } from '../../styles/input';
+import { FieldLabelS, InputWrapperS } from '../../styles/place-form';
 
-type InputProps<T extends FieldValues> = {
+type InputProps = {
   type: HTMLInputTypeAttribute;
-  name: keyof T;
-  placeholder: string;
-  register: UseFormRegister<T>;
-  style?: CSSProperties;
-  errorStatus: boolean;
+  title: string;
+  placeholder?: string;
 };
 
-export const Input = <T extends FieldValues>({
+export const Input: FunctionComponent<InputProps> = ({
   type,
-  name,
-  placeholder,
-  register,
-  style,
-  errorStatus,
-  
-}: InputProps<T>): JSX.Element => (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column'
-    }}
-  >
-    <label></label>
-    <InputS
-      type={type}
-      {...register(name as Path<T>, { required: true })}
-      style={style}
-      placeholder={placeholder}
-      error={Boolean(errorStatus)}
-    />
-  </div>
-);
+  title,
+  placeholder = title
+}): JSX.Element => {
+  const [inputValue, setInputValue] = useState<number | string>();
+
+  return (
+    <>
+      <FieldLabelS>{title}</FieldLabelS>
+      <InputWrapperS>
+        <InputS type={type} placeholder={placeholder} value={inputValue} />
+      </InputWrapperS>
+    </>
+  );
+};

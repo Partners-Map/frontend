@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { AdderLabelS } from '../../styles/adder';
+import { AdderContainerS, AdderLabelS } from '../../styles/adder';
 import { InputS } from '../../styles/input';
 import { Button } from '../button';
 import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
@@ -18,19 +18,14 @@ export const Adder: FunctionComponent<AdderProps> = ({ label, placeholder }): JS
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     reset,
     formState: { errors }
   } = useForm<TAdderData>();
   const [conditions, setConditions] = useState<string[]>([]);
-  const labelValue = watch('label');
 
   return (
-    <div
-      style={{
-        margin: '2vh 0 0 0'
-      }}
-    >
+    <AdderContainerS>
       <AdderLabelS>{label}</AdderLabelS>
       <div
         style={{
@@ -39,20 +34,26 @@ export const Adder: FunctionComponent<AdderProps> = ({ label, placeholder }): JS
           gap: '6px'
         }}
       >
-        <InputS type='text' {...register('label', { required: true })} placeholder={placeholder} />
+        <InputS
+          type='text'
+          {...register('label', {
+            required: true
+          })}
+          placeholder={placeholder}
+        />
         <Button
           icon={WhitePlusIcon}
           iconSize={20}
           backgroundColor='blue'
           onClick={() => {
-            setConditions([...conditions, labelValue]);
+            setConditions([...conditions, getValues('label')]);
             reset({ label: '' });
           }}
         />
       </div>
       {conditions.map(condition => (
-        <p>{condition}</p>
+        <div>{condition}</div>
       ))}
-    </div>
+    </AdderContainerS>
   );
 };

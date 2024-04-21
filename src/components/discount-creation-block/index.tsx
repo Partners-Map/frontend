@@ -1,18 +1,24 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useGetDiscountTypesQuery } from '../../__data__/services/discount-type';
 import { DiscountInfoContainerS, TitleS } from '../../styles/discount-form';
 import { InputS } from '../../styles/input';
-import { FieldContainerS, FieldLabelS, InputWrapperS } from '../../styles/place-form';
-import { Select, SelectOption } from '../select';
-import { useGetDiscountTypesQuery } from '../../__data__/services/discount-type';
+import {
+  DiscountCreationBlockContainerS,
+  FieldContainerS,
+  FieldLabelS,
+  InputWrapperS
+} from '../../styles/place-form';
 import { Adder } from '../adder';
+import { Select, SelectOption } from '../select';
+import { Textarea } from '../textarea';
 
 export type TDiscountData = {
   size: number;
   type: string;
 };
 
-export const DiscountForm: FunctionComponent = (): JSX.Element => {
+export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -33,12 +39,8 @@ export const DiscountForm: FunctionComponent = (): JSX.Element => {
     }
   }, [discountTypes]);
 
-  useEffect(() => {
-    console.log(watch());
-  }, [watch()]);
-
   return (
-    <div>
+    <DiscountCreationBlockContainerS>
       <TitleS>Добавить скидку</TitleS>
       <DiscountInfoContainerS>
         <FieldContainerS>
@@ -69,6 +71,7 @@ export const DiscountForm: FunctionComponent = (): JSX.Element => {
         </FieldContainerS>
       </DiscountInfoContainerS>
       <Adder label={'Условие'} placeholder={'Условие'} />
-    </div>
+      <Textarea title='Дополнительная информация' />
+    </DiscountCreationBlockContainerS>
   );
 };

@@ -1,8 +1,7 @@
 import { CSSProperties, FunctionComponent, useState } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
 import { SelectContainerS, SelectOptionS, SelectOptionsS, SelectValue } from '../../styles/select';
 import SelectLineIcon from '/public/icons/select-line.svg?react';
-import { UseFormSetValue } from 'react-hook-form';
-import { TDiscountData } from '../discount-form';
 
 export type SelectOption = {
   value: string;
@@ -13,7 +12,7 @@ export type SelectProps = {
   options: SelectOption[];
   styleContainer?: CSSProperties;
   placeholder: string;
-  selecteOption: UseFormSetValue<any>;
+  selecteOption?: UseFormSetValue<any>;
   fieldName: string;
 };
 
@@ -33,7 +32,7 @@ export const Select: FunctionComponent<SelectProps> = ({
 
   const onOptionClick = (option: SelectOption): void => {
     setSelectedOption(option);
-    selecteOption(fieldName, option.value);
+    // selecteOption(fieldName, option.value);
     setIsOpen(false);
   };
 
