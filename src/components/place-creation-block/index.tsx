@@ -8,9 +8,11 @@ import {
   InputWrapperS,
   PlaceCreationBlockContainerS
 } from '../../styles/place-form';
+import { PickAvgPrice } from '../pick-avg-price';
 import { Select, SelectOption } from '../select';
-import { WorkingHours } from '../working-hours';
 import { Textarea } from '../textarea';
+import { WorkingHours } from '../working-hours';
+import { useDispatch } from 'react-redux';
 
 export type TPlaceCreationBlock = {
   title: string;
@@ -28,6 +30,11 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
     formState: { errors }
   } = useForm<TPlaceCreationBlock>();
   const { data: categories } = useGetCategoriesQuery();
+  const dispatch = useDispatch();
+
+  const handlerSelectCategory = (option: SelectOption): void => {
+    setValue('category', option.value);
+  };
 
   useEffect(() => {
     if (categories) {
@@ -38,6 +45,10 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
       setTransformedArray(newTransformedArray);
     }
   }, [categories]);
+
+  useEffect(() => {
+    dispatch()
+  }, [watch()]);
 
   return (
     <PlaceCreationBlockContainerS>
@@ -59,27 +70,15 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
           }}
           options={transformedArray}
           placeholder={'Выберите'}
-          selecteOption={setValue}
-          fieldName={'category'}
+          onChange={handlerSelectCategory}
         />
       </FieldContainerS>
       <FieldContainerS>
-        <FieldLabelS>Название завидения</FieldLabelS>
+        <FieldLabelS>Время работы</FieldLabelS>
         <WorkingHours />
       </FieldContainerS>
       <FieldContainerS>
-        <FieldLabelS>Средний чек</FieldLabelS>
-        <Select
-          styleContainer={{
-            maxWidth: 'none'
-          }}
-          options={[
-            { value: '1', label: 'Средний чек 1' },
-            { value: '2', label: 'Средний чек 2' }
-          ]}
-          placeholder={'Выберите'}
-          // selecteOption={}
-        />
+        <PickAvgPrice />
       </FieldContainerS>
       <Textarea title='Описание' />
     </PlaceCreationBlockContainerS>

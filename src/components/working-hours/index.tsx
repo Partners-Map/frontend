@@ -24,7 +24,7 @@ export const WorkingHours = (): JSX.Element => {
       }}
     >
       <InputS
-        type='time'
+        type='text'
         {...register('from', {
           required: true
         })}

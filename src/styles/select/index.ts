@@ -4,7 +4,7 @@ type SelectOptionsProps = {
   isOpen: boolean;
 };
 
-export const SelectContainerS = styled.div`
+export const SelectContainerS = styled.div<{ disabled: boolean }>`
   min-width: 60px;
   max-width: 150px;
   position: relative;
@@ -15,6 +15,7 @@ export const SelectContainerS = styled.div`
   padding: 1vh;
   border: 1px solid #ccc;
   border-radius: 6px;
+  background-color: ${({ disabled }): string => (disabled ? '#ccc' : '#fff')};
 `;
 
 export const SelectOptionsS = styled.div<SelectOptionsProps>`
@@ -37,6 +38,7 @@ export const SelectOptionsS = styled.div<SelectOptionsProps>`
 export const SelectOptionS = styled.div`
   padding: 1vh;
   cursor: pointer;
+
   &:hover {
     background-color: #f0f0f0;
   }

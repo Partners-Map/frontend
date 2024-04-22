@@ -1,6 +1,8 @@
 import { FunctionComponent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { TPartner } from '../../@types/models/partner';
 import { useGetPartnersQuery } from '../../__data__/services/partners';
+import { setPartner } from '../../__data__/slices/new-place';
 import {
   NewPartnerButtonContainerS,
   PartnerContainerS,
@@ -16,14 +18,16 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
   const { data: partners } = useGetPartnersQuery();
   const firstPartner = (partners || [])[0];
   const [isSelectedId, setIsSelectedId] = useState<string>('');
+  const dispatch = useDispatch();
 
   const handlerSelectPartner = (partner: TPartner): void => {
-    // TODO: redux стейт
+    dispatch(setPartner(partner.id));
     setIsSelectedId(partner.id);
-    console.log(partner);
   };
 
-  const handlerCreatePartner = (): void => {};
+  const handlerCreatePartner = (): void => {
+    // TODO: создание нового партнера
+  };
 
   useEffect(() => {
     if (firstPartner) {

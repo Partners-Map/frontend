@@ -5,3 +5,10 @@ export type TDiscount = {
   information: string;
   discountTypeId: string;
 };
+
+export type TNewDiscount = {
+  conditions: string[];
+  amount: number;
+  information: string;
+  discountTypeId: string;
+};
