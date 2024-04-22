@@ -1,11 +1,12 @@
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { AdderContainerS, AdderLabelS, ListS } from '../../styles/adder';
-import { InputS } from '../../styles/input';
-import { Button } from '../button';
-import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
 import { useDispatch } from 'react-redux';
 import { setDiscountConditions } from '../../__data__/slices/new-place';
+import { AddedItemTitleS, AdderContainerS, AdderLabelS, ListS } from '../../styles/adder';
+import { InputS } from '../../styles/input';
+import { Button } from '../button';
+import TrashIcon from '/public/icons/trash.svg?react';
+import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
 
 type AdderProps = {
   label: string;
@@ -71,7 +72,17 @@ export const Adder: FunctionComponent<AdderProps> = ({
       </div>
       <ListS isAddress={isAddress}>
         {list.map(item => (
-          <div>{item}</div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              padding: '10px'
+            }}
+          >
+            <AddedItemTitleS>{item}</AddedItemTitleS>
+            <TrashIcon width={24} height={24} />
+          </div>
         ))}
       </ListS>
     </AdderContainerS>

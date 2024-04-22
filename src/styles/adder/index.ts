@@ -19,3 +19,7 @@ export const ListS = styled.div<{ isAddress?: boolean }>`
   height: ${({ isAddress }): string => (isAddress ? '24vh' : 'none')};
   overflow-y: auto;
 `;
+
+export const AddedItemTitleS = styled(UbuntuRegular)`
+  color: #010736dd;
+`;
