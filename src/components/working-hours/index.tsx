@@ -1,4 +1,8 @@
-import { FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form';
+import { UnknownAction } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { setPlaceClosingTime, setPlaceOpeningTime } from '../../__data__/slices/new-place';
 import { InputS } from '../../styles/input';
 
 type TWorkingHoursData = {
@@ -9,10 +13,26 @@ type TWorkingHoursData = {
 export const WorkingHours = (): JSX.Element => {
   const {
     register,
-    handleSubmit,
+    getValues,
     watch,
     formState: { errors }
   } = useForm<TWorkingHoursData>();
+  const dispatch = useDispatch();
+
+  const setValueToRedux = (
+    fieldName: keyof TWorkingHoursData,
+    actionCreator: (data: string) => UnknownAction
+  ): void => {
+    const value = getValues(fieldName);
+    if (value) {
+      dispatch(actionCreator(value));
+    }
+  };
+
+  useEffect(() => {
+    setValueToRedux('from', setPlaceOpeningTime);
+    setValueToRedux('to', setPlaceClosingTime);
+  }, [watch()]);
 
   return (
     <div

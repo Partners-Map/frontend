@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
+import { gisApi } from '../services/2gis';
 import { authApi } from '../services/auth';
 import { avgPriceApi } from '../services/avg-price';
 import { categoryApi } from '../services/category';
@@ -17,6 +18,8 @@ const rootReducer = combineReducers({
   [categoryApi.reducerPath]: categoryApi.reducer,
   [discountTypeApi.reducerPath]: discountTypeApi.reducer,
   [avgPriceApi.reducerPath]: avgPriceApi.reducer,
+  [gisApi.reducerPath]: gisApi.reducer,
+
   newPlaceSlice: newPlaceReducer
 });
 
@@ -27,7 +30,8 @@ const apiMiddleware = [
   discountApi.middleware,
   categoryApi.middleware,
   discountTypeApi.middleware,
-  avgPriceApi.middleware
+  avgPriceApi.middleware,
+  gisApi.middleware
 ];
 
 export const store = configureStore({

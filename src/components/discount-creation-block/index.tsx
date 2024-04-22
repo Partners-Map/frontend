@@ -12,22 +12,49 @@ import {
 import { Adder } from '../adder';
 import { Select, SelectOption } from '../select';
 import { Textarea } from '../textarea';
+import { UnknownAction } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import {
+  setDiscountAmount,
+  setDiscountDiscountTypeId,
+  setDiscountInformation
+} from '../../__data__/slices/new-place';
 
 export type TDiscountData = {
-  size: number;
+  amount: number;
   type: string;
+  information: string;
 };
 
 export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors }
-  } = useForm<TDiscountData>();
+  const { register, watch, setValue, getValues } = useForm<TDiscountData>();
   const { data: discountTypes } = useGetDiscountTypesQuery();
   const [transformedArray, setTransformedArray] = useState<SelectOption[]>([]);
+  const dispatch = useDispatch();
+
+  const handlerDiscountTypeSelect = (option: SelectOption): void => {
+    setValue('type', option.value);
+  };
+
+  const handlerInfoChange = (value: string): void => {
+    setValue('information', value);
+  };
+
+  const setValueToRedux = (
+    fieldName: keyof TDiscountData,
+    actionCreator: (data: string) => UnknownAction
+  ): void => {
+    const value = getValues(fieldName);
+    if (value && typeof value === 'string') {
+      dispatch(actionCreator(value));
+    }
+  };
+
+  useEffect(() => {
+    dispatch(setDiscountAmount(getValues('amount')));
+    setValueToRedux('type', setDiscountDiscountTypeId);
+    setValueToRedux('information', setDiscountInformation);
+  }, [watch()]);
 
   useEffect(() => {
     if (discountTypes) {
@@ -48,7 +75,7 @@ export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
           <InputWrapperS style={{ height: '2vh' }}>
             <InputS
               type='text'
-              {...register('size', { required: true })}
+              {...register('amount', { required: true })}
               placeholder='Количество'
             />
           </InputWrapperS>
@@ -64,14 +91,13 @@ export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
               }}
               options={transformedArray}
               placeholder={'Выберите'}
-              selecteOption={setValue}
-              fieldName='type'
+              onChange={handlerDiscountTypeSelect}
             />
           </InputWrapperS>
         </FieldContainerS>
       </DiscountInfoContainerS>
-      <Adder label={'Условие'} placeholder={'Условие'} />
-      <Textarea title='Дополнительная информация' />
+      <Adder label={'Условие'} placeholder={'Условие'} isCondition />
+      <Textarea title='Дополнительная информация' onChange={handlerInfoChange} />
     </DiscountCreationBlockContainerS>
   );
 };

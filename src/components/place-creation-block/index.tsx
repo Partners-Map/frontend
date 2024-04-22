@@ -13,6 +13,12 @@ import { Select, SelectOption } from '../select';
 import { Textarea } from '../textarea';
 import { WorkingHours } from '../working-hours';
 import { useDispatch } from 'react-redux';
+import {
+  setPlaceCategoryId,
+  setPlaceDescription,
+  setPlaceTitle
+} from '../../__data__/slices/new-place';
+import { UnknownAction } from '@reduxjs/toolkit/react';
 
 export type TPlaceCreationBlock = {
   title: string;
@@ -22,18 +28,26 @@ export type TPlaceCreationBlock = {
 
 export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
   const [transformedArray, setTransformedArray] = useState<SelectOption[]>([]);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors }
-  } = useForm<TPlaceCreationBlock>();
+  const { register, watch, setValue, getValues } = useForm<TPlaceCreationBlock>();
   const { data: categories } = useGetCategoriesQuery();
   const dispatch = useDispatch();
 
   const handlerSelectCategory = (option: SelectOption): void => {
     setValue('category', option.value);
+  };
+
+  const handlerChangeTextArea = (value: string): void => {
+    setValue('description', value);
+  };
+
+  const setValueToRedux = (
+    fieldName: keyof TPlaceCreationBlock,
+    actionCreator: (data: string) => UnknownAction
+  ): void => {
+    const value = getValues(fieldName);
+    if (value) {
+      dispatch(actionCreator(value));
+    }
   };
 
   useEffect(() => {
@@ -47,7 +61,9 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
   }, [categories]);
 
   useEffect(() => {
-    dispatch()
+    setValueToRedux('title', setPlaceTitle);
+    setValueToRedux('category', setPlaceCategoryId);
+    setValueToRedux('description', setPlaceDescription);
   }, [watch()]);
 
   return (
@@ -80,7 +96,7 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
       <FieldContainerS>
         <PickAvgPrice />
       </FieldContainerS>
-      <Textarea title='Описание' />
+      <Textarea title='Описание' onChange={handlerChangeTextArea} />
     </PlaceCreationBlockContainerS>
   );
 };

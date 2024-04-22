@@ -7,7 +7,7 @@ export const discountTypeApi = createApi({
   baseQuery,
   endpoints: builder => ({
     getDiscountTypes: builder.query<TDiscountType[], void>({
-      query: () => '/discounttypes'
+      query: () => '/discount-types'
     })
   })
 });

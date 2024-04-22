@@ -3,15 +3,17 @@ import { TNewPlace } from '../../../@types/models/place';
 import { TNewDiscount } from '../../../@types/models/discount';
 import { TNewAddress } from '../../../@types/models/address';
 
-export type newPlaceState = {
+export type NewPlaceState = {
   partnerId: string;
+  categoryId: string;
   place: TNewPlace;
   discount: TNewDiscount;
-  address: TNewAddress;
+  addresses: TNewAddress[];
 };
 
-const initialState: newPlaceState = {
+const initialState: NewPlaceState = {
   partnerId: '',
+  categoryId: '',
   place: {
     title: '',
     description: '',
@@ -27,13 +29,7 @@ const initialState: newPlaceState = {
     information: '',
     discountTypeId: ''
   },
-  address: {
-    city: '',
-    street: '',
-    house: '',
-    latitude: '',
-    longitude: ''
-  }
+  addresses: []
 };
 
 const newPlaceSlice = createSlice({
@@ -43,14 +39,44 @@ const newPlaceSlice = createSlice({
     setPartner: (state, action: PayloadAction<string>) => {
       state.partnerId = action.payload;
     },
-    setPlace: (state, action: PayloadAction<TNewPlace>) => {
-      state.place = action.payload;
+    setPlaceTitle: (state, action: PayloadAction<string>) => {
+      state.place.title = action.payload;
+    },
+    setPlaceCategoryId: (state, action: PayloadAction<string>) => {
+      state.categoryId = action.payload;
+    },
+    setPlaceDescription: (state, action: PayloadAction<string>) => {
+      state.place.description = action.payload;
+    },
+    setPlaceOpeningTime: (state, action: PayloadAction<string>) => {
+      state.place.openingTime = action.payload;
+    },
+    setPlaceClosingTime: (state, action: PayloadAction<string>) => {
+      state.place.closingTime = action.payload;
+    },
+    setPlaceMinAvgPriceId: (state, action: PayloadAction<string>) => {
+      state.place.minAvgPriceId = action.payload;
+    },
+    setPlaceMaxAvgPriceId: (state, action: PayloadAction<string>) => {
+      state.place.maxAvgPriceId = action.payload;
     },
     setDiscount: (state, action: PayloadAction<TNewDiscount>) => {
       state.discount = action.payload;
     },
-    setAddress: (state, action: PayloadAction<TNewAddress>) => {
-      state.address = action.payload;
+    setDiscountAmount: (state, action: PayloadAction<number>) => {
+      state.discount.amount = action.payload;
+    },
+    setDiscountInformation: (state, action: PayloadAction<string>) => {
+      state.discount.information = action.payload;
+    },
+    setDiscountDiscountTypeId: (state, action: PayloadAction<string>) => {
+      state.discount.discountTypeId = action.payload;
+    },
+    setDiscountConditions: (state, action: PayloadAction<string[]>) => {
+      state.discount.conditions = action.payload;
+    },
+    setAddress: (state, action: PayloadAction<TNewAddress[]>) => {
+      state.addresses = action.payload;
     },
     clearNewPlace: () => {
       return { ...initialState };
@@ -58,5 +84,21 @@ const newPlaceSlice = createSlice({
   }
 });
 
-export const { setPartner, setPlace, setDiscount, setAddress, clearNewPlace } = newPlaceSlice.actions;
+export const {
+  setPartner,
+  setPlaceTitle,
+  setPlaceCategoryId,
+  setPlaceDescription,
+  setPlaceOpeningTime,
+  setPlaceClosingTime,
+  setPlaceMinAvgPriceId,
+  setPlaceMaxAvgPriceId,
+  setDiscount,
+  setDiscountAmount,
+  setDiscountInformation,
+  setDiscountDiscountTypeId,
+  setDiscountConditions,
+  setAddress,
+  clearNewPlace
+} = newPlaceSlice.actions;
 export const newPlaceReducer = newPlaceSlice.reducer;
