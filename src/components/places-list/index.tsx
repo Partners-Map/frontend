@@ -1,10 +1,10 @@
 import { CSSProperties, FunctionComponent } from 'react';
-import { TPlaceWithAddress } from '../../@types/models/place';
+import { TPlaceWithAddress, TPlaceWithFullInfo } from '../../@types/models/place';
 import { PlaceListContainerS } from '../../styles/place-list';
 import { PlaceCard } from '../place-card';
 
 type PlacesListProps = {
-  data: TPlaceWithAddress[];
+  data: TPlaceWithFullInfo[];
   style?: CSSProperties;
 };
 
