@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { TPlace } from '../../@types/models/place';
+import { TPlaceWithFullInfo } from '../../@types/models/place';
 import {
   PlaceInfoCategory,
   PlaceInfoConditions,
@@ -13,7 +13,7 @@ import {
 } from '../../styles/place-info';
 
 type PlaceInfoProps = {
-  data: TPlace;
+  data: TPlaceWithFullInfo;
 };
 
 export const PlaceInfo: FunctionComponent<PlaceInfoProps> = ({ data }): JSX.Element => {
@@ -28,7 +28,7 @@ export const PlaceInfo: FunctionComponent<PlaceInfoProps> = ({ data }): JSX.Elem
         <PlaceInfoCategory>Рестораны, кафе и кофейни</PlaceInfoCategory>
         <PlaceInfoExtraContainer>
           <PlaceInfoExtraText>{'Время работы: 09:00 - 23:00'}</PlaceInfoExtraText>
-          <PlaceInfoExtraText>{`Ср. чек: ${data.avgReceipt}`}</PlaceInfoExtraText>
+          <PlaceInfoExtraText>{`Ср. чек: ${data.minAvgPrice?.symbol} ${data.maxAvgPrice ? `- ${data.maxAvgPrice?.symbol}` : ''}`}</PlaceInfoExtraText>
         </PlaceInfoExtraContainer>
       </div>
 

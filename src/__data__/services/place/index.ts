@@ -28,6 +28,9 @@ export const placeApi = createApi({
     }),
     getPlaceByIdWithAddress: builder.query<TPlaceWithAddress, string>({
       query: id => `/place/${id}/address`
+    }),
+    getPlaceByIdWithFullInfo: builder.query<TPlaceWithFullInfo, string>({
+      query: id => `/place/${id}/full-info`
     })
   })
 });
@@ -38,5 +41,6 @@ export const {
   useGetPlacesWithCategoriesQuery,
   useGetPlacesWithAddressQuery,
   useGetPlaceByIdQuery,
-  useGetPlaceByIdWithAddressQuery
+  useGetPlaceByIdWithAddressQuery,
+  useGetPlaceByIdWithFullInfoQuery
 } = placeApi;

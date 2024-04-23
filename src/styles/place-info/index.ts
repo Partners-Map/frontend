@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { UbuntuMedium, UbuntuRegular } from '../fonts';
 
 export const PlaceInfoContainer = styled.div`
   margin: 4vh 0 0 0;
@@ -6,12 +7,12 @@ export const PlaceInfoContainer = styled.div`
   flex-direction: column;
 `;
 
-export const PlaceInfoTitle = styled.h1`
+export const PlaceInfoTitle = styled(UbuntuMedium)`
   font-size: 20px;
 `;
 
-export const PlaceInfoCategory = styled.h2`
-  font-size: 8px;
+export const PlaceInfoCategory = styled(UbuntuRegular)`
+  font-size: 14px;
 `;
 
 export const PlaceInfoExtraContainer = styled.div`
@@ -21,7 +22,7 @@ export const PlaceInfoExtraContainer = styled.div`
 `;
 
 export const PlaceInfoExtraText = styled.h1`
-  font-size: 8px;
+  font-size: 12px;
 `;
 
 export const PlaceInfoDescription = styled.h1`
