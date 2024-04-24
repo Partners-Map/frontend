@@ -9,6 +9,7 @@ import { RoutesList } from '../../routers';
 import { PageContainerS } from '../../styles/page-container';
 
 //TODO: фильтрация
+//TODO: сохранение фильтрации при преходе с главной
 export const MapPage: FunctionComponent = (): JSX.Element => {
   const { data: placesWithAddress } = useGetPlacesWithAddressQuery();
   const baseLongitude = 39.7257;
