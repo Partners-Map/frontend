@@ -1,6 +1,6 @@
-import { FunctionComponent, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { FunctionComponent } from 'react';
 import { TCategory } from '../../@types/models/category';
+import { useFilter } from '../../hooks/filter';
 import { CategoryCloudContainerS, TagS } from '../../styles/tag-cloud';
 
 type CategoryCloudPrps = {
@@ -10,28 +10,13 @@ type CategoryCloudPrps = {
 export const CategoryCloud: FunctionComponent<CategoryCloudPrps> = ({
   categories
 }): JSX.Element => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-
-  const handlerSelectCategory = (category: TCategory): void => {
-    const currentParams = Object.fromEntries(searchParams);
-    currentParams.category = category.id;
-    setSearchParams(currentParams);
-    setSelectedCategory(category.id);
-  };
-
-  const handlerDeleteCategory = (): void => {
-    const currentParams = Object.fromEntries(searchParams);
-    delete currentParams.category;
-    setSearchParams(currentParams);
-    setSelectedCategory('');
-  };
+  const { selectFilter, deleteFilter, findFilter } = useFilter();
 
   const handlerSelect = (category: TCategory): void => {
-    if (Object.fromEntries(searchParams).category) {
-      handlerDeleteCategory();
+    if (findFilter('category') === category.id) {
+      deleteFilter('category');
     } else {
-      handlerSelectCategory(category);
+      selectFilter('category', category.id);
     }
   };
 
@@ -41,7 +26,7 @@ export const CategoryCloud: FunctionComponent<CategoryCloudPrps> = ({
         <TagS
           key={category.id}
           onClick={() => handlerSelect(category)}
-          selected={selectedCategory === category.id}
+          selected={findFilter('category') === category.id}
         >
           {category.title}
         </TagS>

@@ -1,9 +1,9 @@
 import { FunctionComponent, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useGetAvgPricesRangesQuery } from '../../__data__/services/avg-price';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
 import { FiltersContainerS } from '../../styles/filters';
 import { Select, SelectOption } from '../select';
-import { useGetAvgPricesRangesQuery } from '../../__data__/services/avg-price';
-import { useSearchParams } from 'react-router-dom';
 
 type FiltersPrps = {
   inMapPage?: boolean;
@@ -16,7 +16,11 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ inMapPage }): JSX.Elem
   const [avgPriceRanges, setAvgPriceRanges] = useState<SelectOption[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handlerSelectCategory = (option: SelectOption): void => {};
+  const handlerSelectCategory = (option: SelectOption): void => {
+    const currentParams = Object.fromEntries(searchParams);
+    currentParams.category = option.value;
+    setSearchParams(currentParams);
+  };
 
   const handlerSelectAvgPrice = (option: SelectOption): void => {
     const currentParams = Object.fromEntries(searchParams);
@@ -51,12 +55,12 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ inMapPage }): JSX.Elem
       {inMapPage && (
         <Select
           options={categoriesVariances}
-          styleContainer={{ width: '60vw' }}
-          placeholder={'Выберите'}
+          styleContainer={{ width: '90vw' }}
+          placeholder={'Категория'}
           onChange={handlerSelectCategory}
         />
       )}
-      <Select options={avgPriceRanges} placeholder={'Выберите'} onChange={handlerSelectAvgPrice} />
+      <Select options={avgPriceRanges} placeholder={'Диапазон'} onChange={handlerSelectAvgPrice} />
     </FiltersContainerS>
   );
 };

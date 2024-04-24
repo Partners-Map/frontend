@@ -1,4 +1,4 @@
-import { CSSProperties, FunctionComponent, useEffect, useState } from 'react';
+import { CSSProperties, FunctionComponent, useEffect, useRef, useState } from 'react';
 import { SelectContainerS, SelectOptionS, SelectOptionsS, SelectValue } from '../../styles/select';
 import SelectLineIcon from '/public/icons/select-line.svg?react';
 
@@ -16,6 +16,7 @@ export type SelectProps = {
   disabled?: boolean;
 };
 
+// TODO: defaultValue
 export const Select: FunctionComponent<SelectProps> = ({
   options,
   styleContainer,
@@ -25,6 +26,8 @@ export const Select: FunctionComponent<SelectProps> = ({
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOption>();
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const toggleOpen = (): void => {
     if (!disabled) {
@@ -42,19 +45,24 @@ export const Select: FunctionComponent<SelectProps> = ({
   };
 
   useEffect(() => {
-    if (disabled) {
-      const initState = {
-        value: '',
-        label: '',
-        ariaLabel: ''
-      };
-      setSelectedOption(initState);
-      onChange(initState);
+    if (containerRef.current) {
+      const width = containerRef.current.offsetWidth;
+      setContainerWidth(width);
     }
-  }, [disabled]);
+  }, []);
+
+  const containerStyle: CSSProperties = {
+    ...styleContainer,
+    minWidth: containerWidth ? `${containerWidth}px` : 'auto'
+  };
 
   return (
-    <SelectContainerS disabled={disabled} onClick={toggleOpen} style={styleContainer}>
+    <SelectContainerS
+      ref={containerRef}
+      disabled={disabled}
+      onClick={toggleOpen}
+      style={containerStyle}
+    >
       {selectedOption ? (
         <SelectValue>{selectedOption.label}</SelectValue>
       ) : (

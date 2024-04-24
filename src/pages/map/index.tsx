@@ -8,6 +8,7 @@ import { useMap } from '../../hooks/map';
 import { RoutesList } from '../../routers';
 import { PageContainerS } from '../../styles/page-container';
 
+//TODO: фильтрация
 export const MapPage: FunctionComponent = (): JSX.Element => {
   const { data: placesWithAddress } = useGetPlacesWithAddressQuery();
   const baseLongitude = 39.7257;
@@ -40,6 +41,7 @@ export const MapPage: FunctionComponent = (): JSX.Element => {
   return (
     <PageContainerS>
       <Header />
+
       <Filters inMapPage={true} />
       <div
         style={{

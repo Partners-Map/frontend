@@ -21,13 +21,14 @@
     ],
     "no-var": "error",
     "quotes": ["error", "single"],
-    "no-unused-vars": "warn",
+    "no-unused-vars": ["off"],
     "no-duplicate-imports": "error",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/triple-slash-reference": "warn",
-    "react-hooks/rules-of-hooks": "warn"
+    "react-hooks/rules-of-hooks": "warn",
+    "intreact-hooks/exhaustive-deps": "off"
   }
 }
