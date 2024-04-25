@@ -75,7 +75,7 @@ export const MapPage: FunctionComponent = (): JSX.Element => {
     <PageContainerS>
       <Header />
 
-      <Filters inMapPage={true} />
+      <Filters haveCategory={true} />
       <div
         style={{
           height: '70vh',

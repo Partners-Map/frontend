@@ -6,10 +6,10 @@ import { FiltersContainerS } from '../../styles/filters';
 import { Select, SelectOption } from '../select';
 
 type FiltersPrps = {
-  inMapPage?: boolean;
+  haveCategory?: boolean;
 };
 
-export const Filters: FunctionComponent<FiltersPrps> = ({ inMapPage }): JSX.Element => {
+export const Filters: FunctionComponent<FiltersPrps> = ({ haveCategory }): JSX.Element => {
   const { data: categories, isLoading } = useGetCategoriesQuery();
   const { data: avgPrices } = useGetAvgPricesRangesQuery();
   const [categoriesVariances, setCategoriesVariances] = useState<SelectOption[]>([]);
@@ -29,7 +29,7 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ inMapPage }): JSX.Elem
   };
 
   useEffect(() => {
-    if (inMapPage && categories && !isLoading) {
+    if (haveCategory && categories && !isLoading) {
       setCategoriesVariances(
         categories.map(item => ({
           value: item.id,
@@ -37,7 +37,7 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ inMapPage }): JSX.Elem
         }))
       );
     }
-  }, [categories, inMapPage, isLoading]);
+  }, [categories, haveCategory, isLoading]);
 
   useEffect(() => {
     if (avgPrices) {
@@ -52,7 +52,7 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ inMapPage }): JSX.Elem
 
   return (
     <FiltersContainerS>
-      {inMapPage && (
+      {haveCategory && (
         <Select
           options={categoriesVariances}
           styleContainer={{ width: '90vw' }}
