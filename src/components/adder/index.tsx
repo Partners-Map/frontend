@@ -1,8 +1,14 @@
-import { FunctionComponent, useState } from 'react';
+import { CSSProperties, FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { setDiscountConditions } from '../../__data__/slices/new-place';
-import { AddedItemTitleS, AdderContainerS, AdderLabelS, ListS } from '../../styles/adder';
+import { useDispatch, useSelector } from 'react-redux';
+import { NewPlaceState } from '../../__data__/slices/new-place';
+import {
+  AddedItemTitleS,
+  AdderContainerS,
+  AdderHelperTextS,
+  AdderLabelS,
+  ListS
+} from '../../styles/adder';
 import { InputS } from '../../styles/input';
 import { Button } from '../button';
 import TrashIcon from '/public/icons/trash.svg?react';
@@ -10,22 +16,28 @@ import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
 
 type AdderProps = {
   label: string;
-  placeholder: string;
-  isCondition?: boolean;
-  isAddress?: boolean;
-  onAddressAdder: (addsess: string) => void;
+  placeholder?: string;
+  onAdding: (value: string) => void;
+  onDeleteItem: (value: string) => void;
+  addedElements: TAdderData[];
+  listStyle?: CSSProperties;
+  error?: boolean;
+  helperText?: string;
 };
 
-type TAdderData = {
+export type TAdderData = {
   label: string;
 };
 
 export const Adder: FunctionComponent<AdderProps> = ({
   label,
-  placeholder,
-  isCondition = false,
-  isAddress = false,
-  onAddressAdder
+  placeholder = ' ',
+  onAdding,
+  addedElements = [],
+  listStyle,
+  error,
+  helperText,
+  onDeleteItem
 }): JSX.Element => {
   const {
     register,
@@ -33,22 +45,15 @@ export const Adder: FunctionComponent<AdderProps> = ({
     reset,
     formState: { errors }
   } = useForm<TAdderData>();
-  const [list, setList] = useState<string[]>([]);
   const dispatch = useDispatch();
+  const addresses = useSelector(
+    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.addresses
+  );
 
   const handlerAdd = (): void => {
-    if (getValues('label').length <= 0) return;
-    setList([...list, getValues('label')]);
-    if (isCondition) {
-      dispatch(setDiscountConditions([...list, getValues('label').trimStart().trimEnd()]));
-      reset({ label: '' });
-      return;
-    }
-    if (isAddress) {
-      onAddressAdder(getValues('label').trimStart().trimEnd());
-      reset({ label: '' });
-      return;
-    }
+    if (errors.label) return;
+    onAdding(getValues('label').trimStart().trimEnd());
+    reset({ label: '' });
   };
 
   return (
@@ -67,11 +72,14 @@ export const Adder: FunctionComponent<AdderProps> = ({
             required: true
           })}
           placeholder={placeholder}
+          error={error}
         />
+
         <Button icon={WhitePlusIcon} iconSize={20} backgroundColor='blue' onClick={handlerAdd} />
       </div>
-      <ListS isAddress={isAddress}>
-        {list.map(item => (
+      <AdderHelperTextS>{helperText}</AdderHelperTextS>
+      <ListS style={listStyle}>
+        {addedElements.map(item => (
           <div
             style={{
               display: 'flex',
@@ -80,8 +88,8 @@ export const Adder: FunctionComponent<AdderProps> = ({
               padding: '10px'
             }}
           >
-            <AddedItemTitleS>{item}</AddedItemTitleS>
-            <TrashIcon width={24} height={24} />
+            <AddedItemTitleS>{item.label}</AddedItemTitleS>
+            <TrashIcon width={24} height={24} onClick={() => onDeleteItem(item.label)} />
           </div>
         ))}
       </ListS>

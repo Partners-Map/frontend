@@ -92,7 +92,7 @@ export type TPlaceWithFullInfo = {
     information: string;
     discountTypeId: string;
   };
-  _count: {
+  _count?: {
     address: number;
     placeToCategory: number;
   };

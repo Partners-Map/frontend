@@ -1,8 +1,12 @@
 import { UnknownAction } from '@reduxjs/toolkit';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { setPlaceClosingTime, setPlaceOpeningTime } from '../../__data__/slices/new-place';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  NewPlaceState,
+  setPlaceClosingTime,
+  setPlaceOpeningTime
+} from '../../__data__/slices/new-place';
 import { InputS } from '../../styles/input';
 
 type TWorkingHoursData = {
@@ -11,12 +15,20 @@ type TWorkingHoursData = {
 };
 
 export const WorkingHours = (): JSX.Element => {
+  const currentPlace = useSelector(
+    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.place
+  );
   const {
     register,
     getValues,
     watch,
     formState: { errors }
-  } = useForm<TWorkingHoursData>();
+  } = useForm<TWorkingHoursData>({
+    defaultValues: {
+      from: currentPlace.openingTime,
+      to: currentPlace.closingTime
+    }
+  });
   const dispatch = useDispatch();
 
   const setValueToRedux = (

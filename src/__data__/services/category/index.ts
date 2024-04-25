@@ -8,8 +8,11 @@ export const categoryApi = createApi({
   endpoints: builder => ({
     getCategories: builder.query<TCategory[], void>({
       query: () => '/categories'
+    }),
+    getCategoryById: builder.query<TCategory, string>({
+      query: id => `/category/${id}`
     })
   })
 });
 
-export const { useGetCategoriesQuery } = categoryApi;
+export const { useGetCategoriesQuery, useGetCategoryByIdQuery } = categoryApi;

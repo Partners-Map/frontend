@@ -1,15 +1,24 @@
+import mapglAPI from '@2gis/mapgl/types/index';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { useMap } from '../../hooks/map';
-import { Adder } from '../adder';
-import { MapWrapper } from '../map-wrapper';
-import { useGeocoderQuery } from '../../__data__/services/2gis';
 import { useDispatch, useSelector } from 'react-redux';
+import { useGeocoderMutation } from '../../__data__/services/2gis';
 import { NewPlaceState, setAddress } from '../../__data__/slices/new-place';
+import { useMap } from '../../hooks/map';
+import { Adder, TAdderData } from '../adder';
+import { MapWrapper } from '../map-wrapper';
 
 export const AddressForm: FunctionComponent = (): JSX.Element => {
+  const currentAddresses = useSelector(
+    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.addresses
+  );
   const baseLongitude = 39.7257;
   const baseLatitude = 43.5992;
-  const [geocoderAddress, setGeocoderAddress] = useState('');
+  const [addetingError, setAddetingError] = useState<boolean>(false);
+  const [addedAddresses, setAddedAddresses] = useState<TAdderData[]>(
+    currentAddresses.map(address => ({
+      label: `${address.city}, ${address.street}, ${address.house}`
+    }))
+  );
   const map = useMap({
     options: {
       center: [baseLongitude, baseLatitude],
@@ -17,7 +26,7 @@ export const AddressForm: FunctionComponent = (): JSX.Element => {
     }
   });
   // Москва, Садовническая, 25
-  const { data, refetch } = useGeocoderQuery(geocoderAddress);
+  const [geocoding] = useGeocoderMutation();
   const dispatch = useDispatch();
   const addresses = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.addresses
@@ -37,25 +46,55 @@ export const AddressForm: FunctionComponent = (): JSX.Element => {
     }
   };
 
-  const handlerAddressAdder = (address: string): void => {
-    setGeocoderAddress(address);
-    refetch();
+  const handlerDeleteAddress = (value: string): void => {
+    dispatch(
+      setAddress(
+        addresses.filter(
+          address => `${address.city}, ${address.street}, ${address.house}` !== value
+        )
+      )
+    );
+    setAddedAddresses(addedAddresses.filter(address => address.label !== value));
+  };
+
+  const handlerAddressAdder = async (address: string): Promise<void> => {
+    await geocoding(address)
+      .unwrap()
+      .then(data => {
+        if (!data || data.meta.code !== 200) throw Error();
+        setAddetingError(false);
+        const addressInfo = parseAddress(address);
+        const newAddress = {
+          city: addressInfo.city || '',
+          street: addressInfo.street || '',
+          house: addressInfo.house || '',
+          latitude: data.result.items[0].point.lat,
+          longitude: data.result.items[0].point.lon
+        };
+        dispatch(setAddress([...addresses, newAddress]));
+        setAddedAddresses([...addedAddresses, { label: address }]);
+      })
+      .catch(() => {
+        setAddetingError(true);
+      });
   };
 
   useEffect(() => {
-    if (data && data.meta.code === 200) {
-      const addressInfo = parseAddress(data.result.items[0].full_name);
-      const newAddress = {
-        city: addressInfo.city || '',
-        street: addressInfo.street || '',
-        house: addressInfo.house || '',
-        latitude: data.result.items[0].point.lat,
-        longitude: data.result.items[0].point.lon
-      };
-      console.log(data.result.items[0].full_name, addressInfo);
-      dispatch(setAddress([...addresses, newAddress]));
-    }
-  }, [data]);
+    if (!map || !addresses) return;
+    const markers: mapglAPI.Marker[] = [];
+
+    addresses.forEach(place => {
+      const marker = new map.mapglAPI.Marker(map.map, {
+        coordinates: [Number(place.longitude), Number(place.latitude)]
+      });
+
+      markers.push(marker);
+    });
+
+    return () => {
+      markers.forEach(marker => marker.destroy());
+    };
+  }, [map, addresses]);
 
   return (
     <div
@@ -66,14 +105,18 @@ export const AddressForm: FunctionComponent = (): JSX.Element => {
     >
       <div
         style={{
-          margin: '2vh 0 0 0'
+          margin: '2vh 0 0 0',
+          height: '32vh'
         }}
       >
         <Adder
           label={'Местоположение'}
           placeholder={'Местоположение'}
-          isAddress
-          onAddressAdder={handlerAddressAdder}
+          onAdding={handlerAddressAdder}
+          addedElements={addedAddresses}
+          helperText='пример: "Москва, Садовническая, 25"'
+          error={addetingError}
+          onDeleteItem={handlerDeleteAddress}
         />
       </div>
       <div

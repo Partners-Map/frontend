@@ -14,7 +14,7 @@ type TextBaseProps = {
   children?: ReactNode;
 };
 
-const TextBase = styled.h1<TextBaseProps>`
+const TextBase = styled.p<TextBaseProps>`
   font-family: 'Ubuntu', sans-serif;
   font-weight: ${({ weight }): number => weight || 400};
   font-style: ${({ italic }): string => (italic ? 'italic' : 'normal')};

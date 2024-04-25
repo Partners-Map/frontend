@@ -1,6 +1,14 @@
+import { UnknownAction } from '@reduxjs/toolkit/react';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
+import {
+  NewPlaceState,
+  setPlaceCategoryId,
+  setPlaceDescription,
+  setPlaceTitle
+} from '../../__data__/slices/new-place';
 import { InputS } from '../../styles/input';
 import {
   FieldContainerS,
@@ -12,13 +20,6 @@ import { PickAvgPrice } from '../pick-avg-price';
 import { Select, SelectOption } from '../select';
 import { Textarea } from '../textarea';
 import { WorkingHours } from '../working-hours';
-import { useDispatch } from 'react-redux';
-import {
-  setPlaceCategoryId,
-  setPlaceDescription,
-  setPlaceTitle
-} from '../../__data__/slices/new-place';
-import { UnknownAction } from '@reduxjs/toolkit/react';
 
 export type TPlaceCreationBlock = {
   title: string;
@@ -28,7 +29,16 @@ export type TPlaceCreationBlock = {
 
 export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
   const [transformedArray, setTransformedArray] = useState<SelectOption[]>([]);
-  const { register, watch, setValue, getValues } = useForm<TPlaceCreationBlock>();
+  const currentPlace = useSelector(
+    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
+  );
+  const { register, watch, setValue, getValues } = useForm<TPlaceCreationBlock>({
+    defaultValues: {
+      title: currentPlace.place.title,
+      category: currentPlace.categoryId,
+      description: currentPlace.place.description
+    }
+  });
   const { data: categories } = useGetCategoriesQuery();
   const dispatch = useDispatch();
 

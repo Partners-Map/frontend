@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { UbuntuRegular } from '../fonts';
+import { UbuntuLight, UbuntuRegular } from '../fonts';
 
 export const AdderLabelS = styled(UbuntuRegular)`
   color: #010736dd;
@@ -22,4 +22,9 @@ export const ListS = styled.div<{ isAddress?: boolean }>`
 
 export const AddedItemTitleS = styled(UbuntuRegular)`
   color: #010736dd;
+`;
+
+export const AdderHelperTextS = styled(UbuntuLight)`
+  font-size: 12px;
+  color: #cccccc;
 `;

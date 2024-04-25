@@ -1,8 +1,8 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TPartner } from '../../@types/models/partner';
 import { useGetPartnersQuery } from '../../__data__/services/partners';
-import { setPartner } from '../../__data__/slices/new-place';
+import { NewPlaceState, setPartner } from '../../__data__/slices/new-place';
 import {
   NewPartnerButtonContainerS,
   PartnerContainerS,
@@ -17,7 +17,10 @@ import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
 export const PartnerForm: FunctionComponent = (): JSX.Element => {
   const { data: partners } = useGetPartnersQuery();
   const firstPartner = (partners || [])[0];
-  const [isSelectedId, setIsSelectedId] = useState<string>('');
+  const currentPartner = useSelector(
+    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.partnerId
+  );
+  const [isSelectedId, setIsSelectedId] = useState<string>(currentPartner);
   const dispatch = useDispatch();
 
   const handlerSelectPartner = (partner: TPartner): void => {
