@@ -23,7 +23,7 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
 
   const onSubmit: SubmitHandler<TFormData> = async (data: TFormData): Promise<void> => {
     const clearEmail = data.email.trim();
-    const clearPassword = data.email.trim();
+    const clearPassword = data.password.trim();
 
     if (clearEmail.length > 0 && clearPassword.length > 0) {
       await login({

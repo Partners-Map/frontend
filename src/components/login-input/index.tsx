@@ -19,13 +19,11 @@ export const LoginInput = <T extends FieldValues>({
   style,
   errorStatus
 }: TLoginInputProps<T>): JSX.Element => (
-  <>
-    <LoginInputS
-      type={type}
-      {...register(name as Path<T>, { required: true })}
-      style={style}
-      placeholder={placeholder}
-      error={Boolean(errorStatus)}
-    />
-  </>
+  <LoginInputS
+    type={type}
+    {...register(name as Path<T>, { required: true })}
+    style={style}
+    placeholder={placeholder}
+    error={Boolean(errorStatus)}
+  />
 );

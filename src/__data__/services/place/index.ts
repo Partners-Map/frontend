@@ -1,5 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { TPlace, TPlaceWithAddress } from '../../../@types/models/place';
+import {
+  TPlace,
+  TPlaceWithAddress,
+  TPlaceWithFullInfo,
+  TPlacesWithCategorie
+} from '../../../@types/models/place';
 import { baseQuery } from '../../config';
 
 export const placeApi = createApi({
@@ -9,6 +14,12 @@ export const placeApi = createApi({
     getPlaces: builder.query<TPlace[], void>({
       query: () => '/places'
     }),
+    getPlacesWithCategories: builder.query<TPlacesWithCategorie[], void>({
+      query: () => '/places/with-category'
+    }),
+    getPlacesWithFullInfo: builder.query<TPlaceWithFullInfo[], void>({
+      query: () => '/places/full-info'
+    }),
     getPlacesWithAddress: builder.query<TPlaceWithAddress[], void>({
       query: () => '/places/addresses'
     }),
@@ -17,13 +28,19 @@ export const placeApi = createApi({
     }),
     getPlaceByIdWithAddress: builder.query<TPlaceWithAddress, string>({
       query: id => `/place/${id}/address`
+    }),
+    getPlaceByIdWithFullInfo: builder.query<TPlaceWithFullInfo, string>({
+      query: id => `/place/${id}/full-info`
     })
   })
 });
 
 export const {
   useGetPlacesQuery,
+  useGetPlacesWithFullInfoQuery,
+  useGetPlacesWithCategoriesQuery,
   useGetPlacesWithAddressQuery,
   useGetPlaceByIdQuery,
-  useGetPlaceByIdWithAddressQuery
+  useGetPlaceByIdWithAddressQuery,
+  useGetPlaceByIdWithFullInfoQuery
 } = placeApi;
