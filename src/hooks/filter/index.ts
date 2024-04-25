@@ -1,9 +1,16 @@
 import { useSearchParams } from 'react-router-dom';
+import { TPlaceWithFullInfo, TPlacesWithCategorie } from '../../@types/models/place';
 
 export type TuseFilter = {
   selectFilter: (param: string, value: string | number) => void;
   deleteFilter: (param: string) => void;
   findFilter: (param: string) => string;
+  filterDataByPriceRange: (data: TPlaceWithFullInfo[], priceRange: string) => TPlaceWithFullInfo[];
+  filterDataByCategory: (
+    data: TPlaceWithFullInfo[],
+    categoriesData: TPlacesWithCategorie[],
+    categoryId: string
+  ) => TPlaceWithFullInfo[];
 };
 
 export const useFilter = (): TuseFilter => {
@@ -23,9 +30,42 @@ export const useFilter = (): TuseFilter => {
 
   const findFilter = (param: string): string => Object.fromEntries(searchParams)[param];
 
+  const filterDataByPriceRange = (
+    data: TPlaceWithFullInfo[],
+    priceRange: string
+  ): TPlaceWithFullInfo[] => {
+    if (!priceRange) return data;
+
+    return data.filter(item => {
+      const minPrice = item.minAvgPrice.symbol;
+      const maxPrice = item.maxAvgPrice.symbol;
+
+      if (priceRange === 'small') return minPrice !== '₽₽₽' && maxPrice !== '₽₽₽';
+      if (priceRange === 'middle') return minPrice !== '₽₽₽' && minPrice !== '₽';
+
+      return true;
+    });
+  };
+
+  const filterDataByCategory = (
+    data: TPlaceWithFullInfo[],
+    categoriesData: TPlacesWithCategorie[],
+    categoryId: string
+  ): TPlaceWithFullInfo[] => {
+    const placesIds = categoriesData.map(category => {
+      if (category.categoryId === categoryId) {
+        return category.placeId;
+      }
+    });
+
+    return data.filter(item => placesIds.includes(item.id));
+  };
+
   return {
     selectFilter,
     deleteFilter,
-    findFilter
+    findFilter,
+    filterDataByPriceRange,
+    filterDataByCategory
   };
 };
