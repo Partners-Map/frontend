@@ -19,6 +19,7 @@ export const PlaceInfoExtraContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0.4vh 0 0 0;
+  gap: 4px
 `;
 
 export const PlaceInfoExtraText = styled.h1`
