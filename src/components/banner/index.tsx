@@ -4,11 +4,11 @@ import { BunnerContainerS, BunnerTextS, BunnerTitleS } from '../../styles/banner
 export const Banner: FunctionComponent = (): JSX.Element => {
   return (
     <BunnerContainerS>
-      <BunnerTitleS>Система лояльности</BunnerTitleS>
+      <BunnerTitleS>Партнерская экосистема СберПорта</BunnerTitleS>
       <BunnerTextS>
-        Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение
-        шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при
-        простой дубликации "Здесь ваш текст..
+        Партнерская экосистема СберПорта – это уникальная программа лояльности для резидентов
+        ИТ-центра по разработке продуктов Корпоративно-инвестиционного бизнеса Сбера в Сочи,
+        включающая индивидуальные скидки и предложения в различных заведениях Сочи.
       </BunnerTextS>
     </BunnerContainerS>
   );

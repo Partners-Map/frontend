@@ -13,8 +13,8 @@ export const PresendNewPlace = () => {
       {addedPlace && <PlaceCreateInfo data={addedPlace} />}
       <div
         style={{
-          height: '50vh',
-          margin: '4vh 0 0 0'
+          height: '32vh',
+          margin: '2vh 0 0 0'
         }}
       >
         <MapWrapper />
