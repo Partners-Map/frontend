@@ -1,32 +1,13 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FunctionComponent } from 'react';
+import { PlaceFormContainerS } from '../../styles/place-form';
+import { DiscountCreationBlock } from '../discount-creation-block';
+import { PlaceCreationBlock } from '../place-creation-block';
 
-export const PlaceForm = () => {
-  const [formData, setFormData] = useState({
-    title: '',
-    description: ''
-  });
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>): void => {
-    setFormData(prevState => ({ ...prevState, [event.target.id]: event.target.value }));
-  };
-  const handlerSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    console.log(formData);
-  };
-
+export const PlaceForm: FunctionComponent = (): JSX.Element => {
   return (
-    <form
-      onSubmit={handlerSubmit}
-      style={{
-        display: 'flex',
-        flexDirection: 'column'
-      }}
-    >
-      <label htmlFor='title'>title:</label>
-      <input type='text' id='title' onChange={handleChange} />
-      <label htmlFor='description'>description:</label>
-      <textarea id='description' onChange={handleChange} />
-      <button type='submit'>сохранить данные</button>
-    </form>
+    <PlaceFormContainerS>
+      <PlaceCreationBlock />
+      <DiscountCreationBlock />
+    </PlaceFormContainerS>
   );
 };

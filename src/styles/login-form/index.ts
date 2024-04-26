@@ -25,7 +25,7 @@ export const LoginInputS = styled.input<{ error?: boolean }>`
   max-width: 400px;
   padding: 1vh;
   outline: none;
-  border: 1px solid ${({ error }): string => (error ? '#e62a2a' : '#dddddd')};
+  border: 1px solid ${({ error }): string => (error ? '#e62a2a' : '#CCCCCC')};
   border-radius: 8px;
 `;
 

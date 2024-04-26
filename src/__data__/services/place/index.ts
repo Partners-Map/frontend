@@ -1,6 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { TPlace, TPlaceWithAddress } from '../../../@types/models/place';
+import {
+  TPlace,
+  TPlaceWithAddress,
+  TPlaceWithFullInfo,
+  TPlacesWithCategorie
+} from '../../../@types/models/place';
 import { baseQuery } from '../../config';
+import { NewPlaceState } from '../../slices/new-place';
 
 export const placeApi = createApi({
   reducerPath: 'placeApi',
@@ -8,6 +14,12 @@ export const placeApi = createApi({
   endpoints: builder => ({
     getPlaces: builder.query<TPlace[], void>({
       query: () => '/places'
+    }),
+    getPlacesWithCategories: builder.query<TPlacesWithCategorie[], void>({
+      query: () => '/places/with-category'
+    }),
+    getPlacesWithFullInfo: builder.query<TPlaceWithFullInfo[], void>({
+      query: () => '/places/full-info'
     }),
     getPlacesWithAddress: builder.query<TPlaceWithAddress[], void>({
       query: () => '/places/addresses'
@@ -17,13 +29,27 @@ export const placeApi = createApi({
     }),
     getPlaceByIdWithAddress: builder.query<TPlaceWithAddress, string>({
       query: id => `/place/${id}/address`
+    }),
+    getPlaceByIdWithFullInfo: builder.query<TPlaceWithFullInfo, string>({
+      query: id => `/place/${id}/full-info`
+    }),
+    createFullPlace: builder.mutation<TPlace, NewPlaceState>({
+      query: data => ({
+        url: 'place/full',
+        method: 'POST',
+        body: data
+      })
     })
   })
 });
 
 export const {
   useGetPlacesQuery,
+  useGetPlacesWithFullInfoQuery,
+  useGetPlacesWithCategoriesQuery,
   useGetPlacesWithAddressQuery,
   useGetPlaceByIdQuery,
-  useGetPlaceByIdWithAddressQuery
+  useGetPlaceByIdWithAddressQuery,
+  useGetPlaceByIdWithFullInfoQuery,
+  useCreateFullPlaceMutation
 } = placeApi;

@@ -1,44 +1,85 @@
-import { CSSProperties, FunctionComponent, useState } from 'react';
-import { SelectContainer, SelectOption, SelectOptions } from '../../styles/select';
-import SelectLine from '/public/icons/select-line.svg?react';
+import { CSSProperties, FunctionComponent, useEffect, useRef, useState } from 'react';
+import { SelectContainerS, SelectOptionS, SelectOptionsS, SelectValue } from '../../styles/select';
+import SelectLineIcon from '/public/icons/select-line.svg?react';
 
 export type SelectOption = {
   value: string;
   label: string;
+  ariaLabel?: string;
 };
 
 export type SelectProps = {
   options: SelectOption[];
   styleContainer?: CSSProperties;
+  placeholder: string;
+  onChange: (value: SelectOption) => void;
+  disabled?: boolean;
 };
 
+// TODO: defaultValue
 export const Select: FunctionComponent<SelectProps> = ({
   options,
-  styleContainer
+  styleContainer,
+  placeholder,
+  onChange,
+  disabled = false
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOption>();
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const toggleOpen = (): void => {
-    setIsOpen(!isOpen);
+    if (!disabled) {
+      setIsOpen(!isOpen);
+    }
   };
 
   const onOptionClick = (option: SelectOption): void => {
     setSelectedOption(option);
+    if (onChange) {
+      onChange(option);
+    }
+
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    if (containerRef.current) {
+      const width = containerRef.current.offsetWidth;
+      setContainerWidth(width);
+    }
+  }, []);
+
+  const containerStyle: CSSProperties = {
+    ...styleContainer,
+    minWidth: containerWidth ? `${containerWidth}px` : 'auto'
+  };
+
   return (
-    <SelectContainer onClick={toggleOpen} style={styleContainer}>
-      {selectedOption ? selectedOption.label : options[0]?.label}
-      <SelectLine height='15' width='15' />
-      <SelectOptions isOpen={isOpen}>
+    <SelectContainerS
+      ref={containerRef}
+      disabled={disabled}
+      onClick={toggleOpen}
+      style={containerStyle}
+    >
+      {selectedOption ? (
+        <SelectValue>{selectedOption.label}</SelectValue>
+      ) : (
+        <SelectValue placeholder>{placeholder}</SelectValue>
+      )}
+      <SelectLineIcon height='15' width='15' />
+      <SelectOptionsS isOpen={isOpen}>
         {options.map((option, index) => (
-          <SelectOption key={index} onClick={() => onOptionClick(option)}>
+          <SelectOptionS
+            key={index}
+            onClick={() => onOptionClick(option)}
+            aria-label={option.ariaLabel ? option.ariaLabel : option.label}
+          >
             {option.label}
-          </SelectOption>
+          </SelectOptionS>
         ))}
-      </SelectOptions>
-    </SelectContainer>
+      </SelectOptionsS>
+    </SelectContainerS>
   );
 };

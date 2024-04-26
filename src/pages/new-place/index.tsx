@@ -7,19 +7,52 @@ import { PartnerForm } from '../../components/partner-form';
 import { PlaceForm } from '../../components/place-form';
 import { PresendNewPlace } from '../../components/presend-new-place';
 import { Stepper } from '../../components/stepper';
-import { ButtonsContainerS } from '../../styles/new-place';
+import { RoutesList } from '../../routers';
+import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/page-container';
+import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
+import { useCreateFullPlaceMutation } from '../../__data__/services/place';
+import { useSelector } from 'react-redux';
+import { NewPlaceState } from '../../__data__/slices/new-place';
+
+type TSteps = {
+  [key: number]: JSX.Element;
+};
 
 export const CreatePage: FunctionComponent = (): JSX.Element => {
   const { step } = useParams();
   const currentStep = Number(step);
   const navigate = useNavigate();
+  const currentNewPlace = useSelector(
+    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
+  );
+  const [createFullPlace] = useCreateFullPlaceMutation();
 
-  const handlerNextStep = (): void => {
-    navigate(`/admin/create/${currentStep + 1}`);
+  const haveBackButton = (): boolean => {
+    return currentStep !== 1;
   };
 
-  const stepsComponents: { [key: number]: JSX.Element } = {
+  const handlerNextStep = (): void => {
+    navigate(RoutesList.NewPlace + (currentStep + 1));
+  };
+
+  const handlerBackStep = (): void => {
+    navigate(RoutesList.NewPlace + (currentStep - 1));
+  };
+
+  const isLastStep = (): boolean => {
+    return currentStep === 4;
+  };
+
+  const handlerCreate = (): void => {
+    createFullPlace(currentNewPlace)
+      .unwrap()
+      .then(() => {
+        navigate(RoutesList.PlacesPage);
+      });
+  };
+
+  const stepsComponents: TSteps = {
     1: <PartnerForm />,
     2: <PlaceForm />,
     3: <AddressForm />,
@@ -28,18 +61,35 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
 
   useEffect(() => {
     if (!Object.keys(stepsComponents).includes(currentStep.toString())) {
-      navigate('/admin/places');
+      navigate(RoutesList.PlacesPage);
     }
   });
 
   return (
     <PageContainerS>
-      <Header isAdmin />
-      <Stepper step={currentStep} />
-      {stepsComponents[currentStep]}
-      <ButtonsContainerS>
-        <Button onClick={handlerNextStep} title={'Следующий шаг'} />
-      </ButtonsContainerS>
+      <ContentWrapperS>
+        <MainContentWrapperS>
+          <Header isAdmin />
+          <Stepper step={currentStep} />
+          {stepsComponents[currentStep]}
+        </MainContentWrapperS>
+        <ButtonsContainerS>
+          {haveBackButton() ? (
+            <Button
+              icon={ArrowLeftIcon}
+              iconSize={19}
+              backgroundColor='white'
+              onClick={handlerBackStep}
+            />
+          ) : (
+            <div></div>
+          )}
+          <Button
+            onClick={isLastStep() ? handlerCreate : handlerNextStep}
+            title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'}
+          />
+        </ButtonsContainerS>
+      </ContentWrapperS>
     </PageContainerS>
   );
 };
