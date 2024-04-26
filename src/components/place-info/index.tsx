@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import { TPlaceWithFullInfo } from '../../@types/models/place';
+import { useGetPlacesWithCategoriesQuery } from '../../__data__/services/place';
 import {
   PlaceInfoCategory,
   PlaceInfoConditions,
@@ -17,6 +18,7 @@ type PlaceInfoProps = {
 };
 
 export const PlaceInfo: FunctionComponent<PlaceInfoProps> = ({ data }): JSX.Element => {
+  const { data: placeWithCategories } = useGetPlacesWithCategoriesQuery();
   return (
     <PlaceInfoContainer>
       <PlaceInfoTitle>{data.title}</PlaceInfoTitle>
@@ -25,9 +27,13 @@ export const PlaceInfo: FunctionComponent<PlaceInfoProps> = ({ data }): JSX.Elem
           margin: '2vh 0 0 0'
         }}
       >
-        <PlaceInfoCategory>Рестораны, кафе и кофейни</PlaceInfoCategory>
+        {placeWithCategories?.map(placeWithCategory => {
+          if (placeWithCategory.placeId === data.id) {
+            return <PlaceInfoCategory>{placeWithCategory.category.title}</PlaceInfoCategory>;
+          }
+        })}
         <PlaceInfoExtraContainer>
-          <PlaceInfoExtraText>{'Время работы: 09:00 - 23:00'}</PlaceInfoExtraText>
+          <PlaceInfoExtraText>{`Время работы: ${data.openingTime !== '' ? data.openingTime : '09:00'} - ${data.closingTime !== '' ? data.closingTime : '23:00'}`}</PlaceInfoExtraText>
           <PlaceInfoExtraText>{`Ср. чек: ${data.minAvgPrice?.symbol} ${data.maxAvgPrice ? `- ${data.maxAvgPrice?.symbol}` : ''}`}</PlaceInfoExtraText>
         </PlaceInfoExtraContainer>
       </div>
@@ -39,12 +45,15 @@ export const PlaceInfo: FunctionComponent<PlaceInfoProps> = ({ data }): JSX.Elem
         </>
       )}
       <PlaceInfoConditions>Условия получения</PlaceInfoConditions>
-      <PlaceInfoConditionsText>
-        Предлагая разнообразное меню, "Променад" - ресторан в Сочи, который учитывает разнообразные
-        вкусы и предпочтения, обеспечивая удовлетворительный обед для всех. Этот ресторан в Сочи
-        специализируется на местной кухне, используя ингредиенты из собственной теплицы для придания
-        подлинности и уникальности своим блюдам. Обладатель звезды Мишлен, пространство разделено
-        тематически между уютным первым этажом и ярким вторым этажом.
+      <ol style={{ margin: '1vh 0 0 4vw' }}>
+        {data.discount.conditions.map(condition => (
+          <li>
+            <PlaceInfoConditionsText>{condition}</PlaceInfoConditionsText>
+          </li>
+        ))}
+      </ol>
+      <PlaceInfoConditionsText style={{ margin: '2vh 0 0 0' }}>
+        {data.discount.information}
       </PlaceInfoConditionsText>
     </PlaceInfoContainer>
   );
