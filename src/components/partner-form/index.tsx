@@ -58,14 +58,14 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
           </PartnerContainerS>
         ))}
       </PartnersListContainerS>
-      <NewPartnerButtonContainerS>
+      {/* <NewPartnerButtonContainerS>
         <Button
           title='Добавить нового партнера'
           icon={WhitePlusIcon}
           iconSize={24}
           onClick={handlerCreatePartner}
         />
-      </NewPartnerButtonContainerS>
+      </NewPartnerButtonContainerS> */}
     </>
   );
 };

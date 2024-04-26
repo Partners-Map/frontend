@@ -6,6 +6,7 @@ import {
   TPlacesWithCategorie
 } from '../../../@types/models/place';
 import { baseQuery } from '../../config';
+import { NewPlaceState } from '../../slices/new-place';
 
 export const placeApi = createApi({
   reducerPath: 'placeApi',
@@ -31,6 +32,13 @@ export const placeApi = createApi({
     }),
     getPlaceByIdWithFullInfo: builder.query<TPlaceWithFullInfo, string>({
       query: id => `/place/${id}/full-info`
+    }),
+    createFullPlace: builder.mutation<TPlace, NewPlaceState>({
+      query: data => ({
+        url: 'place/full',
+        method: 'POST',
+        body: data
+      })
     })
   })
 });
@@ -42,5 +50,6 @@ export const {
   useGetPlacesWithAddressQuery,
   useGetPlaceByIdQuery,
   useGetPlaceByIdWithAddressQuery,
-  useGetPlaceByIdWithFullInfoQuery
+  useGetPlaceByIdWithFullInfoQuery,
+  useCreateFullPlaceMutation
 } = placeApi;

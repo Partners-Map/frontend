@@ -1,10 +1,12 @@
 import { FunctionComponent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { TPlaceWithFullInfo } from '../../@types/models/place';
 import {
   useGetPlacesWithCategoriesQuery,
   useGetPlacesWithFullInfoQuery
 } from '../../__data__/services/place';
+import { clearNewPlace } from '../../__data__/slices/new-place';
 import { Button } from '../../components/button';
 import { Filters } from '../../components/filters';
 import { Header } from '../../components/header';
@@ -17,6 +19,7 @@ import { ButtonContainerS, PageContainerS } from '../../styles/page-container';
 export const PlacesPage: FunctionComponent = () => {
   const { data: placesWithFullInfo } = useGetPlacesWithFullInfoQuery();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [filteredData, setFilteredData] = useState<TPlaceWithFullInfo[]>([] || placesWithFullInfo);
   const { data: placesWithCategories } = useGetPlacesWithCategoriesQuery();
   const { filterDataByCategory, filterDataByPriceRange } = useFilter();
@@ -43,6 +46,10 @@ export const PlacesPage: FunctionComponent = () => {
   const goToNewPlace = (): void => {
     navigate(RoutesList.NewPlace + 1);
   };
+
+  useEffect(() => {
+    dispatch(clearNewPlace());
+  });
 
   return (
     <PageContainerS>

@@ -11,6 +11,9 @@ import { RoutesList } from '../../routers';
 import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/page-container';
 import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
+import { useCreateFullPlaceMutation } from '../../__data__/services/place';
+import { useSelector } from 'react-redux';
+import { NewPlaceState } from '../../__data__/slices/new-place';
 
 type TSteps = {
   [key: number]: JSX.Element;
@@ -20,6 +23,10 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
   const { step } = useParams();
   const currentStep = Number(step);
   const navigate = useNavigate();
+  const currentNewPlace = useSelector(
+    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
+  );
+  const [createFullPlace] = useCreateFullPlaceMutation();
 
   const haveBackButton = (): boolean => {
     return currentStep !== 1;
@@ -35,6 +42,14 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
 
   const isLastStep = (): boolean => {
     return currentStep === 4;
+  };
+
+  const handlerCreate = (): void => {
+    createFullPlace(currentNewPlace)
+      .unwrap()
+      .then(() => {
+        navigate(RoutesList.PlacesPage);
+      });
   };
 
   const stepsComponents: TSteps = {
@@ -70,7 +85,7 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
             <div></div>
           )}
           <Button
-            onClick={handlerNextStep}
+            onClick={isLastStep() ? handlerCreate : handlerNextStep}
             title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'}
           />
         </ButtonsContainerS>
