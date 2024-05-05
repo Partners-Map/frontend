@@ -28,7 +28,9 @@ export const MainPage: FunctionComponent = (): JSX.Element => {
   const { filterDataByCategory, filterDataByPriceRange } = useFilter();
 
   const goMapPage = (): void => {
-    navigate(RoutesList.MapPage);
+    navigate(
+      `${RoutesList.MapPage}?${priceRange ? `priceRange=${priceRange}&` : ''}${category ? `category=${category}` : ''}`
+    );
   };
 
   useEffect(() => {
