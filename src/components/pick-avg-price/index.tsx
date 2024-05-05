@@ -69,8 +69,8 @@ export const PickAvgPrice: FunctionComponent = (): JSX.Element => {
       <SelectWrapperS>
         <Select
           styleContainer={{
-            minWidth: '80vw',
-            width: '100%'
+            minWidth: '20vw',
+            width: '35vw'
           }}
           options={transformAvgPrices}
           placeholder={'Выберите'}
@@ -78,8 +78,8 @@ export const PickAvgPrice: FunctionComponent = (): JSX.Element => {
         />
         <Select
           styleContainer={{
-            minWidth: '80vw',
-            width: '100%'
+            minWidth: '20vw',
+            width: '35vw'
           }}
           options={transformAvgPrices}
           placeholder={'Выберите'}

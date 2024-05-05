@@ -5,10 +5,10 @@ type SelectOptionsProps = {
 };
 
 export const SelectContainerS = styled.div<{ disabled: boolean }>`
-  min-width: 60px;
-  max-width: 150px;
+  min-width: 20px;
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;

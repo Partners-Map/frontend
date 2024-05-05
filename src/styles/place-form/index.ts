@@ -11,7 +11,6 @@ export const PlaceFormContainerS = styled.div`
 export const FieldContainerS = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 400px;
   gap: 4px;
 `;
 

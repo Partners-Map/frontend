@@ -6,21 +6,30 @@ type InputProps = {
   type: HTMLInputTypeAttribute;
   title: string;
   placeholder?: string;
+  style?: CSSProperties;
+  onChange: (value: string) => void;
 };
 
 export const Input: FunctionComponent<InputProps> = ({
   type,
   title,
-  placeholder = title
+  placeholder = title,
+  style,
+  onChange
 }): JSX.Element => {
   const [inputValue, setInputValue] = useState<number | string>();
 
   return (
-    <>
+    <div style={style}>
       <FieldLabelS>{title}</FieldLabelS>
       <InputWrapperS>
-        <InputS type={type} placeholder={placeholder} value={inputValue} />
+        <InputS
+          type={type}
+          placeholder={placeholder}
+          value={inputValue}
+          onChange={e => onChange(e.target.value)}
+        />
       </InputWrapperS>
-    </>
+    </div>
   );
 };
