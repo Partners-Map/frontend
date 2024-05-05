@@ -1,19 +1,20 @@
 import { FunctionComponent } from 'react';
 
 type StepperProps = {
-  step: number;
+  step: string;
 };
 
 type TStepsText = {
-  [key: number]: string;
+  [key: string]: string;
 };
 
 export const Stepper: FunctionComponent<StepperProps> = ({ step }): JSX.Element => {
   const stepsText: TStepsText = {
-    1: 'Добавление партнера',
-    2: 'Добавление места',
-    3: 'Добавление адреса',
-    4: 'Итого'
+    SelectPartner: 'Добавление партнера',
+    CreatePartner: 'Создание партнера',
+    CreatePlace: 'Добавление места',
+    AddAddress: 'Добавление адреса',
+    PresendPlace: 'Итого'
   };
 
   return (
@@ -27,7 +28,7 @@ export const Stepper: FunctionComponent<StepperProps> = ({ step }): JSX.Element 
         style={{
           fontSize: '20px'
         }}
-      >{`Шаг ${step} - ${stepsText[step]}`}</h1>
+      >{`Шаг ${step !== 'SelectPartner' ? Object.keys(stepsText).findIndex(value => value === step) : 1} - ${stepsText[step]}`}</h1>
     </div>
   );
 };

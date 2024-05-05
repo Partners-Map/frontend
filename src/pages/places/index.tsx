@@ -44,7 +44,7 @@ export const PlacesPage: FunctionComponent = () => {
   }, [placesWithFullInfo, priceRange, category, placesWithCategories]);
 
   const goToNewPlace = (): void => {
-    navigate(RoutesList.NewPlace + 1);
+    navigate(RoutesList.NewPlace + 'SelectPartner');
   };
 
   useEffect(() => {
