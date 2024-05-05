@@ -4,7 +4,7 @@ import { TPlaceWithFullInfo, TPlacesWithCategorie } from '../../@types/models/pl
 export type TuseFilter = {
   selectFilter: (param: string, value: string | number) => void;
   deleteFilter: (param: string) => void;
-  findFilter: (param: string) => string;
+  findFilterValue: (param: string) => string;
   filterDataByPriceRange: (data: TPlaceWithFullInfo[], priceRange: string) => TPlaceWithFullInfo[];
   filterDataByCategory: (
     data: TPlaceWithFullInfo[],
@@ -15,6 +15,8 @@ export type TuseFilter = {
 
 export const useFilter = (): TuseFilter => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const findFilterValue = (param: string): string => Object.fromEntries(searchParams)[param];
 
   const selectFilter = (param: string, value: string | number): void => {
     const currentParams = Object.fromEntries(searchParams);
@@ -27,8 +29,6 @@ export const useFilter = (): TuseFilter => {
     delete currentParams[param];
     setSearchParams(currentParams);
   };
-
-  const findFilter = (param: string): string => Object.fromEntries(searchParams)[param];
 
   const filterDataByPriceRange = (
     data: TPlaceWithFullInfo[],
@@ -64,7 +64,7 @@ export const useFilter = (): TuseFilter => {
   return {
     selectFilter,
     deleteFilter,
-    findFilter,
+    findFilterValue,
     filterDataByPriceRange,
     filterDataByCategory
   };

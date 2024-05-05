@@ -12,9 +12,11 @@ type FiltersPrps = {
 export const Filters: FunctionComponent<FiltersPrps> = ({ haveCategory }): JSX.Element => {
   const { data: categories, isLoading } = useGetCategoriesQuery();
   const { data: avgPrices } = useGetAvgPricesRangesQuery();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const priceRange = searchParams.get('priceRange');
+  const category = searchParams.get('category');
   const [categoriesVariances, setCategoriesVariances] = useState<SelectOption[]>([]);
   const [avgPriceRanges, setAvgPriceRanges] = useState<SelectOption[]>([]);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const handlerSelectCategory = (option: SelectOption): void => {
     const currentParams = Object.fromEntries(searchParams);

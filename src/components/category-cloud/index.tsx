@@ -10,10 +10,10 @@ type CategoryCloudPrps = {
 export const CategoryCloud: FunctionComponent<CategoryCloudPrps> = ({
   categories
 }): JSX.Element => {
-  const { selectFilter, deleteFilter, findFilter } = useFilter();
+  const { selectFilter, deleteFilter, findFilterValue } = useFilter();
 
   const handlerSelect = (category: TCategory): void => {
-    if (findFilter('category') === category.id) {
+    if (findFilterValue('category') === category.id) {
       deleteFilter('category');
     } else {
       selectFilter('category', category.id);
@@ -26,7 +26,7 @@ export const CategoryCloud: FunctionComponent<CategoryCloudPrps> = ({
         <TagS
           key={category.id}
           onClick={() => handlerSelect(category)}
-          selected={findFilter('category') === category.id}
+          selected={findFilterValue('category') === category.id}
         >
           {category.title}
         </TagS>
