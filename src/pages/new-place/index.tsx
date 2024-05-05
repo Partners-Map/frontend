@@ -1,7 +1,11 @@
 import { FunctionComponent, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useCreateFullPlaceMutation } from '../../__data__/services/place';
+import { NewPlaceState } from '../../__data__/slices/new-place';
 import { AddressForm } from '../../components/address-form';
 import { Button } from '../../components/button';
+import { CreatePartner } from '../../components/create-partner';
 import { Header } from '../../components/header';
 import { PartnerForm } from '../../components/partner-form';
 import { PlaceForm } from '../../components/place-form';
@@ -11,10 +15,6 @@ import { RoutesList } from '../../routers';
 import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/page-container';
 import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
-import { useCreateFullPlaceMutation } from '../../__data__/services/place';
-import { useSelector } from 'react-redux';
-import { NewPlaceState } from '../../__data__/slices/new-place';
-import { CreatePartner } from '../../components/create-partner';
 
 type TSteps = {
   [key: string]: JSX.Element;
@@ -103,10 +103,14 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
           ) : (
             <div></div>
           )}
-          <Button
-            onClick={isLastStep() ? handlerCreate : handlerNextStep}
-            title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'}
-          />
+          {currentStep !== 'CreatePartner' ? (
+            <Button
+              onClick={isLastStep() ? handlerCreate : handlerNextStep}
+              title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'}
+            />
+          ) : (
+            <div></div>
+          )}
         </ButtonsContainerS>
       </ContentWrapperS>
     </PageContainerS>

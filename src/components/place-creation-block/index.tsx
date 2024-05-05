@@ -90,14 +90,17 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
       </FieldContainerS>
       <FieldContainerS>
         <FieldLabelS>Категория</FieldLabelS>
-        <Select
-          styleContainer={{
-            maxWidth: 'none'
-          }}
-          options={transformedArray}
-          placeholder={'Выберите'}
-          onChange={handlerSelectCategory}
-        />
+        <InputWrapperS>
+          <Select
+            styleContainer={{
+              maxWidth: 'none',
+              width: '80vw'
+            }}
+            options={transformedArray}
+            placeholder={'Выберите'}
+            onChange={handlerSelectCategory}
+          />
+        </InputWrapperS>
       </FieldContainerS>
       <FieldContainerS>
         <FieldLabelS>Время работы</FieldLabelS>

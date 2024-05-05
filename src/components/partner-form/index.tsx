@@ -13,6 +13,8 @@ import { SearchInputS } from '../../styles/search-input';
 import { Button } from '../button';
 import BlackPlusIcon from '/public/icons/black-plus-icon.svg?react';
 import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
+import { useNavigate } from 'react-router-dom';
+import { RoutesList } from '../../routers';
 
 export const PartnerForm: FunctionComponent = (): JSX.Element => {
   const { data: partners } = useGetPartnersQuery();
@@ -22,6 +24,7 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
   );
   const [isSelectedId, setIsSelectedId] = useState<string>(currentPartner);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handlerSelectPartner = (partner: TPartner): void => {
     dispatch(setPartner(partner.id));
@@ -29,7 +32,7 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
   };
 
   const handlerCreatePartner = (): void => {
-    // TODO: создание нового партнера
+    navigate(RoutesList.NewPlace + 'CreatePartner');
   };
 
   useEffect(() => {
@@ -58,14 +61,14 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
           </PartnerContainerS>
         ))}
       </PartnersListContainerS>
-      {/* <NewPartnerButtonContainerS>
+      <NewPartnerButtonContainerS>
         <Button
           title='Добавить нового партнера'
           icon={WhitePlusIcon}
           iconSize={24}
           onClick={handlerCreatePartner}
         />
-      </NewPartnerButtonContainerS> */}
+      </NewPartnerButtonContainerS>
     </>
   );
 };
