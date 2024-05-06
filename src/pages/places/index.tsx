@@ -15,6 +15,7 @@ import { Search } from '../../components/search';
 import { useFilter } from '../../hooks/filter';
 import { RoutesList } from '../../routers';
 import { ButtonContainerS, PageContainerS } from '../../styles/page-container';
+import { clearEditPlace } from '../../__data__/slices/edit-place';
 
 export const PlacesPage: FunctionComponent = () => {
   const { data: placesWithFullInfo } = useGetPlacesWithFullInfoQuery();
@@ -49,6 +50,7 @@ export const PlacesPage: FunctionComponent = () => {
 
   useEffect(() => {
     dispatch(clearNewPlace());
+    dispatch(clearEditPlace());
   });
 
   return (
@@ -61,7 +63,7 @@ export const PlacesPage: FunctionComponent = () => {
         }}
       />
       <Filters haveCategory />
-      {filteredData && <PlacesList data={filteredData} style={{ maxHeight: '62vh' }} />}
+      {filteredData && <PlacesList isAdmin data={filteredData} style={{ maxHeight: '62vh' }} />}
       <ButtonContainerS>
         <Button title={'Добавить новое место'} onClick={goToNewPlace} />
       </ButtonContainerS>

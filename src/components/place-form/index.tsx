@@ -3,11 +3,15 @@ import { PlaceFormContainerS } from '../../styles/place-form';
 import { DiscountCreationBlock } from '../discount-creation-block';
 import { PlaceCreationBlock } from '../place-creation-block';
 
-export const PlaceForm: FunctionComponent = (): JSX.Element => {
+type PlaceFormProps = {
+  isEditing?: boolean;
+};
+
+export const PlaceForm: FunctionComponent<PlaceFormProps> = ({ isEditing }): JSX.Element => {
   return (
     <PlaceFormContainerS>
-      <PlaceCreationBlock />
-      <DiscountCreationBlock />
+      <PlaceCreationBlock isEditing={isEditing} />
+      <DiscountCreationBlock isEditing />
     </PlaceFormContainerS>
   );
 };

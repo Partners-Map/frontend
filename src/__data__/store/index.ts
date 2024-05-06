@@ -1,5 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
+import { persistStore } from 'redux-persist';
+import { persistedEditPlaceReducer, persistedNewPlaceReducer } from '../persist';
 import { gisApi } from '../services/2gis';
 import { authApi } from '../services/auth';
 import { avgPriceApi } from '../services/avg-price';
@@ -8,7 +10,6 @@ import { discountApi } from '../services/discount';
 import { discountTypeApi } from '../services/discount-type';
 import { partnerApi } from '../services/partners';
 import { placeApi } from '../services/place';
-import { newPlaceReducer } from '../slices/new-place';
 
 const rootReducer = combineReducers({
   [placeApi.reducerPath]: placeApi.reducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   [avgPriceApi.reducerPath]: avgPriceApi.reducer,
   [gisApi.reducerPath]: gisApi.reducer,
 
-  newPlaceSlice: newPlaceReducer
+  newPlaceSlice: persistedNewPlaceReducer,
+  editPlaceSlice: persistedEditPlaceReducer
 });
 
 const apiMiddleware = [
@@ -38,5 +40,7 @@ export const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiMiddleware)
 });
+
+export const persistor = persistStore(store);
 
 setupListeners(store.dispatch);

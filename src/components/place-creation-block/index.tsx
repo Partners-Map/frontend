@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
 import {
   NewPlaceState,
-  setPlaceCategoryId,
-  setPlaceDescription,
-  setPlaceTitle
+  setPlaceCategoryId as setNewPlaceCategoryId,
+  setPlaceDescription as setNewPlaceDescription,
+  setPlaceTitle as setNewPlaceTitle
 } from '../../__data__/slices/new-place';
 import { InputS } from '../../styles/input';
 import {
@@ -21,6 +21,18 @@ import { Select, SelectOption } from '../select';
 import { Textarea } from '../textarea';
 import { WorkingHours } from '../working-hours';
 import { Input } from '../input';
+import {
+  EditPlaceState,
+  setPlaceTitle as setEditPlaceTitle,
+  setPlaceCategoryId as setEditPlaceCategoryId,
+  setPlaceDescription as setEditPlaceDescription
+} from '../../__data__/slices/edit-place';
+import { useParams } from 'react-router-dom';
+import { useGetPlaceByIdWithFullInfoQuery } from '../../__data__/services/place';
+
+type PlaceCreationBlockProps = {
+  isEditing?: boolean;
+};
 
 export type TPlaceCreationBlock = {
   title: string;
@@ -28,16 +40,23 @@ export type TPlaceCreationBlock = {
   description: string;
 };
 
-export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
+export const PlaceCreationBlock: FunctionComponent<PlaceCreationBlockProps> = ({
+  isEditing = false
+}): JSX.Element => {
   const [transformedArray, setTransformedArray] = useState<SelectOption[]>([]);
+  const { id, step: currentStep } = useParams();
+  const { data } = useGetPlaceByIdWithFullInfoQuery(id!);
   const currentPlace = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
   );
+  const editPlace = useSelector(
+    (state: { editPlaceSlice: EditPlaceState }) => state.editPlaceSlice
+  );
   const { watch, setValue, getValues } = useForm<TPlaceCreationBlock>({
     defaultValues: {
-      title: currentPlace.place.title,
+      title: isEditing ? data?.title : currentPlace.place.title,
       category: currentPlace.categoryId,
-      description: currentPlace.place.description
+      description: isEditing ? data?.description : currentPlace.place.description
     }
   });
   const { data: categories } = useGetCategoriesQuery();
@@ -72,9 +91,9 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
   }, [categories]);
 
   useEffect(() => {
-    setValueToRedux('title', setPlaceTitle);
-    setValueToRedux('category', setPlaceCategoryId);
-    setValueToRedux('description', setPlaceDescription);
+    setValueToRedux('title', isEditing ? setEditPlaceTitle : setNewPlaceTitle);
+    setValueToRedux('category', isEditing ? setEditPlaceCategoryId : setNewPlaceCategoryId);
+    setValueToRedux('description', isEditing ? setEditPlaceDescription : setNewPlaceDescription);
   }, [watch()]);
 
   return (
