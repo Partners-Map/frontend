@@ -1,8 +1,10 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { TPartner } from '../../@types/models/partner';
 import { useGetPartnersQuery } from '../../__data__/services/partners';
 import { NewPlaceState, setPartner } from '../../__data__/slices/new-place';
+import { RoutesList } from '../../routers';
 import {
   NewPartnerButtonContainerS,
   PartnerContainerS,
@@ -13,12 +15,9 @@ import { SearchInputS } from '../../styles/search-input';
 import { Button } from '../button';
 import BlackPlusIcon from '/public/icons/black-plus-icon.svg?react';
 import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
-import { useNavigate } from 'react-router-dom';
-import { RoutesList } from '../../routers';
 
 export const PartnerForm: FunctionComponent = (): JSX.Element => {
-  const { data: partners } = useGetPartnersQuery();
-  const firstPartner = (partners || [])[0];
+  const { data: partners, refetch } = useGetPartnersQuery();
   const currentPartner = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.partnerId
   );
@@ -36,10 +35,8 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (firstPartner) {
-      setIsSelectedId(firstPartner.id);
-    }
-  }, [firstPartner, partners]);
+    refetch();
+  }, []);
 
   return (
     <>

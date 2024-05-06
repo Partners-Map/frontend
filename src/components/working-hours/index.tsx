@@ -7,7 +7,7 @@ import {
   setPlaceClosingTime,
   setPlaceOpeningTime
 } from '../../__data__/slices/new-place';
-import { InputS } from '../../styles/input';
+import { Input } from '../input';
 
 type TWorkingHoursData = {
   from: string;
@@ -19,7 +19,7 @@ export const WorkingHours = (): JSX.Element => {
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.place
   );
   const {
-    register,
+    setValue,
     getValues,
     watch,
     formState: { errors }
@@ -55,23 +55,23 @@ export const WorkingHours = (): JSX.Element => {
         gap: '5px'
       }}
     >
-      <InputS
+      <Input
         type='text'
-        {...register('from', {
-          required: true
-        })}
+        onChange={value => {
+          setValue('from', value);
+        }}
+        value={getValues('from')}
         placeholder='От'
-        maxWidth='194px'
-        error={Boolean(errors.from)}
+        title={''}
       />
-      <InputS
+      <Input
         type='text'
-        {...register('to', {
-          required: true
-        })}
+        onChange={value => {
+          setValue('to', value);
+        }}
+        value={getValues('to')}
         placeholder='До'
-        maxWidth='194px'
-        error={Boolean(errors.to)}
+        title={''}
       />
     </div>
   );

@@ -20,6 +20,7 @@ import { PickAvgPrice } from '../pick-avg-price';
 import { Select, SelectOption } from '../select';
 import { Textarea } from '../textarea';
 import { WorkingHours } from '../working-hours';
+import { Input } from '../input';
 
 export type TPlaceCreationBlock = {
   title: string;
@@ -32,7 +33,7 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
   const currentPlace = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
   );
-  const { register, watch, setValue, getValues } = useForm<TPlaceCreationBlock>({
+  const { watch, setValue, getValues } = useForm<TPlaceCreationBlock>({
     defaultValues: {
       title: currentPlace.place.title,
       category: currentPlace.categoryId,
@@ -79,14 +80,21 @@ export const PlaceCreationBlock: FunctionComponent = (): JSX.Element => {
   return (
     <PlaceCreationBlockContainerS>
       <FieldContainerS>
-        <FieldLabelS>Название завидения</FieldLabelS>
-        <InputWrapperS>
-          <InputS
-            type='text'
-            {...register('title', { required: true })}
-            placeholder='Название завидения'
-          />
-        </InputWrapperS>
+        <Input
+          type='text'
+          onChange={value => {
+            setValue('title', value);
+          }}
+          value={getValues('title')}
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '4px'
+          }}
+          placeholder='Название завидения'
+          title={'Название завидения'}
+        />
       </FieldContainerS>
       <FieldContainerS>
         <FieldLabelS>Категория</FieldLabelS>

@@ -13,6 +13,7 @@ import { InputS } from '../../styles/input';
 import { Button } from '../button';
 import TrashIcon from '/public/icons/trash.svg?react';
 import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
+import { Input } from '../input';
 
 type AdderProps = {
   label: string;
@@ -40,7 +41,7 @@ export const Adder: FunctionComponent<AdderProps> = ({
   onDeleteItem
 }): JSX.Element => {
   const {
-    register,
+    setValue,
     getValues,
     reset,
     formState: { errors }
@@ -53,7 +54,7 @@ export const Adder: FunctionComponent<AdderProps> = ({
   const handlerAdd = (): void => {
     if (errors.label) return;
     onAdding(getValues('label').trimStart().trimEnd());
-    reset({ label: '' });
+    setValue('label', '');
   };
 
   return (
@@ -66,13 +67,17 @@ export const Adder: FunctionComponent<AdderProps> = ({
           gap: '6px'
         }}
       >
-        <InputS
+        <Input
+          title={''}
           type='text'
-          {...register('label', {
-            required: true
-          })}
+          onChange={value => {
+            setValue('label', value);
+          }}
+          value={getValues('label')}
+          style={{
+            width: '100%'
+          }}
           placeholder={placeholder}
-          error={error}
         />
 
         <Button icon={WhitePlusIcon} iconSize={20} backgroundColor='blue' onClick={handlerAdd} />
