@@ -21,6 +21,7 @@ import {
 import { Adder, TAdderData } from '../adder';
 import { Select, SelectOption } from '../select';
 import { Textarea } from '../textarea';
+import { Input } from '../input';
 
 export type TDiscountData = {
   amount: number;
@@ -32,7 +33,7 @@ export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
   const currentDiscount = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.discount
   );
-  const { register, watch, setValue, getValues } = useForm<TDiscountData>({
+  const { watch, setValue, getValues } = useForm<TDiscountData>({
     defaultValues: {
       amount: currentDiscount.amount,
       type: currentDiscount.discountTypeId,
@@ -104,14 +105,21 @@ export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
       <TitleS>Добавить скидку</TitleS>
       <DiscountInfoContainerS>
         <FieldContainerS>
-          <FieldLabelS>Количество</FieldLabelS>
-          <InputWrapperS style={{ height: '2vh' }}>
-            <InputS
-              type='text'
-              {...register('amount', { required: true })}
-              placeholder='Количество'
-            />
-          </InputWrapperS>
+          <Input
+            title={'Количество'}
+            type='text'
+            onChange={value => {
+              setValue('amount', Number(value));
+            }}
+            value={getValues('amount')}
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px'
+            }}
+            placeholder='Количество'
+          />
         </FieldContainerS>
         <FieldContainerS>
           <FieldLabelS>Тип скидки</FieldLabelS>

@@ -4,6 +4,7 @@ import { useGetAvgPricesRangesQuery } from '../../__data__/services/avg-price';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
 import { FiltersContainerS } from '../../styles/filters';
 import { Select, SelectOption } from '../select';
+import { SelectWrapperS } from '../../styles/pick-avg-price';
 
 type FiltersPrps = {
   haveCategory?: boolean;
@@ -57,7 +58,6 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ haveCategory }): JSX.E
       {haveCategory && (
         <Select
           options={categoriesVariances}
-          styleContainer={{ width: '90vw' }}
           placeholder={'Категория'}
           onChange={handlerSelectCategory}
         />

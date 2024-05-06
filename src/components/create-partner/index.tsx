@@ -51,6 +51,7 @@ export const CreatePartner = (): JSX.Element => {
         onChange={value => {
           setValue('partner', value);
         }}
+        value={getValues('partner')}
       />
       <Button
         title='Создать партнера'

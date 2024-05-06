@@ -3,6 +3,7 @@ import { InputS } from '../../styles/input';
 import { FieldLabelS, InputWrapperS } from '../../styles/place-form';
 
 type InputProps = {
+  value: string | number;
   type: HTMLInputTypeAttribute;
   title: string;
   placeholder?: string;
@@ -11,14 +12,13 @@ type InputProps = {
 };
 
 export const Input: FunctionComponent<InputProps> = ({
+  value,
   type,
   title,
   placeholder = title,
   style,
   onChange
 }): JSX.Element => {
-  const [inputValue, setInputValue] = useState<number | string>();
-
   return (
     <div style={style}>
       <FieldLabelS>{title}</FieldLabelS>
@@ -26,7 +26,7 @@ export const Input: FunctionComponent<InputProps> = ({
         <InputS
           type={type}
           placeholder={placeholder}
-          value={inputValue}
+          value={value}
           onChange={e => onChange(e.target.value)}
         />
       </InputWrapperS>
