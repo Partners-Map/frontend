@@ -1,30 +1,44 @@
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useCreatePartnerMutation } from '../../__data__/services/partners';
-import { setPartner } from '../../__data__/slices/new-place';
+import { setPartner as setNewPartner } from '../../__data__/slices/new-place';
 import { Button } from '../button';
 import { Input } from '../input';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RoutesList } from '../../routers';
+import { FunctionComponent } from 'react';
+import { setPartner as setEditPartner } from '../../__data__/slices/edit-place';
 
-export const CreatePartner = (): JSX.Element => {
+type CreatePartnerProps = {
+  isEditing?: boolean;
+};
+
+export const CreatePartner: FunctionComponent<CreatePartnerProps> = ({
+  isEditing = false
+}): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { register, getValues, watch, setValue } = useForm<{ partner: string }>();
+  const { id } = useParams();
+  const { getValues, setValue } = useForm<{ partner: string }>();
   const [createPartner] = useCreatePartnerMutation();
 
   const handlerCreatePartner = (): void => {
-    console.log(watch());
-
     const clearPartnerName = getValues('partner').trimStart().trimEnd();
+
     if (clearPartnerName.length < 1) {
       return;
     }
+
     createPartner({ name: clearPartnerName })
       .unwrap()
-      .then(data => {
-        dispatch(setPartner(data.id));
-        navigate(RoutesList.NewPlace + 'CreatePlace');
+      .then((data): void => {
+        if (!isEditing) {
+          dispatch(setNewPartner(data.id));
+          navigate(RoutesList.NewPlace + 'CreatePlace');
+          return;
+        }
+        dispatch(setEditPartner(data.id));
+        navigate(RoutesList.EditPlace + id + '/CreatePlace');
       });
   };
 

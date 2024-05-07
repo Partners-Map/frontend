@@ -14,9 +14,13 @@ import { useGetAvgPriceByIdQuery } from '../../__data__/services/avg-price';
 
 type PlacesCardProps = {
   data: TPlaceWithAddress;
+  isAdmin?: boolean;
 };
 
-export const PlaceCard: FunctionComponent<PlacesCardProps> = ({ data }): JSX.Element => {
+export const PlaceCard: FunctionComponent<PlacesCardProps> = ({
+  data,
+  isAdmin = false
+}): JSX.Element => {
   const navigate = useNavigate();
   const { data: maxAvgPrice } = useGetAvgPriceByIdQuery(data.maxAvgPriceId);
   const { data: minAvgPrice } = useGetAvgPriceByIdQuery(data.minAvgPriceId);
@@ -24,6 +28,10 @@ export const PlaceCard: FunctionComponent<PlacesCardProps> = ({ data }): JSX.Ele
   const firstAddress = data.address[0];
 
   const handlerClickPlace = (): void => {
+    if (isAdmin) {
+      // navigate(`${RoutesList.EditPlace + data.id}/SelectPartner`);
+      return;
+    }
     navigate(RoutesList.PlacePage + data.id);
   };
 

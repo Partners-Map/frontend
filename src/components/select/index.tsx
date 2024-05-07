@@ -14,18 +14,19 @@ export type SelectProps = {
   placeholder: string;
   onChange: (value: SelectOption) => void;
   disabled?: boolean;
+  defaultValue?: SelectOption;
 };
 
-// TODO: defaultValue
 export const Select: FunctionComponent<SelectProps> = ({
   options,
   styleContainer,
   placeholder,
   onChange,
-  disabled = false
+  disabled = false,
+  defaultValue = options[0]
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<SelectOption>();
+  const [selectedOption, setSelectedOption] = useState<SelectOption>(defaultValue);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 

@@ -6,13 +6,18 @@ import { PlaceCard } from '../place-card';
 type PlacesListProps = {
   data: TPlaceWithFullInfo[];
   style?: CSSProperties;
+  isAdmin?: boolean;
 };
 
-export const PlacesList: FunctionComponent<PlacesListProps> = ({ data, style }): JSX.Element => {
+export const PlacesList: FunctionComponent<PlacesListProps> = ({
+  data,
+  style,
+  isAdmin = false
+}): JSX.Element => {
   return (
     <PlaceListContainerS style={style}>
       {data.map(place => (
-        <PlaceCard data={place} />
+        <PlaceCard data={place} isAdmin={isAdmin} />
       ))}
     </PlaceListContainerS>
   );

@@ -1,8 +1,8 @@
-import { FunctionComponent, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCreateFullPlaceMutation } from '../../__data__/services/place';
-import { NewPlaceState } from '../../__data__/slices/new-place';
+import { useGetPlaceByIdWithFullInfoQuery } from '../../__data__/services/place';
+import { EditPlaceState } from '../../__data__/slices/edit-place';
 import { AddressForm } from '../../components/address-form';
 import { Button } from '../../components/button';
 import { CreatePartner } from '../../components/create-partner';
@@ -14,24 +14,21 @@ import { Stepper } from '../../components/stepper';
 import { RoutesList } from '../../routers';
 import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/page-container';
+import { TSteps } from '../new-place';
 import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
 
-export type TSteps = {
-  [key: string]: JSX.Element;
-};
-
-export const CreatePage: FunctionComponent = (): JSX.Element => {
-  const { step: currentStep } = useParams();
+export const EditPlacePage = (): JSX.Element => {
+  const { id, step: currentStep } = useParams();
+  const { data } = useGetPlaceByIdWithFullInfoQuery(id!);
   const navigate = useNavigate();
-  const currentNewPlace = useSelector(
-    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
+  const currentEditPlace = useSelector(
+    (state: { editPlaceSlice: EditPlaceState }) => state.editPlaceSlice
   );
-  const [createFullPlace] = useCreateFullPlaceMutation();
 
   const stepsComponents: TSteps = {
-    SelectPartner: <PartnerForm />,
+    SelectPartner: <PartnerForm isEditing partnerId={data?.partnerId} />,
     CreatePartner: <CreatePartner />,
-    CreatePlace: <PlaceForm />,
+    CreatePlace: <PlaceForm isEditing />,
     AddAddress: <AddressForm />,
     PresendPlace: <PresendNewPlace />
   };
@@ -42,11 +39,13 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
 
   const handlerNextStep = (): void => {
     if (currentStep === 'SelectPartner') {
-      navigate(RoutesList.NewPlace + 'CreatePlace');
+      navigate(RoutesList.EditPlace + id + '/CreatePlace');
       return;
     }
     navigate(
-      RoutesList.NewPlace +
+      RoutesList.EditPlace +
+        id +
+        '/' +
         Object.keys(stepsComponents)[
           Object.keys(stepsComponents).findIndex(element => element === currentStep) + 1
         ]
@@ -55,11 +54,13 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
 
   const handlerBackStep = (): void => {
     if (currentStep === 'CreatePlace') {
-      navigate(RoutesList.NewPlace + 'SelectPartner');
+      navigate(RoutesList.EditPlace + id + '/' + 'SelectPartner');
       return;
     }
     navigate(
-      RoutesList.NewPlace +
+      RoutesList.EditPlace +
+        id +
+        '/' +
         Object.keys(stepsComponents)[
           Object.keys(stepsComponents).findIndex(element => element === currentStep) - 1
         ]
@@ -70,16 +71,12 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
     return currentStep === Object.keys(stepsComponents)[Object.keys(stepsComponents).length - 1];
   };
 
-  const handlerCreate = (): void => {
-    createFullPlace(currentNewPlace)
-      .unwrap()
-      .then(() => {
-        navigate(RoutesList.PlacesPage);
-      });
+  const handlerSave = (): void => {
+    //TODO сохранение изменений
   };
 
   useEffect(() => {
-    if (!Object.keys(stepsComponents).includes(currentStep!)) {
+    if (!Object.keys(stepsComponents).includes(currentStep!) || !id) {
       navigate(RoutesList.PlacesPage);
     }
   });
@@ -90,7 +87,7 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
         <MainContentWrapperS>
           <Header isAdmin />
           <Stepper step={currentStep!} />
-          {stepsComponents[currentStep!]}
+          {data && stepsComponents[currentStep!]}
         </MainContentWrapperS>
         <ButtonsContainerS>
           {haveBackButton() ? (
@@ -105,8 +102,8 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
           )}
           {currentStep !== 'CreatePartner' ? (
             <Button
-              onClick={isLastStep() ? handlerCreate : handlerNextStep}
-              title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'}
+              onClick={isLastStep() ? handlerSave : handlerNextStep}
+              title={isLastStep() ? 'Сохранить' : 'Следующий шаг'}
             />
           ) : (
             <div></div>

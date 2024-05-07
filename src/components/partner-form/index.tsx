@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TPartner } from '../../@types/models/partner';
 import { useGetPartnersQuery } from '../../__data__/services/partners';
-import { NewPlaceState, setPartner } from '../../__data__/slices/new-place';
+import { EditPlaceState, setPartner as setEditPartner } from '../../__data__/slices/edit-place';
+import { NewPlaceState, setPartner as setNewPartner } from '../../__data__/slices/new-place';
 import { RoutesList } from '../../routers';
 import {
   NewPartnerButtonContainerS,
@@ -16,18 +17,31 @@ import { Button } from '../button';
 import BlackPlusIcon from '/public/icons/black-plus-icon.svg?react';
 import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
 
-export const PartnerForm: FunctionComponent = (): JSX.Element => {
+type PartnerFormProps = {
+  partnerId?: string;
+  isEditing?: boolean;
+};
+
+export const PartnerForm: FunctionComponent<PartnerFormProps> = ({
+  partnerId = '',
+  isEditing = false
+}): JSX.Element => {
   const { data: partners, refetch } = useGetPartnersQuery();
   const currentPartner = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.partnerId
   );
-  const [isSelectedId, setIsSelectedId] = useState<string>(currentPartner);
+  const editPartner = useSelector(
+    (state: { editPlaceSlice: EditPlaceState }) => state.editPlaceSlice.partnerId
+  );
+  const [isSelectedId, setIsSelectedId] = useState<string>(
+    isEditing ? editPartner : currentPartner
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handlerSelectPartner = (partner: TPartner): void => {
-    dispatch(setPartner(partner.id));
     setIsSelectedId(partner.id);
+    dispatch(isEditing ? setEditPartner(partner.id) : setNewPartner(partner.id));
   };
 
   const handlerCreatePartner = (): void => {
@@ -36,6 +50,13 @@ export const PartnerForm: FunctionComponent = (): JSX.Element => {
 
   useEffect(() => {
     refetch();
+  }, []);
+
+  useEffect(() => {
+    if (partnerId !== '') {
+      dispatch(setEditPartner(partnerId));
+      setIsSelectedId(partnerId);
+    }
   }, []);
 
   return (
