@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { UbuntuRegular } from '../fonts';
 
 export const PlaceCardContainerS = styled.div`
   display: flex;
@@ -27,6 +26,6 @@ export const PlaceCardOtherInfoContainerS = styled.div`
   gap: 4px;
 `;
 
-export const PlaceCardOtherInfoTextS = styled(UbuntuRegular)`
+export const PlaceCardOtherInfoTextS = styled.h2`
   font-size: 8px;
 `;

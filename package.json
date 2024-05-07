@@ -10,8 +10,17 @@
     "format": "prettier --write 'src/**/**/*.{ts,tsx,json}' --config .prettierrc",
     "preview": "vite preview"
   },
+  "resolutions": {
+    "styled-components": "^6"
+  },
   "dependencies": {
     "@2gis/mapgl": "^1.46.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/ubuntu": "^5.0.13",
+    "@mui/icons-material": "^5.15.16",
+    "@mui/material": "^5.15.16",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@reduxjs/toolkit": "2.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -34,7 +43,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-refresh": "0.4.5",
     "prettier": "^3.2.5",
-    "styled-components": "^5.3.11",
+    "styled-components": "^6.0.0",
     "typescript": "5.2.2",
     "vite": "5.0.13",
     "vite-plugin-svgr": "^4.2.0"

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { UbuntuRegular } from '../fonts';
 
 export const PlaceFormContainerS = styled.div`
   margin: 2vh 0 4vh 0;
@@ -14,7 +13,7 @@ export const FieldContainerS = styled.div`
   gap: 4px;
 `;
 
-export const FieldLabelS = styled(UbuntuRegular)`
+export const FieldLabelS = styled.h1`
   color: #010736dd;
 `;
 
