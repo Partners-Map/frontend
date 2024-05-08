@@ -4,18 +4,18 @@ export const theme = responsiveFontSizes(
   createTheme({
     palette: {
       primary: {
-        main: '#439974',
-        light: '#65B391',
-        dark: '#5BB38D'
+        main: '#010837',
+        light: '#33395f',
+        dark: '#000526'
       },
       secondary: {
-        main: '#DF8662',
-        light: '#B8603D',
-        dark: '#E79F83'
+        main: '#00838f',
+        light: '#339ba5',
+        dark: '#005b64'
       }
     },
     typography: {
-      fontFamily: 'Roboto, sans-serif',
+      fontFamily: 'Ubuntu, sans-serif',
       fontSize: 14,
       fontWeightLight: 300,
       fontWeightRegular: 400,
