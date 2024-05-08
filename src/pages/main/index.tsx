@@ -16,6 +16,7 @@ import { useFilter } from '../../hooks/filter';
 import { RoutesList } from '../../routers';
 import { ButtonContainerS, PageContainerS } from '../../styles/page-container';
 
+// TODO перенос на mui
 export const MainPage: FunctionComponent = (): JSX.Element => {
   const navigate = useNavigate();
   const { data: categories } = useGetCategoriesQuery();
