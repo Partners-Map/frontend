@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { UbuntuMedium, UbuntuRegular } from '../fonts';
 
 export const PlaceCreateInfoContainer = styled.div`
   margin: 4vh 0 0 0;
@@ -7,11 +6,11 @@ export const PlaceCreateInfoContainer = styled.div`
   flex-direction: column;
 `;
 
-export const PlaceCreateInfoTitle = styled(UbuntuMedium)`
+export const PlaceCreateInfoTitle = styled.h2`
   font-size: 20px;
 `;
 
-export const PlaceCreateInfoCategory = styled(UbuntuRegular)`
+export const PlaceCreateInfoCategory = styled.h2`
   font-size: 14px;
 `;
 
