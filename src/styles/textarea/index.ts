@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { UbuntuRegular } from '../fonts';
 
 export const TextareaS = styled.textarea`
   max-width: 400px;
@@ -19,6 +18,6 @@ export const TextareaS = styled.textarea`
   }
 `;
 
-export const TextareaLabelS = styled(UbuntuRegular)`
+export const TextareaLabelS = styled.h3`
   color: #010736dd;
 `;

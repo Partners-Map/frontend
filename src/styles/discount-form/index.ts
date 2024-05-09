@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { UbuntuMedium } from '../fonts';
 
-export const TitleS = styled(UbuntuMedium)`
+export const TitleS = styled.h2`
   font-size: 16px;
 `;
 

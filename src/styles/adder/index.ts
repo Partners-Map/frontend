@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { UbuntuLight, UbuntuRegular } from '../fonts';
 
-export const AdderLabelS = styled(UbuntuRegular)`
+export const AdderLabelS = styled.h1`
   color: #010736dd;
 `;
 
@@ -20,11 +19,11 @@ export const ListS = styled.div<{ isAddress?: boolean }>`
   overflow-y: auto;
 `;
 
-export const AddedItemTitleS = styled(UbuntuRegular)`
+export const AddedItemTitleS = styled.h1`
   color: #010736dd;
 `;
 
-export const AdderHelperTextS = styled(UbuntuLight)`
+export const AdderHelperTextS = styled.h2`
   font-size: 12px;
   color: #cccccc;
 `;
