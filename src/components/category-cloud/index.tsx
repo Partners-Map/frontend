@@ -1,8 +1,8 @@
+import { Button, Typography } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { TCategory } from '../../@types/models/category';
 import { useFilter } from '../../hooks/filter';
-import { CategoryCloudContainerS, TagS } from '../../styles/tag-cloud';
-import { Button, Typography } from '@mui/material';
+import { CategoryCloudContainerS } from '../../styles/tag-cloud';
 
 type CategoryCloudPrps = {
   categories: TCategory[];

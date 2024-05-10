@@ -3,8 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useGetAvgPricesRangesQuery } from '../../__data__/services/avg-price';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
 import { FiltersContainerS } from '../../styles/filters';
-import { Select, SelectOption } from '../select';
 import { SelectWrapperS } from '../../styles/pick-avg-price';
+import { Select, SelectChangeEvent } from '@mui/material';
 
 type FiltersPrps = {
   haveCategory?: boolean;
@@ -14,55 +14,40 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ haveCategory }): JSX.E
   const { data: categories, isLoading } = useGetCategoriesQuery();
   const { data: avgPrices } = useGetAvgPricesRangesQuery();
   const [searchParams, setSearchParams] = useSearchParams();
-  const priceRange = searchParams.get('priceRange');
-  const category = searchParams.get('category');
-  const [categoriesVariances, setCategoriesVariances] = useState<SelectOption[]>([]);
-  const [avgPriceRanges, setAvgPriceRanges] = useState<SelectOption[]>([]);
+  // const priceRange = searchParams.get('priceRange');
+  // const category = searchParams.get('category');
+  const [category, setCategory] = useState<string>('');
+  const [avgPriceRanges, setAvgPriceRanges] = useState<string>('');
 
-  const handlerSelectCategory = (option: SelectOption): void => {
+  const handlerSelect = (
+    event: SelectChangeEvent,
+    searchParam: 'category' | 'priceRange'
+  ): void => {
     const currentParams = Object.fromEntries(searchParams);
-    currentParams.category = option.value;
+    currentParams[searchParam] = event.target.value as string;
+    if (searchParam === 'category') {
+      setCategory(event.target.value as string);
+    } else {
+      setAvgPriceRanges(event.target.value as string);
+    }
     setSearchParams(currentParams);
   };
-
-  const handlerSelectAvgPrice = (option: SelectOption): void => {
-    const currentParams = Object.fromEntries(searchParams);
-    currentParams.priceRange = option.value;
-    setSearchParams(currentParams);
-  };
-
-  useEffect(() => {
-    if (haveCategory && categories && !isLoading) {
-      setCategoriesVariances(
-        categories.map(item => ({
-          value: item.id,
-          label: item.title
-        }))
-      );
-    }
-  }, [categories, haveCategory, isLoading]);
-
-  useEffect(() => {
-    if (avgPrices) {
-      setAvgPriceRanges(
-        avgPrices.map(item => ({
-          value: item.startOfRange,
-          label: item.symbol
-        }))
-      );
-    }
-  }, [avgPrices]);
 
   return (
     <FiltersContainerS>
       {haveCategory && (
+        // <Select
+        //   options={categoriesVariances}
+        //   placeholder={'Категория'}
+        //   onChange={handlerSelectCategory}
+        // ></Select>
         <Select
-          options={categoriesVariances}
           placeholder={'Категория'}
-          onChange={handlerSelectCategory}
-        />
+          value={category}
+          onChange={(e: SelectChangeEvent) => handlerSelect(e, 'category')}
+        ></Select>
       )}
-      <Select options={avgPriceRanges} placeholder={'Диапазон'} onChange={handlerSelectAvgPrice} />
+      {/* <Select options={avgPriceRanges} placeholder={'Диапазон'} onChange={handlerSelectAvgPrice} /> */}
     </FiltersContainerS>
   );
 };

@@ -18,7 +18,7 @@ import { ButtonContainerS, PageContainerS } from '../../styles/pages';
 
 export const HomePage: FunctionComponent = (): JSX.Element => {
   const navigate = useNavigate();
-  const { data: categories } = useGetCategoriesQuery();
+  const { data: categories = [] } = useGetCategoriesQuery();
   const { data: placesWithFullInfo } = useGetPlacesWithFullInfoQuery();
   const { data: placesWithCategories } = useGetPlacesWithCategoriesQuery();
   const [searchParams] = useSearchParams();
@@ -57,7 +57,7 @@ export const HomePage: FunctionComponent = (): JSX.Element => {
     <PageContainerS maxWidth='lg'>
       <Header />
       <Banner />
-      <CategoryCloud categories={categories || []} />
+      <CategoryCloud categories={categories} />
       <Filters />
       <PlacesList data={filteredData} />
       <ButtonContainerS>
