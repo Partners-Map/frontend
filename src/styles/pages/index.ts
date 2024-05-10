@@ -1,9 +1,8 @@
+import { Container } from '@mui/material';
 import styled from 'styled-components';
 
-export const PageContainerS = styled.div`
+export const PageContainerS = styled(Container)`
   padding: 0 5vw 0 5vw;
-  display: flex;
-  flex-direction: column;
 `;
 
 export const ButtonContainerS = styled.div`

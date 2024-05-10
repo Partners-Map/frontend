@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { redirect, useNavigate, useSearchParams } from 'react-router-dom';
 import { TPlaceWithFullInfo } from '../../@types/models/place';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
 import {
@@ -14,10 +14,9 @@ import { Header } from '../../components/header';
 import { PlacesList } from '../../components/places-list';
 import { useFilter } from '../../hooks/filter';
 import { RoutesList } from '../../routers';
-import { ButtonContainerS, PageContainerS } from '../../styles/page-container';
+import { ButtonContainerS, PageContainerS } from '../../styles/pages';
 
-// TODO перенос на mui
-export const MainPage: FunctionComponent = (): JSX.Element => {
+export const HomePage: FunctionComponent = (): JSX.Element => {
   const navigate = useNavigate();
   const { data: categories } = useGetCategoriesQuery();
   const { data: placesWithFullInfo } = useGetPlacesWithFullInfoQuery();
@@ -29,9 +28,7 @@ export const MainPage: FunctionComponent = (): JSX.Element => {
   const { filterDataByCategory, filterDataByPriceRange } = useFilter();
 
   const goMapPage = (): void => {
-    navigate(
-      `${RoutesList.MapPage}?${priceRange ? `priceRange=${priceRange}&` : ''}${category ? `category=${category}` : ''}`
-    );
+    navigate(`${RoutesList.MapPage}?${searchParams.toString()}`);
   };
 
   useEffect(() => {
@@ -50,13 +47,19 @@ export const MainPage: FunctionComponent = (): JSX.Element => {
     }
   }, [placesWithFullInfo, priceRange, category, placesWithCategories]);
 
+  useEffect(() => {
+    if (!categories || !placesWithFullInfo) {
+      redirect(RoutesList.ServiceUnavailable);
+    }
+  }, [categories, placesWithFullInfo]);
+
   return (
-    <PageContainerS>
+    <PageContainerS maxWidth='lg'>
       <Header />
       <Banner />
-      {categories && <CategoryCloud categories={categories} />}
+      <CategoryCloud categories={categories || []} />
       <Filters />
-      {placesWithFullInfo && <PlacesList data={filteredData} />}
+      <PlacesList data={filteredData} />
       <ButtonContainerS>
         <Button title={'Показать на карте'} onClick={goMapPage} />
       </ButtonContainerS>

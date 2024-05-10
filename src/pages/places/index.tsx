@@ -14,7 +14,7 @@ import { PlacesList } from '../../components/places-list';
 import { Search } from '../../components/search';
 import { useFilter } from '../../hooks/filter';
 import { RoutesList } from '../../routers';
-import { ButtonContainerS, PageContainerS } from '../../styles/page-container';
+import { ButtonContainerS, PageContainerS } from '../../styles/pages';
 import { clearEditPlace } from '../../__data__/slices/edit-place';
 
 export const PlacesPage: FunctionComponent = () => {

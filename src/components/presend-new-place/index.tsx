@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { NewPlaceState } from '../../__data__/slices/new-place';
-import { PageContainerS } from '../../styles/page-container';
+import { PageContainerS } from '../../styles/pages';
 import { Header } from '../header';
 import { MapWrapper } from '../map-wrapper';
 import { PlaceCreateInfo } from '../place-create-info';

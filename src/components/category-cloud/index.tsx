@@ -2,6 +2,7 @@ import { FunctionComponent } from 'react';
 import { TCategory } from '../../@types/models/category';
 import { useFilter } from '../../hooks/filter';
 import { CategoryCloudContainerS, TagS } from '../../styles/tag-cloud';
+import { Button, Typography } from '@mui/material';
 
 type CategoryCloudPrps = {
   categories: TCategory[];
@@ -23,13 +24,13 @@ export const CategoryCloud: FunctionComponent<CategoryCloudPrps> = ({
   return (
     <CategoryCloudContainerS>
       {categories.map((category: TCategory) => (
-        <TagS
+        <Button
           key={category.id}
           onClick={() => handlerSelect(category)}
-          selected={findFilterValue('category') === category.id}
+          variant={findFilterValue('category') === category.id ? 'contained' : 'outlined'}
         >
-          {category.title}
-        </TagS>
+          <Typography variant='subtitle1'>{category.title}</Typography>
+        </Button>
       ))}
     </CategoryCloudContainerS>
   );

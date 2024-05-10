@@ -12,7 +12,7 @@ import { MapWrapper } from '../../components/map-wrapper';
 import { useFilter } from '../../hooks/filter';
 import { useMap } from '../../hooks/map';
 import { RoutesList } from '../../routers';
-import { PageContainerS } from '../../styles/page-container';
+import { PageContainerS } from '../../styles/pages';
 
 export const MapPage: FunctionComponent = (): JSX.Element => {
   const { data: placesWithFullInfo } = useGetPlacesWithFullInfoQuery();
