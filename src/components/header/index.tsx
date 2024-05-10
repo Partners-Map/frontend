@@ -10,6 +10,7 @@ export type HeaderProps = {
   v2?: boolean;
 };
 
+// TODO mui
 export const Header: FunctionComponent<HeaderProps> = ({ isAdmin, v2 = false }): JSX.Element => {
   const navigate = useNavigate();
 
