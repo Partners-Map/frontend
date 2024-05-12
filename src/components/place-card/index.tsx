@@ -41,14 +41,20 @@ export const PlaceCard: FunctionComponent<PlacesCardProps> = ({
         <Typography variant='subtitle1' color='primary'>
           {data.title}
         </Typography>
-        <Typography variant='caption'>
-          {firstAddress?.city
-            ? `${firstAddress?.city}, ${firstAddress?.street}, ${firstAddress?.house}`
-            : ''}
-        </Typography>
+        {firstAddress?.city ? (
+          <Typography variant='caption'>
+            {`${firstAddress.city}, ${firstAddress.street}, ${firstAddress.house}`}
+          </Typography>
+        ) : (
+          <></>
+        )}
         <Typography variant='caption'>{data.description}</Typography>
         <PlaceCardOtherInfoContainerS>
-          <Typography variant='caption'>{'Время работы: 09:00 - 23:00'}</Typography>
+          <Typography variant='caption'>
+            {data.openingTime !== ''
+              ? `Время работы: ${data.openingTime} - ${data.closingTime}`
+              : ''}
+          </Typography>
           <Typography variant='caption'>{`Ср. чек: ${minAvgPrice?.symbol} ${maxAvgPrice ? `- ${maxAvgPrice?.symbol}` : ''}`}</Typography>
         </PlaceCardOtherInfoContainerS>
       </PlaceCardContainerS>
