@@ -8,7 +8,7 @@ export const Logo: FunctionComponent = (): JSX.Element => {
   const navigate = useNavigate();
 
   const handlerClick = (): void => {
-    navigate(RoutesList.MainPage);
+    navigate(RoutesList.HomePage);
   };
 
   return (
