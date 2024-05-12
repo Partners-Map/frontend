@@ -4,7 +4,7 @@ import { useGetAvgPricesRangesQuery } from '../../__data__/services/avg-price';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
 import { FiltersContainerS } from '../../styles/filters';
 import { SelectWrapperS } from '../../styles/pick-avg-price';
-import { Select, SelectChangeEvent } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 type FiltersPrps = {
   haveCategory?: boolean;
@@ -23,12 +23,13 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ haveCategory }): JSX.E
     event: SelectChangeEvent,
     searchParam: 'category' | 'priceRange'
   ): void => {
+    const value = event.target.value as string;
     const currentParams = Object.fromEntries(searchParams);
-    currentParams[searchParam] = event.target.value as string;
+    currentParams[searchParam] = value;
     if (searchParam === 'category') {
-      setCategory(event.target.value as string);
+      setCategory(value);
     } else {
-      setAvgPriceRanges(event.target.value as string);
+      setAvgPriceRanges(value);
     }
     setSearchParams(currentParams);
   };
@@ -36,18 +37,31 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ haveCategory }): JSX.E
   return (
     <FiltersContainerS>
       {haveCategory && (
-        // <Select
-        //   options={categoriesVariances}
-        //   placeholder={'Категория'}
-        //   onChange={handlerSelectCategory}
-        // ></Select>
-        <Select
-          placeholder={'Категория'}
-          value={category}
-          onChange={(e: SelectChangeEvent) => handlerSelect(e, 'category')}
-        ></Select>
+        <FormControl sx={{ minWidth: 120 }} size='small'>
+          <InputLabel id='avgPriceLabel'>Категория</InputLabel>
+          <Select
+            labelId='avgPriceLabel'
+            label='Категория'
+            value={category}
+            onChange={(e: SelectChangeEvent) => handlerSelect(e, 'category')}
+          >
+            {categories?.map(category => <MenuItem value={category.id}>{category.title}</MenuItem>)}
+          </Select>
+        </FormControl>
       )}
-      {/* <Select options={avgPriceRanges} placeholder={'Диапазон'} onChange={handlerSelectAvgPrice} /> */}
+      <FormControl sx={{ minWidth: 120 }} size='small'>
+        <InputLabel id='avgPriceLabel'>Диапазон</InputLabel>
+        <Select
+          labelId='avgPriceLabel'
+          label='Диапазон'
+          value={avgPriceRanges}
+          onChange={(e: SelectChangeEvent) => handlerSelect(e, 'priceRange')}
+        >
+          {avgPrices?.map(avgPrice => (
+            <MenuItem value={avgPrice.startOfRange}>{avgPrice.symbol}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </FiltersContainerS>
   );
 };

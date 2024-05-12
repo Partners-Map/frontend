@@ -54,7 +54,7 @@ export const HomePage: FunctionComponent = (): JSX.Element => {
   }, [categories, placesWithFullInfo]);
 
   return (
-    <PageContainerS maxWidth='lg'>
+    <PageContainerS maxWidth='xl'>
       <Header />
       <Banner />
       <CategoryCloud categories={categories} />
