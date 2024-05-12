@@ -2,16 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { TPlaceWithFullInfo } from '../../@types/models/place';
 import { useGetPlacesWithCategoriesQuery } from '../../__data__/services/place';
-import {
-  PlaceInfoCategory,
-  PlaceInfoConditions,
-  PlaceInfoConditionsText,
-  PlaceInfoContainer,
-  PlaceInfoDescription,
-  PlaceInfoDescriptionText,
-  PlaceInfoExtraContainer,
-  PlaceInfoExtraText
-} from '../../styles/place-info';
+import { PlaceInfoContainer, PlaceInfoExtraContainer } from '../../styles/place-info';
 
 type PlaceInfoProps = {
   data: TPlaceWithFullInfo;
@@ -35,7 +26,11 @@ export const PlaceInfo: FunctionComponent<PlaceInfoProps> = ({ data }): JSX.Elem
           }
         })}
         <PlaceInfoExtraContainer>
-          <Typography variant='body2'>{`Время работы: ${data.openingTime !== '' ? data.openingTime : '09:00'} - ${data.closingTime !== '' ? data.closingTime : '23:00'}`}</Typography>
+          <Typography variant='body2'>
+            {data.openingTime !== ''
+              ? `Время работы: ${data.openingTime} - ${data.closingTime}`
+              : ''}
+          </Typography>
           <Typography variant='body2'>{`Ср. чек: ${data.minAvgPrice?.symbol} ${data.maxAvgPrice ? `- ${data.maxAvgPrice?.symbol}` : ''}`}</Typography>
         </PlaceInfoExtraContainer>
       </Box>

@@ -1,3 +1,4 @@
+import { Button, IconButton } from '@mui/material';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -6,16 +7,15 @@ import {
   useGetPlacesWithCategoriesQuery,
   useGetPlacesWithFullInfoQuery
 } from '../../__data__/services/place';
+import { clearEditPlace } from '../../__data__/slices/edit-place';
 import { clearNewPlace } from '../../__data__/slices/new-place';
-import { Button } from '../../components/button';
 import { Filters } from '../../components/filters';
 import { Header } from '../../components/header';
 import { PlacesList } from '../../components/places-list';
-import { Search } from '../../components/search';
 import { useFilter } from '../../hooks/filter';
 import { RoutesList } from '../../routers';
 import { ButtonContainerS, PageContainerS } from '../../styles/pages';
-import { clearEditPlace } from '../../__data__/slices/edit-place';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 export const PlacesPage: FunctionComponent = () => {
   const { data: placesWithFullInfo } = useGetPlacesWithFullInfoQuery();
@@ -48,6 +48,10 @@ export const PlacesPage: FunctionComponent = () => {
     navigate(RoutesList.NewPlace + 'SelectPartner');
   };
 
+  const goBack = (): void => {
+    navigate(RoutesList.AdminHub);
+  };
+
   useEffect(() => {
     dispatch(clearNewPlace());
     dispatch(clearEditPlace());
@@ -56,16 +60,28 @@ export const PlacesPage: FunctionComponent = () => {
   return (
     <PageContainerS>
       <Header isAdmin />
-      <Search
+      <Button
+        variant='contained'
+        sx={{
+          marginTop: '2vh'
+        }}
+        onClick={goBack}
+      >
+        <ChevronLeftIcon />
+      </Button>
+      {/* TODO добавить в общую фильтрацию, поиск */}
+      {/* <Search
         style={{
           margin: '4vh 0 0 0',
           width: '100%'
         }}
-      />
+      /> */}
       <Filters haveCategory />
-      {filteredData && <PlacesList isAdmin data={filteredData} style={{ maxHeight: '62vh' }} />}
+      {filteredData && <PlacesList isAdmin data={filteredData} style={{ maxHeight: '64vh' }} />}
       <ButtonContainerS>
-        <Button title={'Добавить новое место'} onClick={goToNewPlace} />
+        <Button onClick={goToNewPlace} variant='contained'>
+          Добавить новое место
+        </Button>
       </ButtonContainerS>
     </PageContainerS>
   );
