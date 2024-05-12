@@ -10,6 +10,7 @@ import { PlacesPage } from './pages/places';
 import { ServiceUnavailablePage } from './pages/service-unavailable';
 import { RoutesList } from './routers';
 import ResetStyles from './styles/reset';
+import { AdminHub } from './pages/admin-hub';
 
 export function App(): JSX.Element {
   return (
@@ -23,9 +24,13 @@ export function App(): JSX.Element {
           <Route path={'admin'}>
             <Route index element={<Navigate to={RoutesList.LoginPage} />} />
             <Route path='login' element={<LoginPage />} />
+            <Route path='admin-hub' element={<AdminHub />} />
             <Route path='places' element={<PlacesPage />} />
+            {/* TODO  CategoriesPage */}
+            {/* <Route path='categories' element={<CategoriesPage />} /> */}
             <Route path='new-place/:step' element={<CreatePage />} />
             <Route path='edit-place/:id/:step' element={<EditPlacePage />} />
+            <Route path='*' element={<Navigate to={RoutesList.AdminHub} replace={true} />} />
           </Route>
           <Route path='service-unavailable' element={<ServiceUnavailablePage />} />
           <Route path='*' element={<NotFoundPage />} />

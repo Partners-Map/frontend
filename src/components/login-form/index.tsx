@@ -36,7 +36,7 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
       })
         .unwrap()
         .then(() => {
-          navigate(RoutesList.PlacesPage);
+          navigate(RoutesList.AdminHub);
         });
     }
   };

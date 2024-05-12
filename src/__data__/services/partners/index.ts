@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { TPartner } from '../../../@types/models/partner';
-import { baseQuery } from '../../config';
+import { baseQuery } from '../../../configs/api';
 import { CreatePartner } from '../../../components/create-partner';
 
 export const partnerApi = createApi({

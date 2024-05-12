@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { TLoginData, TLoginParams } from '../../../@types/api/auth';
-import { baseQuery } from '../../config';
+import { baseQuery } from '../../../configs/api';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
