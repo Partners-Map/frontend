@@ -5,7 +5,7 @@ import {
   TPlaceWithFullInfo,
   TPlacesWithCategorie
 } from '../../../@types/models/place';
-import { baseQuery } from '../../config';
+import { baseQuery } from '../../../configs/api';
 import { NewPlaceState } from '../../slices/new-place';
 
 export const placeApi = createApi({

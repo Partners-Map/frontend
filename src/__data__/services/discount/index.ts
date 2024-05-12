@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { TDiscount } from '../../../@types/models/discount';
-import { baseQuery } from '../../config';
+import { baseQuery } from '../../../configs/api';
 
 export const discountApi = createApi({
   reducerPath: 'discountApi',
@@ -8,8 +8,7 @@ export const discountApi = createApi({
 
   endpoints: builder => ({
     getDiscounts: builder.query<TDiscount[], void>({
-      query: () => '/discounts',
-      
+      query: () => '/discounts'
     })
   })
 });

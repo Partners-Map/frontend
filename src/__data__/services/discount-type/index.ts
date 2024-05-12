@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type { TDiscountType } from '../../../@types/models/discount-type';
-import { baseQuery } from '../../config';
+import { baseQuery } from '../../../configs/api';
 
 export const discountTypeApi = createApi({
   reducerPath: 'discountTypeApi',
