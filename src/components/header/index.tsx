@@ -14,7 +14,7 @@ export const Header: FunctionComponent<HeaderProps> = ({ isAdmin, v2 = false }):
   const navigate = useNavigate();
 
   const handlerBack = (): void => {
-    navigate(RoutesList.MainPage);
+    navigate(RoutesList.HomePage);
   };
 
   return (

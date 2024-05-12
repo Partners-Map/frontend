@@ -1,5 +1,5 @@
 export const enum RoutesList {
-  MainPage = '/',
+  HomePage = '/',
   LoginPage = '/admin/login',
   PlacesPage = '/admin/places',
   СategoriesPage = '/admin/categories',
