@@ -1,3 +1,4 @@
+import { Box, FormControl } from '@mui/material';
 import styled from 'styled-components';
 
 export const LoginFormS = styled.form`
@@ -6,15 +7,17 @@ export const LoginFormS = styled.form`
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 100%;
   margin-top: 20vh;
 `;
 
-export const LoginInputWrapperS = styled.div`
+export const LoginInputWrapperS = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 10vh;
   width: 100%;
+  gap: 1vh;
 `;
 
 export const LoginInputS = styled.input<{ error?: boolean }>`
