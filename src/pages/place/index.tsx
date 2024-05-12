@@ -36,7 +36,7 @@ export const PlacePage: FunctionComponent = (): JSX.Element => {
       {place && <PlaceInfo data={place} />}
       <div
         style={{
-          height: '50vh',
+          height: '40vh',
           margin: '4vh 0 0 0'
         }}
       >
