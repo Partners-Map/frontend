@@ -1,7 +1,8 @@
+import { Box } from '@mui/material';
 import styled from 'styled-components';
 import { HeaderProps } from '../../components/header';
 
-export const HeaderContainerS = styled.div<HeaderProps>`
+export const HeaderContainerS = styled(Box)<HeaderProps>`
   display: flex;
   flex-direction: row;
   align-items: center;

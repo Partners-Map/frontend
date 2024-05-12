@@ -5,5 +5,7 @@ export const enum RoutesList {
   MapPage = '/map',
   PlacePage = '/place/',
   NewPlace = '/admin/new-place/',
-  EditPlace = '/admin/edit-place/'
+  EditPlace = '/admin/edit-place/',
+  ServiceUnavailable = '/service-unavailable',
+  NotFound = '/404'
 }

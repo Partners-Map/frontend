@@ -5,7 +5,7 @@ import { Header } from '../../components/header';
 import { MapWrapper } from '../../components/map-wrapper';
 import { PlaceInfo } from '../../components/place-info';
 import { useMap } from '../../hooks/map';
-import { PageContainerS } from '../../styles/page-container';
+import { PageContainerS } from '../../styles/pages';
 
 export const PlacePage: FunctionComponent = (): JSX.Element => {
   const { id } = useParams();

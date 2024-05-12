@@ -13,7 +13,7 @@ import { PresendNewPlace } from '../../components/presend-new-place';
 import { Stepper } from '../../components/stepper';
 import { RoutesList } from '../../routers';
 import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
-import { PageContainerS } from '../../styles/page-container';
+import { PageContainerS } from '../../styles/pages';
 import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
 
 export type TSteps = {

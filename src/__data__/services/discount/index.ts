@@ -5,9 +5,11 @@ import { baseQuery } from '../../config';
 export const discountApi = createApi({
   reducerPath: 'discountApi',
   baseQuery,
+
   endpoints: builder => ({
     getDiscounts: builder.query<TDiscount[], void>({
-      query: () => '/discounts'
+      query: () => '/discounts',
+      
     })
   })
 });

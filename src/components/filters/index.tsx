@@ -3,8 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useGetAvgPricesRangesQuery } from '../../__data__/services/avg-price';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
 import { FiltersContainerS } from '../../styles/filters';
-import { Select, SelectOption } from '../select';
 import { SelectWrapperS } from '../../styles/pick-avg-price';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 type FiltersPrps = {
   haveCategory?: boolean;
@@ -14,55 +14,54 @@ export const Filters: FunctionComponent<FiltersPrps> = ({ haveCategory }): JSX.E
   const { data: categories, isLoading } = useGetCategoriesQuery();
   const { data: avgPrices } = useGetAvgPricesRangesQuery();
   const [searchParams, setSearchParams] = useSearchParams();
-  const priceRange = searchParams.get('priceRange');
-  const category = searchParams.get('category');
-  const [categoriesVariances, setCategoriesVariances] = useState<SelectOption[]>([]);
-  const [avgPriceRanges, setAvgPriceRanges] = useState<SelectOption[]>([]);
+  // const priceRange = searchParams.get('priceRange');
+  // const category = searchParams.get('category');
+  const [category, setCategory] = useState<string>('');
+  const [avgPriceRanges, setAvgPriceRanges] = useState<string>('');
 
-  const handlerSelectCategory = (option: SelectOption): void => {
+  const handlerSelect = (
+    event: SelectChangeEvent,
+    searchParam: 'category' | 'priceRange'
+  ): void => {
+    const value = event.target.value as string;
     const currentParams = Object.fromEntries(searchParams);
-    currentParams.category = option.value;
+    currentParams[searchParam] = value;
+    if (searchParam === 'category') {
+      setCategory(value);
+    } else {
+      setAvgPriceRanges(value);
+    }
     setSearchParams(currentParams);
   };
-
-  const handlerSelectAvgPrice = (option: SelectOption): void => {
-    const currentParams = Object.fromEntries(searchParams);
-    currentParams.priceRange = option.value;
-    setSearchParams(currentParams);
-  };
-
-  useEffect(() => {
-    if (haveCategory && categories && !isLoading) {
-      setCategoriesVariances(
-        categories.map(item => ({
-          value: item.id,
-          label: item.title
-        }))
-      );
-    }
-  }, [categories, haveCategory, isLoading]);
-
-  useEffect(() => {
-    if (avgPrices) {
-      setAvgPriceRanges(
-        avgPrices.map(item => ({
-          value: item.startOfRange,
-          label: item.symbol
-        }))
-      );
-    }
-  }, [avgPrices]);
 
   return (
     <FiltersContainerS>
       {haveCategory && (
-        <Select
-          options={categoriesVariances}
-          placeholder={'Категория'}
-          onChange={handlerSelectCategory}
-        />
+        <FormControl sx={{ minWidth: 120 }} size='small'>
+          <InputLabel id='avgPriceLabel'>Категория</InputLabel>
+          <Select
+            labelId='avgPriceLabel'
+            label='Категория'
+            value={category}
+            onChange={(e: SelectChangeEvent) => handlerSelect(e, 'category')}
+          >
+            {categories?.map(category => <MenuItem value={category.id}>{category.title}</MenuItem>)}
+          </Select>
+        </FormControl>
       )}
-      <Select options={avgPriceRanges} placeholder={'Диапазон'} onChange={handlerSelectAvgPrice} />
+      <FormControl sx={{ minWidth: 120 }} size='small'>
+        <InputLabel id='avgPriceLabel'>Диапазон</InputLabel>
+        <Select
+          labelId='avgPriceLabel'
+          label='Диапазон'
+          value={avgPriceRanges}
+          onChange={(e: SelectChangeEvent) => handlerSelect(e, 'priceRange')}
+        >
+          {avgPrices?.map(avgPrice => (
+            <MenuItem value={avgPrice.startOfRange}>{avgPrice.symbol}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </FiltersContainerS>
   );
 };
