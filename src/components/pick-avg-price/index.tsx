@@ -1,12 +1,18 @@
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select
+} from '@mui/material';
 import { UnknownAction } from '@reduxjs/toolkit';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useGetAvgPricesQuery } from '../../__data__/services/avg-price';
 import { setPlaceMaxAvgPriceId, setPlaceMinAvgPriceId } from '../../__data__/slices/new-place';
-import { SelectWrapperS } from '../../styles/pick-avg-price';
-import { FieldLabelS } from '../../styles/place-form';
-import { Select, SelectOption } from '../select';
+import { SelectOption } from '../select';
 
 type TPickAvgPriceData = {
   minAvgPriceId: string;
@@ -15,8 +21,7 @@ type TPickAvgPriceData = {
 
 export const PickAvgPrice: FunctionComponent = (): JSX.Element => {
   const { data: avgPrices } = useGetAvgPricesQuery();
-  const [transformAvgPrices, setTransformAvgPrices] = useState<SelectOption[]>([]);
-  const [disabledRangeAvgPrice, setDisabledRangeAvgPrice] = useState<boolean>(true);
+  const [disabledRangeAvgPrice, setDisabledRangeAvgPrice] = useState<boolean>(false);
   const { getValues, watch, setValue } = useForm<TPickAvgPriceData>();
   const dispatch = useDispatch();
 
@@ -30,12 +35,12 @@ export const PickAvgPrice: FunctionComponent = (): JSX.Element => {
     }
   };
 
-  const onSetMinAvgPriceId = (optin: SelectOption): void => {
-    setValue('minAvgPriceId', optin.value);
+  const onSetMinAvgPriceId = (value: string): void => {
+    setValue('minAvgPriceId', value);
   };
 
-  const onSetMaxAvgPriceId = (optin: SelectOption): void => {
-    setValue('maxAvgPriceId', optin.value);
+  const onSetMaxAvgPriceId = (value: string): void => {
+    setValue('maxAvgPriceId', value);
   };
 
   useEffect(() => {
@@ -49,62 +54,49 @@ export const PickAvgPrice: FunctionComponent = (): JSX.Element => {
     }
   }, [disabledRangeAvgPrice]);
 
-  useEffect(() => {
-    if (avgPrices) {
-      setTransformAvgPrices(
-        avgPrices.map(price => {
-          return {
-            value: price.id,
-            label: price.symbol,
-            areaLabel: price.slug
-          };
-        })
-      );
-    }
-  }, [avgPrices]);
-
   return (
     <>
-      <FieldLabelS>Средний чек</FieldLabelS>
-      <SelectWrapperS>
-        <Select
-          styleContainer={{
-            minWidth: '20vw',
-            width: '35vw'
-          }}
-          options={transformAvgPrices}
-          placeholder={'Выберите'}
-          onChange={onSetMinAvgPriceId}
-        />
-        <Select
-          styleContainer={{
-            minWidth: '20vw',
-            width: '35vw'
-          }}
-          options={transformAvgPrices}
-          placeholder={'Выберите'}
-          disabled={disabledRangeAvgPrice}
-          onChange={onSetMaxAvgPriceId}
-        />
-      </SelectWrapperS>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '6px',
-          padding: '1vw 2vw 1vw 1vw'
-        }}
+      <FormControl
+        sx={{ minWidth: 120, display: 'flex', flexDirection: 'row', gap: '6px' }}
+        size='small'
+        fullWidth
       >
-        <input
-          type='checkbox'
-          id='minAvgPriceId'
-          name='minAvgPriceId'
-          onChange={() => {
-            setDisabledRangeAvgPrice(!disabledRangeAvgPrice);
-          }}
+        <InputLabel id='avgPrice'>Средний чек</InputLabel>
+        <Select
+          labelId='avgPrice'
+          label={'Средний чек'}
+          fullWidth
+          placeholder={'Выберите'}
+          onChange={e => onSetMinAvgPriceId(e.target.value as string)}
+        >
+          {avgPrices?.map(avgPrice => <MenuItem value={avgPrice.id}>{avgPrice.symbol}</MenuItem>)}
+        </Select>
+        <FormControl disabled={!disabledRangeAvgPrice} fullWidth size='small'>
+          <InputLabel id='avgPriceRange'>Средний чек</InputLabel>
+          <Select
+            labelId='avgPriceRange'
+            label={'Средний чек'}
+            fullWidth
+            placeholder={'Выберите'}
+            onChange={e => onSetMaxAvgPriceId(e.target.value as string)}
+          >
+            {avgPrices?.map(avgPrice => <MenuItem value={avgPrice.id}>{avgPrice.symbol}</MenuItem>)}
+          </Select>
+        </FormControl>
+      </FormControl>
+      <FormControl>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={disabledRangeAvgPrice}
+              onChange={() => {
+                setDisabledRangeAvgPrice(!disabledRangeAvgPrice);
+              }}
+            />
+          }
+          label='Выставить диапазон'
         />
-        <label htmlFor='minAvgPriceId'>выставить диапазон</label>
-      </div>
+      </FormControl>
     </>
   );
 };

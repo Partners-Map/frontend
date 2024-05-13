@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import styled from 'styled-components';
 
 export const PlaceFormContainerS = styled.div`
@@ -7,7 +8,7 @@ export const PlaceFormContainerS = styled.div`
   gap: 20px;
 `;
 
-export const FieldContainerS = styled.div`
+export const FieldContainerS = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -27,7 +28,7 @@ export const PlaceCreationBlockContainerS = styled.div`
   gap: 2vh;
 `;
 
-export const DiscountCreationBlockContainerS = styled.div`
+export const DiscountCreationBlockContainerS = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 2vh;

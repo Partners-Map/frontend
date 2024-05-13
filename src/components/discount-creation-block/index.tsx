@@ -11,7 +11,6 @@ import {
   setDiscountInformation
 } from '../../__data__/slices/new-place';
 import { DiscountInfoContainerS, TitleS } from '../../styles/discount-form';
-import { InputS } from '../../styles/input';
 import {
   DiscountCreationBlockContainerS,
   FieldContainerS,
@@ -19,9 +18,10 @@ import {
   InputWrapperS
 } from '../../styles/place-form';
 import { Adder, TAdderData } from '../adder';
-import { Select, SelectOption } from '../select';
-import { Textarea } from '../textarea';
 import { Input } from '../input';
+import { Textarea } from '../textarea';
+import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { SelectOption } from '../select';
 
 export type TDiscountData = {
   amount: number;
@@ -29,7 +29,13 @@ export type TDiscountData = {
   information: string;
 };
 
-export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
+type DiscountCreationBlockProps = {
+  isEditing?: boolean;
+};
+
+export const DiscountCreationBlock: FunctionComponent<DiscountCreationBlockProps> = ({
+  isEditing
+}): JSX.Element => {
   const currentDiscount = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.discount
   );
@@ -51,8 +57,8 @@ export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.discount.conditions
   );
 
-  const handlerDiscountTypeSelect = (option: SelectOption): void => {
-    setValue('type', option.value);
+  const handlerDiscountTypeSelect = (value: string): void => {
+    setValue('type', value);
   };
 
   const handlerInfoChange = (value: string): void => {
@@ -102,53 +108,60 @@ export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
 
   return (
     <DiscountCreationBlockContainerS>
-      <TitleS>Добавить скидку</TitleS>
-      <DiscountInfoContainerS>
-        <FieldContainerS>
-          <Input
-            title={'Количество'}
-            type='text'
-            onChange={value => {
-              setValue('amount', Number(value));
-            }}
-            value={getValues('amount')}
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px'
-            }}
-            placeholder='Количество'
-          />
-        </FieldContainerS>
-        <FieldContainerS>
-          <FieldLabelS>Тип скидки</FieldLabelS>
-          <InputWrapperS>
-            <Select
-              styleContainer={{
-                maxWidth: '400px',
-                minWidth: '40vw',
-                width: '38vw',
-                height: '2vh'
-              }}
-              options={transformedArray}
-              placeholder={'Выберите'}
-              onChange={handlerDiscountTypeSelect}
-            />
-          </InputWrapperS>
-        </FieldContainerS>
-      </DiscountInfoContainerS>
+      <Typography variant='h4' color={'primary'}>
+        Cкидка
+      </Typography>
+      <FormControl
+        fullWidth
+        size='small'
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '6px'
+        }}
+      >
+        <TextField
+          label={'Размер'}
+          type='number'
+          size='small'
+          fullWidth
+          onChange={e => {
+            setValue('amount', Number(e.target.value));
+          }}
+          value={getValues('amount')}
+          placeholder='Размер'
+        />
+        <FormControl fullWidth size='small'>
+          <InputLabel id='disType'>Тип скидки</InputLabel>
+          <Select
+            labelId='disType'
+            label='Тип скидки'
+            placeholder={'Тип скидки'}
+            onChange={e => handlerDiscountTypeSelect(e.target.value as string)}
+          >
+            {discountTypes?.map(discountType => (
+              <MenuItem value={discountType.id}>{discountType.title}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </FormControl>
       <Adder
-        label={'Условие'}
+        label={'Условия'}
         placeholder={'Условие'}
         onAdding={handlerConditionsAdder}
         addedElements={addedConditions}
-        helperText='пример: "Предъявить карту резидента "Сберпорт""'
+        helperText='пример: "Предъявить карту "Сберпорт""'
         error={addetingError}
         onDeleteItem={handlerDeleteCondition}
       />
-
-      <Textarea title='Дополнительная информация' onChange={handlerInfoChange} />
+      <TextField
+        label='Дополнительная информация'
+        placeholder='Дополнительная информация'
+        multiline
+        maxRows={6}
+        minRows={4}
+        onChange={e => handlerInfoChange(e.target.value as string)}
+      />
     </DiscountCreationBlockContainerS>
   );
 };
