@@ -12,6 +12,23 @@ export const categoryApi = createApi({
     getCategoryById: builder.query<TCategory, string>({
       query: id => `/category/${id}`
     }),
+    createCategory: builder.mutation<TCategory, Omit<TCategory, 'id'>>({
+      query: body => ({
+        url: '/category',
+        method: 'POST',
+        body
+      })
+    }),
+    editCategoryById: builder.mutation<TCategory, TCategory>({
+      query: ({ id, title }) => ({
+        url: `/category/${id}`,
+        method: 'PUT',
+        body: {
+          id,
+          title
+        }
+      })
+    }),
     deleteCategoryById: builder.mutation<void, string>({
       query: id => ({
         url: `/category/${id}`,
@@ -21,5 +38,10 @@ export const categoryApi = createApi({
   })
 });
 
-export const { useGetCategoriesQuery, useGetCategoryByIdQuery, useDeleteCategoryByIdMutation } =
-  categoryApi;
+export const {
+  useGetCategoriesQuery,
+  useGetCategoryByIdQuery,
+  useCreateCategoryMutation,
+  useEditCategoryByIdMutation,
+  useDeleteCategoryByIdMutation
+} = categoryApi;
