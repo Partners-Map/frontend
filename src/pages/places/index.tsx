@@ -1,4 +1,5 @@
-import { Button, IconButton } from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Button } from '@mui/material';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,7 +16,6 @@ import { PlacesList } from '../../components/places-list';
 import { useFilter } from '../../hooks/filter';
 import { RoutesList } from '../../routers';
 import { ButtonContainerS, PageContainerS } from '../../styles/pages';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 export const PlacesPage: FunctionComponent = () => {
   const { data: placesWithFullInfo } = useGetPlacesWithFullInfoQuery();
