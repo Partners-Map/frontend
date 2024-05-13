@@ -1,19 +1,17 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Button } from '@mui/material';
-import { FunctionComponent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
-import { useGetPlacesWithCategoriesQuery } from '../../__data__/services/place';
 import { СategoriesList } from '../../components/categories-list';
+import { CategoryAlertDialog } from '../../components/category-alert-dialog';
+import { CategoryDialog, CategoryDialogVariants } from '../../components/category-dialog';
 import { Header } from '../../components/header';
 import { RoutesList } from '../../routers';
 import { ButtonContainerS, PageContainerS } from '../../styles/pages';
-import { CategoryDialog, CategoryDialogVariants } from '../../components/category-dialog';
-import { CategoryAlertDialog } from '../../components/category-alert-dialog';
 
 export const СategoriesPage: FunctionComponent = (): JSX.Element => {
-  const { data: categories } = useGetCategoriesQuery();
+  const { data: categories, refetch: updatedCategoriesList } = useGetCategoriesQuery();
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
@@ -44,12 +42,18 @@ export const СategoriesPage: FunctionComponent = (): JSX.Element => {
   const handleCloseDialog = (value: CategoryDialogVariants | ''): void => {
     setOpenDialog(false);
     setSelectedValue(value);
-    if (value === 'edit') {
-      navigate(RoutesList.EditCategory + selectedСategory);
+    if (value === 'delete') {
+      handlerDeleteCategory();
       return;
     }
-    handlerDeleteCategory();
+    if (value === 'edit') {
+      navigate(RoutesList.EditCategory + selectedСategory);
+    }
   };
+
+  useEffect(() => {
+    updatedCategoriesList();
+  }, []);
 
   return (
     <PageContainerS>

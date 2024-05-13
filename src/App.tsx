@@ -1,10 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AdminHub } from './pages/admin-hub';
 import { СategoriesPage } from './pages/categories';
+import { EditCategoryPage } from './pages/edit-category';
 import { EditPlacePage } from './pages/edit-place';
 import { HomePage } from './pages/home';
 import { LoginPage } from './pages/login';
 import { MapPage } from './pages/map';
+import { NewCategoryPage } from './pages/new-category';
 import { CreatePage } from './pages/new-place';
 import { NotFoundPage } from './pages/not-found';
 import { PlacePage } from './pages/place';
@@ -28,8 +30,8 @@ export function App(): JSX.Element {
             <Route path='admin-hub' element={<AdminHub />} />
             <Route path='places' element={<PlacesPage />} />
             <Route path='categories' element={<СategoriesPage />} />
-            {/* TODO EditCategoryPage */}
-            {/* <Route path='edit-category/:id' element={<EditCategoryPage />} /> */}
+            <Route path='new-category' element={<NewCategoryPage />} />
+            <Route path='edit-category/:id' element={<EditCategoryPage />} />
             <Route path='new-place/:step' element={<CreatePage />} />
             <Route path='edit-place/:id/:step' element={<EditPlacePage />} />
             <Route path='*' element={<Navigate to={RoutesList.AdminHub} replace={true} />} />

@@ -19,6 +19,8 @@ export const CategoryDialog: FunctionComponent<CategoryDialogProps> = ({
   };
 
   const handleListItemClick = (value: CategoryDialogVariants): void => {
+    console.log(value);
+    
     onClose(value);
   };
 
