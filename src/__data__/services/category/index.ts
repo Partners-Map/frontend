@@ -11,8 +11,15 @@ export const categoryApi = createApi({
     }),
     getCategoryById: builder.query<TCategory, string>({
       query: id => `/category/${id}`
+    }),
+    deleteCategoryById: builder.mutation<void, string>({
+      query: id => ({
+        url: `/category/${id}`,
+        method: 'DELETE'
+      })
     })
   })
 });
 
-export const { useGetCategoriesQuery, useGetCategoryByIdQuery } = categoryApi;
+export const { useGetCategoriesQuery, useGetCategoryByIdQuery, useDeleteCategoryByIdMutation } =
+  categoryApi;
