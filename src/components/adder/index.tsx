@@ -1,4 +1,4 @@
-import { CSSProperties, FunctionComponent } from 'react';
+import { CSSProperties, FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { NewPlaceState } from '../../__data__/slices/new-place';
@@ -9,11 +9,10 @@ import {
   AdderLabelS,
   ListS
 } from '../../styles/adder';
-import { InputS } from '../../styles/input';
-import { Button } from '../button';
 import TrashIcon from '/public/icons/trash.svg?react';
 import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
-import { Input } from '../input';
+import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 type AdderProps = {
   label: string;
@@ -40,52 +39,48 @@ export const Adder: FunctionComponent<AdderProps> = ({
   helperText,
   onDeleteItem
 }): JSX.Element => {
-  const {
-    setValue,
-    getValues,
-    reset,
-    formState: { errors }
-  } = useForm<TAdderData>();
+  const [addedTitle, setAddedTitle] = useState<string>('');
   const dispatch = useDispatch();
   const addresses = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.addresses
   );
 
   const handlerAdd = (): void => {
-    if (errors.label) return;
-    onAdding(getValues('label').trimStart().trimEnd());
-    setValue('label', '');
+    const clearAddedTitle = addedTitle.trimStart().trimEnd();
+    if (clearAddedTitle === '') return;
+    onAdding(clearAddedTitle);
+    setAddedTitle('');
   };
 
   return (
     <AdderContainerS>
-      <AdderLabelS>{label}</AdderLabelS>
-      <div
+      <Typography variant={'subtitle1'} color={'primary'}>
+        {label}
+      </Typography>
+      <FormControl
         style={{
           display: 'flex',
           flexDirection: 'row',
           gap: '6px'
         }}
       >
-        <Input
+        <TextField
           title={''}
           type='text'
-          onChange={value => {
-            setValue('label', value);
-          }}
-          value={getValues('label')}
-          style={{
-            width: '100%'
-          }}
+          size='small'
+          onChange={e => setAddedTitle(e.target.value as string)}
+          value={addedTitle}
           placeholder={placeholder}
+          helperText={helperText}
+          fullWidth
         />
-
-        <Button icon={WhitePlusIcon} iconSize={20} backgroundColor='blue' onClick={handlerAdd} />
-      </div>
-      <AdderHelperTextS>{helperText}</AdderHelperTextS>
+        <Button variant='contained' onClick={handlerAdd} size='small'>
+          <AddIcon />
+        </Button>
+      </FormControl>
       <ListS style={listStyle}>
         {addedElements.map(item => (
-          <div
+          <Box
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -93,9 +88,11 @@ export const Adder: FunctionComponent<AdderProps> = ({
               padding: '10px'
             }}
           >
-            <AddedItemTitleS>{item.label}</AddedItemTitleS>
+            <Typography variant={'body1'} color={'primary'}>
+              {item.label}
+            </Typography>
             <TrashIcon width={24} height={24} onClick={() => onDeleteItem(item.label)} />
-          </div>
+          </Box>
         ))}
       </ListS>
     </AdderContainerS>

@@ -1,3 +1,4 @@
+import { FormControl, TextField } from '@mui/material';
 import { UnknownAction } from '@reduxjs/toolkit';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -7,7 +8,6 @@ import {
   setPlaceClosingTime,
   setPlaceOpeningTime
 } from '../../__data__/slices/new-place';
-import { Input } from '../input';
 
 type TWorkingHoursData = {
   from: string;
@@ -47,32 +47,37 @@ export const WorkingHours = (): JSX.Element => {
   }, [watch()]);
 
   return (
-    <div
+    <FormControl
       style={{
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        gap: '5px'
+        gap: '6px'
       }}
+      size='small'
     >
-      <Input
+      <TextField
         type='text'
-        onChange={value => {
-          setValue('from', value);
+        onChange={e => {
+          setValue('from', e.target.value as string);
         }}
         value={getValues('from')}
-        placeholder='От'
-        title={''}
+        placeholder='C'
+        fullWidth
+        size='small'
+        label='C'
       />
-      <Input
+      <TextField
         type='text'
-        onChange={value => {
-          setValue('to', value);
+        onChange={e => {
+          setValue('to', e.target.value as string);
         }}
         value={getValues('to')}
         placeholder='До'
-        title={''}
+        fullWidth
+        size='small'
+        label='До'
       />
-    </div>
+    </FormControl>
   );
 };

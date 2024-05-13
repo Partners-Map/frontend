@@ -11,7 +11,7 @@ export const PlaceForm: FunctionComponent<PlaceFormProps> = ({ isEditing }): JSX
   return (
     <PlaceFormContainerS>
       <PlaceCreationBlock isEditing={isEditing} />
-      <DiscountCreationBlock isEditing />
+      <DiscountCreationBlock isEditing={isEditing} />
     </PlaceFormContainerS>
   );
 };

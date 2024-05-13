@@ -12,7 +12,6 @@ import {
   PartnerTitleS,
   PartnersListContainerS
 } from '../../styles/partner-form';
-import { SearchInputS } from '../../styles/search-input';
 import { Button } from '../button';
 import BlackPlusIcon from '/public/icons/black-plus-icon.svg?react';
 import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
@@ -61,7 +60,8 @@ export const PartnerForm: FunctionComponent<PartnerFormProps> = ({
 
   return (
     <>
-      <SearchInputS type='text' placeholder='Название партнера...' />
+      {/* TODO autocomplete по всем партнерам */}
+      {/* <SearchInputS type='text' placeholder='Название партнера...' /> */}
       <PartnersListContainerS>
         {partners?.map((partner, index) => (
           <PartnerContainerS
