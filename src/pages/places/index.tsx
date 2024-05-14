@@ -15,10 +15,10 @@ import { Filters } from '../../components/filters';
 import { Header } from '../../components/header';
 import { OptionsDialog, OptionsDialogVariants } from '../../components/options-dialog';
 import { PlacesList } from '../../components/places-list';
+import { PlaceSteps } from '../../configs/place';
 import { useFilter } from '../../hooks/filter';
 import { RoutesList } from '../../routers';
 import { ButtonContainerS, PageContainerS } from '../../styles/pages';
-import { PlaceSteps } from '../../configs/place';
 
 export const PlacesPage: FunctionComponent = () => {
   const { data: placesWithFullInfo, refetch: updatedPlacesList } = useGetPlacesWithFullInfoQuery();
@@ -88,11 +88,12 @@ export const PlacesPage: FunctionComponent = () => {
   useEffect(() => {
     dispatch(clearNewPlace());
     dispatch(clearEditPlace());
-  });
+    updatedPlacesList();
+  }, []);
 
   return (
     <PageContainerS>
-      <Header isAdmin />
+      <Header isAdmin v2 />
       <Button
         variant='contained'
         sx={{

@@ -15,18 +15,19 @@ import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
 export const CreatePage: FunctionComponent = (): JSX.Element => {
   const { step: currentStep } = useParams();
   const navigate = useNavigate();
+  const firstStepTitle = Object.keys(PlaceSteps)[0];
   const currentNewPlace = useSelector(
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
   );
   const [createFullPlace] = useCreateFullPlaceMutation();
 
   const haveBackButton = (): boolean => {
-    return currentStep !== 'SelectPartner';
+    return currentStep !== firstStepTitle;
   };
 
   const handlerNextStep = (): void => {
-    if (currentStep === 'SelectPartner') {
-      navigate(RoutesList.NewPlace + 'CreatePlace');
+    if (currentStep === firstStepTitle) {
+      navigate(RoutesList.NewPlace + Object.keys(PlaceSteps)[2]);
       return;
     }
     navigate(
@@ -38,8 +39,8 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
   };
 
   const handlerBackStep = (): void => {
-    if (currentStep === 'CreatePlace') {
-      navigate(RoutesList.NewPlace + 'SelectPartner');
+    if (currentStep === Object.keys(PlaceSteps)[2]) {
+      navigate(RoutesList.NewPlace + firstStepTitle);
       return;
     }
     navigate(
@@ -87,7 +88,7 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
           ) : (
             <div></div>
           )}
-          {currentStep !== 'CreatePartner' ? (
+          {currentStep !== Object.keys(PlaceSteps)[1] ? (
             <Button
               onClick={isLastStep() ? handlerCreate : handlerNextStep}
               title={isLastStep() ? 'Опубликовать' : 'Следующий шаг'}

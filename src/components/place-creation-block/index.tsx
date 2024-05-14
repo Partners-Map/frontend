@@ -7,25 +7,22 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { UnknownAction } from '@reduxjs/toolkit/react';
-import { FunctionComponent, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useGetCategoriesQuery } from '../../__data__/services/category';
 import { useGetPlaceByIdWithFullInfoQuery } from '../../__data__/services/place';
 import {
-  EditPlaceState,
   setPlaceCategoryId as setEditPlaceCategoryId,
   setPlaceDescription as setEditPlaceDescription,
   setPlaceTitle as setEditPlaceTitle
 } from '../../__data__/slices/edit-place';
 import {
-  NewPlaceState,
   setPlaceCategoryId as setNewPlaceCategoryId,
   setPlaceDescription as setNewPlaceDescription,
   setPlaceTitle as setNewPlaceTitle
 } from '../../__data__/slices/new-place';
+import { RootState } from '../../__data__/store';
 import { FieldContainerS, PlaceCreationBlockContainerS } from '../../styles/place-form';
 import { PickAvgPrice } from '../pick-avg-price';
 import { WorkingHours } from '../working-hours';
@@ -44,46 +41,29 @@ export const PlaceCreationBlock: FunctionComponent<PlaceCreationBlockProps> = ({
   isEditing = false
 }): JSX.Element => {
   const { id, step: currentStep } = useParams();
-  const { data } = useGetPlaceByIdWithFullInfoQuery(id!);
-  const currentPlace = useSelector(
-    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
+  const { newPlaceSlice: newPlaceState, editPlaceSlice: editPlaceState } = useSelector(
+    (state: RootState) => state
   );
-  const editPlace = useSelector(
-    (state: { editPlaceSlice: EditPlaceState }) => state.editPlaceSlice
-  );
-  const { watch, setValue, getValues } = useForm<TPlaceCreationBlock>({
-    defaultValues: {
-      title: isEditing ? data?.title : currentPlace.place.title,
-      category: currentPlace.categoryId,
-      description: isEditing ? data?.description : currentPlace.place.description
-    }
-  });
   const { data: categories } = useGetCategoriesQuery();
   const dispatch = useDispatch();
 
-  const handlerSelectCategory = (option: string): void => {
-    setValue('category', option);
+  const handlerTitleChange = (value: Pick<TPlaceCreationBlock, 'title'>): void => {
+    dispatch(isEditing ? setEditPlaceTitle(value.title) : setNewPlaceTitle(value.title));
   };
 
-  const handlerChangeTextArea = (value: string): void => {
-    setValue('description', value);
+  const handlerCategoryIdChange = (value: Pick<TPlaceCreationBlock, 'category'>): void => {
+    dispatch(
+      isEditing ? setEditPlaceCategoryId(value.category) : setNewPlaceCategoryId(value.category)
+    );
   };
 
-  const setValueToRedux = (
-    fieldName: keyof TPlaceCreationBlock,
-    actionCreator: (data: string) => UnknownAction
-  ): void => {
-    const value = getValues(fieldName);
-    if (value) {
-      dispatch(actionCreator(value));
-    }
+  const handlerDescriptionChange = (value: Pick<TPlaceCreationBlock, 'description'>): void => {
+    dispatch(
+      isEditing
+        ? setEditPlaceDescription(value.description)
+        : setNewPlaceDescription(value.description)
+    );
   };
-
-  useEffect(() => {
-    setValueToRedux('title', isEditing ? setEditPlaceTitle : setNewPlaceTitle);
-    setValueToRedux('category', isEditing ? setEditPlaceCategoryId : setNewPlaceCategoryId);
-    setValueToRedux('description', isEditing ? setEditPlaceDescription : setNewPlaceDescription);
-  }, [watch()]);
 
   return (
     <PlaceCreationBlockContainerS>
@@ -93,9 +73,9 @@ export const PlaceCreationBlock: FunctionComponent<PlaceCreationBlockProps> = ({
       <TextField
         type='text'
         onChange={e => {
-          setValue('title', e.target.value);
+          handlerTitleChange({ title: e.target.value as string });
         }}
-        value={getValues('title')}
+        value={isEditing ? editPlaceState.place.title : newPlaceState.place.title}
         size='small'
         fullWidth
         placeholder='Название завидения'
@@ -106,8 +86,10 @@ export const PlaceCreationBlock: FunctionComponent<PlaceCreationBlockProps> = ({
         <Select
           labelId='categorySelect'
           label='Категория'
-          value={getValues('category')}
-          onChange={(e: SelectChangeEvent) => handlerSelectCategory(e.target.value as string)}
+          value={isEditing ? editPlaceState.categoryId : newPlaceState.categoryId}
+          onChange={(e: SelectChangeEvent) =>
+            handlerCategoryIdChange({ category: e.target.value as string })
+          }
         >
           {categories?.map(data => <MenuItem value={data.id}>{data.title}</MenuItem>)}
         </Select>
@@ -116,13 +98,13 @@ export const PlaceCreationBlock: FunctionComponent<PlaceCreationBlockProps> = ({
         <Typography variant='subtitle1' color={'primary'}>
           Время работы
         </Typography>
-        <WorkingHours />
+        <WorkingHours isEditing={isEditing} />
       </FieldContainerS>
       <FieldContainerS>
         <Typography variant='subtitle1' color={'primary'}>
           Средний чек
         </Typography>
-        <PickAvgPrice />
+        <PickAvgPrice isEditing={isEditing} />
       </FieldContainerS>
       <TextField
         label='Описание'
@@ -130,7 +112,8 @@ export const PlaceCreationBlock: FunctionComponent<PlaceCreationBlockProps> = ({
         multiline
         maxRows={6}
         minRows={4}
-        onChange={e => handlerChangeTextArea(e.target.value as string)}
+        value={isEditing ? editPlaceState.place.description : newPlaceState.place.description}
+        onChange={e => handlerDescriptionChange({ description: e.target.value as string })}
       />
     </PlaceCreationBlockContainerS>
   );
