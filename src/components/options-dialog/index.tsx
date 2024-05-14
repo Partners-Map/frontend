@@ -1,24 +1,24 @@
 import { Dialog, DialogTitle, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { FunctionComponent } from 'react';
 
-type CategoryDialogProps = {
+export type OptionsDialogProps = {
   open: boolean;
-  selectedValue: CategoryDialogVariants | '';
-  onClose: (value: CategoryDialogVariants | '') => void;
+  selectedValue: OptionsDialogVariants | '';
+  onClose: (value: OptionsDialogVariants | '') => void;
 };
 
-export type CategoryDialogVariants = 'edit' | 'delete';
+export type OptionsDialogVariants = 'edit' | 'delete';
 
-export const CategoryDialog: FunctionComponent<CategoryDialogProps> = ({
+export const OptionsDialog: FunctionComponent<OptionsDialogProps> = ({
   onClose,
   selectedValue,
   open
-}): JSX.Element => {
+}) => {
   const handleClose = (): void => {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = (value: CategoryDialogVariants): void => {
+  const handleListItemClick = (value: OptionsDialogVariants): void => {
     onClose(value);
   };
 

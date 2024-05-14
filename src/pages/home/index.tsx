@@ -31,6 +31,10 @@ export const HomePage: FunctionComponent = (): JSX.Element => {
     navigate(`${RoutesList.MapPage}?${searchParams.toString()}`);
   };
 
+  const handlerClickPlace = (id: string): void => {
+    navigate(RoutesList.PlacePage + id);
+  };
+
   useEffect(() => {
     if (placesWithFullInfo && placesWithCategories) {
       let filteredDataTemp = [...placesWithFullInfo];
@@ -59,7 +63,7 @@ export const HomePage: FunctionComponent = (): JSX.Element => {
       <Banner />
       <CategoryCloud categories={categories} />
       <Filters />
-      <PlacesList data={filteredData} />
+      <PlacesList data={filteredData} onClick={handlerClickPlace} />
       <ButtonContainerS>
         <Button title={'Показать на карте'} onClick={goMapPage} />
       </ButtonContainerS>

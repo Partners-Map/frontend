@@ -14,8 +14,8 @@ import { Stepper } from '../../components/stepper';
 import { RoutesList } from '../../routers';
 import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/pages';
-import { TSteps } from '../new-place';
 import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
+import { TSteps } from '../../configs/place';
 
 export const EditPlacePage = (): JSX.Element => {
   const { id, step: currentStep } = useParams();
@@ -25,7 +25,7 @@ export const EditPlacePage = (): JSX.Element => {
     (state: { editPlaceSlice: EditPlaceState }) => state.editPlaceSlice
   );
 
-  const stepsComponents: TSteps = {
+  const PlaceSteps: TSteps = {
     SelectPartner: <PartnerForm isEditing partnerId={data?.partnerId} />,
     CreatePartner: <CreatePartner />,
     CreatePlace: <PlaceForm isEditing />,
@@ -46,8 +46,8 @@ export const EditPlacePage = (): JSX.Element => {
       RoutesList.EditPlace +
         id +
         '/' +
-        Object.keys(stepsComponents)[
-          Object.keys(stepsComponents).findIndex(element => element === currentStep) + 1
+        Object.keys(PlaceSteps)[
+          Object.keys(PlaceSteps).findIndex(element => element === currentStep) + 1
         ]
     );
   };
@@ -61,14 +61,14 @@ export const EditPlacePage = (): JSX.Element => {
       RoutesList.EditPlace +
         id +
         '/' +
-        Object.keys(stepsComponents)[
-          Object.keys(stepsComponents).findIndex(element => element === currentStep) - 1
+        Object.keys(PlaceSteps)[
+          Object.keys(PlaceSteps).findIndex(element => element === currentStep) - 1
         ]
     );
   };
 
   const isLastStep = (): boolean => {
-    return currentStep === Object.keys(stepsComponents)[Object.keys(stepsComponents).length - 1];
+    return currentStep === Object.keys(PlaceSteps)[Object.keys(PlaceSteps).length - 1];
   };
 
   const handlerSave = (): void => {
@@ -76,7 +76,7 @@ export const EditPlacePage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!Object.keys(stepsComponents).includes(currentStep!) || !id) {
+    if (!Object.keys(PlaceSteps).includes(currentStep!) || !id) {
       navigate(RoutesList.PlacesPage);
     }
   });
@@ -87,7 +87,7 @@ export const EditPlacePage = (): JSX.Element => {
         <MainContentWrapperS>
           <Header isAdmin />
           <Stepper step={currentStep!} />
-          {data && stepsComponents[currentStep!]}
+          {data && PlaceSteps[currentStep!]}
         </MainContentWrapperS>
         <ButtonsContainerS>
           {haveBackButton() ? (
