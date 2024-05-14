@@ -39,6 +39,12 @@ export const placeApi = createApi({
         method: 'POST',
         body: data
       })
+    }),
+    deletePlaceById: builder.mutation<TPlace, string>({
+      query: id => ({
+        url: `/place/${id}`,
+        method: 'DELETE'
+      })
     })
   })
 });
@@ -51,5 +57,6 @@ export const {
   useGetPlaceByIdQuery,
   useGetPlaceByIdWithAddressQuery,
   useGetPlaceByIdWithFullInfoQuery,
-  useCreateFullPlaceMutation
+  useCreateFullPlaceMutation,
+  useDeletePlaceByIdMutation
 } = placeApi;

@@ -28,6 +28,7 @@ export const СategoriesPage: FunctionComponent = (): JSX.Element => {
 
   const handleCloseAlertDialog = (): void => {
     setOpenAlertDialog(false);
+    updatedCategoriesList();
   };
 
   const goBack = (): void => {

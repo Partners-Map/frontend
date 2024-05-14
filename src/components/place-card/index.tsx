@@ -16,11 +16,13 @@ import { ListItem, Typography } from '@mui/material';
 type PlacesCardProps = {
   data: TPlaceWithAddress;
   isAdmin?: boolean;
+  onClick: (id: string) => void;
 };
 
 export const PlaceCard: FunctionComponent<PlacesCardProps> = ({
   data,
-  isAdmin = false
+  isAdmin = false,
+  onClick
 }): JSX.Element => {
   const navigate = useNavigate();
   const { data: maxAvgPrice } = useGetAvgPriceByIdQuery(data.maxAvgPriceId);
@@ -36,8 +38,8 @@ export const PlaceCard: FunctionComponent<PlacesCardProps> = ({
   };
 
   return (
-    <ListItem>
-      <PlaceCardContainerS onClick={handlerClickPlace}>
+    <ListItem onClick={() => onClick(data.id!)}>
+      <PlaceCardContainerS>
         <Typography variant='subtitle1' color='primary'>
           {data.title}
         </Typography>

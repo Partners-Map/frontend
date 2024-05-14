@@ -3,22 +3,14 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCreateFullPlaceMutation } from '../../__data__/services/place';
 import { NewPlaceState } from '../../__data__/slices/new-place';
-import { AddressForm } from '../../components/address-form';
 import { Button } from '../../components/button';
-import { CreatePartner } from '../../components/create-partner';
 import { Header } from '../../components/header';
-import { PartnerForm } from '../../components/partner-form';
-import { PlaceForm } from '../../components/place-form';
-import { PresendNewPlace } from '../../components/presend-new-place';
 import { Stepper } from '../../components/stepper';
+import { PlaceSteps } from '../../configs/place';
 import { RoutesList } from '../../routers';
 import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/pages';
 import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
-
-export type TSteps = {
-  [key: string]: JSX.Element;
-};
 
 export const CreatePage: FunctionComponent = (): JSX.Element => {
   const { step: currentStep } = useParams();
@@ -27,14 +19,6 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
     (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice
   );
   const [createFullPlace] = useCreateFullPlaceMutation();
-
-  const stepsComponents: TSteps = {
-    SelectPartner: <PartnerForm />,
-    CreatePartner: <CreatePartner />,
-    CreatePlace: <PlaceForm />,
-    AddAddress: <AddressForm />,
-    PresendPlace: <PresendNewPlace />
-  };
 
   const haveBackButton = (): boolean => {
     return currentStep !== 'SelectPartner';
@@ -47,8 +31,8 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
     }
     navigate(
       RoutesList.NewPlace +
-        Object.keys(stepsComponents)[
-          Object.keys(stepsComponents).findIndex(element => element === currentStep) + 1
+        Object.keys(PlaceSteps)[
+          Object.keys(PlaceSteps).findIndex(element => element === currentStep) + 1
         ]
     );
   };
@@ -60,14 +44,14 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
     }
     navigate(
       RoutesList.NewPlace +
-        Object.keys(stepsComponents)[
-          Object.keys(stepsComponents).findIndex(element => element === currentStep) - 1
+        Object.keys(PlaceSteps)[
+          Object.keys(PlaceSteps).findIndex(element => element === currentStep) - 1
         ]
     );
   };
 
   const isLastStep = (): boolean => {
-    return currentStep === Object.keys(stepsComponents)[Object.keys(stepsComponents).length - 1];
+    return currentStep === Object.keys(PlaceSteps)[Object.keys(PlaceSteps).length - 1];
   };
 
   const handlerCreate = (): void => {
@@ -79,7 +63,7 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!Object.keys(stepsComponents).includes(currentStep!)) {
+    if (!Object.keys(PlaceSteps).includes(currentStep!)) {
       navigate(RoutesList.PlacesPage);
     }
   });
@@ -90,7 +74,7 @@ export const CreatePage: FunctionComponent = (): JSX.Element => {
         <MainContentWrapperS>
           <Header isAdmin />
           <Stepper step={currentStep!} />
-          {stepsComponents[currentStep!]}
+          {PlaceSteps[currentStep!]}
         </MainContentWrapperS>
         <ButtonsContainerS>
           {haveBackButton() ? (
