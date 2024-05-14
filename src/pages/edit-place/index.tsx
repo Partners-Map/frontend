@@ -1,45 +1,40 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetPlaceByIdWithFullInfoQuery } from '../../__data__/services/place';
-import { EditPlaceState } from '../../__data__/slices/edit-place';
-import { AddressForm } from '../../components/address-form';
+import {
+  useGetPlaceByIdWithCategoryQuery,
+  useGetPlaceByIdWithFullInfoQuery,
+  useUpdatePlaceWithFullInfoMutation
+} from '../../__data__/services/place';
+import { initEditData } from '../../__data__/slices/edit-place';
+import { RootState } from '../../__data__/store';
 import { Button } from '../../components/button';
-import { CreatePartner } from '../../components/create-partner';
 import { Header } from '../../components/header';
-import { PartnerForm } from '../../components/partner-form';
-import { PlaceForm } from '../../components/place-form';
-import { PresendNewPlace } from '../../components/presend-new-place';
 import { Stepper } from '../../components/stepper';
+import { PlaceSteps } from '../../configs/place';
 import { RoutesList } from '../../routers';
 import { ButtonsContainerS, ContentWrapperS, MainContentWrapperS } from '../../styles/new-place';
 import { PageContainerS } from '../../styles/pages';
+import { transformObject } from '../../utils/transform-object';
 import ArrowLeftIcon from '/public/icons/arrow-left.svg?react';
-import { TSteps } from '../../configs/place';
 
 export const EditPlacePage = (): JSX.Element => {
+  const [updatePlace] = useUpdatePlaceWithFullInfoMutation();
   const { id, step: currentStep } = useParams();
-  const { data } = useGetPlaceByIdWithFullInfoQuery(id!);
+  const { data: placeWithFullInfo } = useGetPlaceByIdWithFullInfoQuery(id!);
+  const { data: placeWithCategory } = useGetPlaceByIdWithCategoryQuery(id!);
+  const editPlaceState = useSelector((state: RootState) => state.editPlaceSlice);
+  const firstStepTitle = Object.keys(PlaceSteps)[0];
   const navigate = useNavigate();
-  const currentEditPlace = useSelector(
-    (state: { editPlaceSlice: EditPlaceState }) => state.editPlaceSlice
-  );
-
-  const PlaceSteps: TSteps = {
-    SelectPartner: <PartnerForm isEditing partnerId={data?.partnerId} />,
-    CreatePartner: <CreatePartner />,
-    CreatePlace: <PlaceForm isEditing />,
-    AddAddress: <AddressForm />,
-    PresendPlace: <PresendNewPlace />
-  };
+  const dispatch = useDispatch();
 
   const haveBackButton = (): boolean => {
-    return currentStep !== 'SelectPartner';
+    return currentStep !== firstStepTitle;
   };
 
   const handlerNextStep = (): void => {
-    if (currentStep === 'SelectPartner') {
-      navigate(RoutesList.EditPlace + id + '/CreatePlace');
+    if (currentStep === firstStepTitle) {
+      navigate(`${RoutesList.EditPlace + id}/${Object.keys(PlaceSteps)[2]}`);
       return;
     }
     navigate(
@@ -53,8 +48,8 @@ export const EditPlacePage = (): JSX.Element => {
   };
 
   const handlerBackStep = (): void => {
-    if (currentStep === 'CreatePlace') {
-      navigate(RoutesList.EditPlace + id + '/' + 'SelectPartner');
+    if (currentStep === Object.keys(PlaceSteps)[2]) {
+      navigate(RoutesList.EditPlace + id + '/' + firstStepTitle);
       return;
     }
     navigate(
@@ -71,15 +66,25 @@ export const EditPlacePage = (): JSX.Element => {
     return currentStep === Object.keys(PlaceSteps)[Object.keys(PlaceSteps).length - 1];
   };
 
-  const handlerSave = (): void => {
-    //TODO сохранение изменений
+  const handlerSave = async (): Promise<void> => {
+    await updatePlace({ id: id!, data: editPlaceState })
+      .unwrap()
+      .then(() => {
+        navigate(RoutesList.PlacesPage, { replace: true });
+      });
   };
 
   useEffect(() => {
     if (!Object.keys(PlaceSteps).includes(currentStep!) || !id) {
-      navigate(RoutesList.PlacesPage);
+      navigate(RoutesList.PlacesPage, { replace: true });
     }
   });
+
+  useEffect(() => {
+    if (placeWithFullInfo && placeWithCategory) {
+      dispatch(initEditData(transformObject(placeWithFullInfo, placeWithCategory[0])));
+    }
+  }, [placeWithFullInfo, placeWithCategory]);
 
   return (
     <PageContainerS>
@@ -87,7 +92,7 @@ export const EditPlacePage = (): JSX.Element => {
         <MainContentWrapperS>
           <Header isAdmin />
           <Stepper step={currentStep!} />
-          {data && PlaceSteps[currentStep!]}
+          {placeWithFullInfo && placeWithCategory && PlaceSteps[currentStep!]}
         </MainContentWrapperS>
         <ButtonsContainerS>
           {haveBackButton() ? (
@@ -100,7 +105,7 @@ export const EditPlacePage = (): JSX.Element => {
           ) : (
             <div></div>
           )}
-          {currentStep !== 'CreatePartner' ? (
+          {currentStep !== Object.keys(PlaceSteps)[1] ? (
             <Button
               onClick={isLastStep() ? handlerSave : handlerNextStep}
               title={isLastStep() ? 'Сохранить' : 'Следующий шаг'}

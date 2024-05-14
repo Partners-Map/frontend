@@ -1,10 +1,13 @@
+import { Typography } from '@mui/material';
 import { FunctionComponent } from 'react';
-import { BunnerContainerS, BunnerTextS, BunnerTitleS } from '../../styles/banner';
+import { BunnerContainerS } from '../../styles/banner';
 
 export const Banner: FunctionComponent = (): JSX.Element => {
   return (
     <BunnerContainerS>
-      <BunnerTitleS>Партнерская экосистема СберПорта</BunnerTitleS>
+      <Typography variant='h5' align={'center'}>
+        Партнерская экосистема СберПорта
+      </Typography>
     </BunnerContainerS>
   );
 };

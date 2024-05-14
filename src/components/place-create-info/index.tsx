@@ -1,33 +1,21 @@
 import mapglAPI from '@2gis/mapgl/types/index';
+import { Box, Typography } from '@mui/material';
 import { FunctionComponent, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useGetAvgPriceByIdQuery } from '../../__data__/services/avg-price';
 import { useGetCategoryByIdQuery } from '../../__data__/services/category';
+import { EditPlaceState } from '../../__data__/slices/edit-place';
 import { NewPlaceState } from '../../__data__/slices/new-place';
 import { useMap } from '../../hooks/map';
-import {
-  PlaceInfoCategory,
-  PlaceInfoConditions,
-  PlaceInfoConditionsText,
-  PlaceInfoContainer,
-  PlaceInfoDescription,
-  PlaceInfoDescriptionText,
-  PlaceInfoExtraContainer,
-  PlaceInfoExtraText,
-  PlaceInfoTitle
-} from '../../styles/place-info';
+import { PlaceInfoContainer, PlaceInfoExtraContainer } from '../../styles/place-info';
 
 export type PlaceCreateInfoProps = {
-  data: NewPlaceState;
+  data: NewPlaceState | EditPlaceState;
 };
 
 export const PlaceCreateInfo: FunctionComponent<PlaceCreateInfoProps> = ({ data }): JSX.Element => {
   const { data: minAvgPrice } = useGetAvgPriceByIdQuery(data.place.minAvgPriceId);
   const { data: maxAvgPrice } = useGetAvgPriceByIdQuery(data.place.maxAvgPriceId);
   const { data: category } = useGetCategoryByIdQuery(data.categoryId);
-  const currentAddresses = useSelector(
-    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.addresses
-  );
   const baseLongitude = 39.7257;
   const baseLatitude = 43.5992;
   const map = useMap({
@@ -38,10 +26,10 @@ export const PlaceCreateInfo: FunctionComponent<PlaceCreateInfoProps> = ({ data 
   });
 
   useEffect(() => {
-    if (!map || !currentAddresses) return;
+    if (!map || !data.addresses) return;
     const markers: mapglAPI.Marker[] = [];
 
-    currentAddresses.forEach(place => {
+    data.addresses.forEach(place => {
       const marker = new map.mapglAPI.Marker(map.map, {
         coordinates: [Number(place.longitude), Number(place.latitude)]
       });
@@ -52,46 +40,53 @@ export const PlaceCreateInfo: FunctionComponent<PlaceCreateInfoProps> = ({ data 
     return () => {
       markers.forEach(marker => marker.destroy());
     };
-  }, [map, currentAddresses]);
+  }, [map, data]);
 
   return (
     <>
       <PlaceInfoContainer>
-        <PlaceInfoTitle>{data.place.title}</PlaceInfoTitle>
-        <div
-          style={{
+        <Typography variant='h3'>{data.place.title}</Typography>
+        <Box
+          sx={{
             margin: '2vh 0 0 0'
           }}
         >
-          <PlaceInfoCategory>{category?.title}</PlaceInfoCategory>
+          {category && <Typography variant='body2'>{category.title}</Typography>}
           <PlaceInfoExtraContainer>
-            <PlaceInfoExtraText>
-              {`Время работы: ${data.place?.openingTime} - ${data.place?.closingTime}`}
-            </PlaceInfoExtraText>
-            <PlaceInfoExtraText>
-              {`Ср. чек: ${minAvgPrice?.symbol} ${maxAvgPrice ? `- ${maxAvgPrice?.symbol}` : ''}`}
-            </PlaceInfoExtraText>
+            {data.place.openingTime !== '' ? (
+              <Typography variant='body2'>
+                {`Время работы: ${data.place.openingTime} - ${data.place.closingTime}`}
+              </Typography>
+            ) : null}
+            {minAvgPrice && (
+              <Typography variant='body2'>{`Ср. чек: ${minAvgPrice.symbol} ${maxAvgPrice ? `- ${maxAvgPrice.symbol}` : ''}`}</Typography>
+            )}
           </PlaceInfoExtraContainer>
-        </div>
-        <PlaceInfoDescription>Описание</PlaceInfoDescription>
-        <PlaceInfoDescriptionText>{data.place?.description}</PlaceInfoDescriptionText>
-        <PlaceInfoConditions>Условия получения</PlaceInfoConditions>
-        {data.discount.conditions.map(condition => (
-          <div
-            style={{
-              margin: '2vh 0 0 0'
-            }}
-          >
-            <ol style={{}}>
-              <li>
-                <PlaceInfoConditionsText>{condition}</PlaceInfoConditionsText>
-              </li>
-            </ol>
-          </div>
-        ))}
-        <PlaceInfoConditionsText style={{ margin: '1vh 0 0 0' }}>
-          {data.discount?.information}
-        </PlaceInfoConditionsText>
+        </Box>
+        {data.place.description && (
+          <>
+            <Typography variant='subtitle1'>Описание</Typography>
+            <Typography variant='body1'>{data.place.description}</Typography>
+          </>
+        )}
+        <Typography
+          variant='subtitle1'
+          sx={{
+            margin: '1.2vh 0 0 0'
+          }}
+        >
+          Условия получения
+        </Typography>
+        <ol style={{ margin: '1vh 0 0 4vw' }}>
+          {data.discount.conditions.map(condition => (
+            <li>
+              <Typography variant='body1'>{condition}</Typography>
+            </li>
+          ))}
+        </ol>
+        <Typography variant='body2' style={{ margin: '2vh 0 0 0' }}>
+          {data.discount.information}
+        </Typography>
       </PlaceInfoContainer>
     </>
   );

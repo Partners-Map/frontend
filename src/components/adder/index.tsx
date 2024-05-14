@@ -19,7 +19,7 @@ type AdderProps = {
   placeholder?: string;
   onAdding: (value: string) => void;
   onDeleteItem: (value: string) => void;
-  addedElements: TAdderData[];
+  addedElements: string[];
   listStyle?: CSSProperties;
   error?: boolean;
   helperText?: string;
@@ -89,9 +89,9 @@ export const Adder: FunctionComponent<AdderProps> = ({
             }}
           >
             <Typography variant={'body1'} color={'primary'}>
-              {item.label}
+              {item}
             </Typography>
-            <TrashIcon width={24} height={24} onClick={() => onDeleteItem(item.label)} />
+            <TrashIcon width={24} height={24} onClick={() => onDeleteItem(item)} />
           </Box>
         ))}
       </ListS>

@@ -18,6 +18,9 @@ export const placeApi = createApi({
     getPlacesWithCategories: builder.query<TPlacesWithCategorie[], void>({
       query: () => '/places/with-category'
     }),
+    getPlaceByIdWithCategory: builder.query<TPlacesWithCategorie[], string>({
+      query: id => `/place/${id}/with-category`
+    }),
     getPlacesWithFullInfo: builder.query<TPlaceWithFullInfo[], void>({
       query: () => '/places/full-info'
     }),
@@ -40,6 +43,13 @@ export const placeApi = createApi({
         body: data
       })
     }),
+    updatePlaceWithFullInfo: builder.mutation<TPlace, { id: string; data: NewPlaceState }>({
+      query: ({ id, data }) => ({
+        url: `place/${id}/full`,
+        method: 'PUT',
+        body: data
+      })
+    }),
     deletePlaceById: builder.mutation<TPlace, string>({
       query: id => ({
         url: `/place/${id}`,
@@ -58,5 +68,7 @@ export const {
   useGetPlaceByIdWithAddressQuery,
   useGetPlaceByIdWithFullInfoQuery,
   useCreateFullPlaceMutation,
-  useDeletePlaceByIdMutation
+  useDeletePlaceByIdMutation,
+  useGetPlaceByIdWithCategoryQuery,
+  useUpdatePlaceWithFullInfoMutation
 } = placeApi;

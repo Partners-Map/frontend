@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import styled from 'styled-components';
 
-export const PlaceInfoContainer = styled.div`
-  margin: 4vh 0 0 0;
+export const PlaceInfoContainer = styled(Box)`
+  margin: 2vh 0 0 0;
   display: flex;
   flex-direction: column;
 `;
