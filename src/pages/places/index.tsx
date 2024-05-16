@@ -93,7 +93,7 @@ export const PlacesPage: FunctionComponent = () => {
 
   return (
     <PageContainerS>
-      <Header isAdmin v2 />
+      <Header isAdmin />
       <Button
         variant='contained'
         sx={{

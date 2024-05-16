@@ -1,7 +1,9 @@
+import HomeIcon from '@mui/icons-material/Home';
+import { IconButton, useTheme } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RoutesList } from '../../routers';
-import { HeaderContainerS, HeaderTextS } from '../../styles/header';
+import { HeaderContainerS } from '../../styles/header';
 import { Logo } from '../logo';
 import { Search } from '../search';
 
@@ -13,9 +15,10 @@ export type HeaderProps = {
 // TODO mui
 export const Header: FunctionComponent<HeaderProps> = ({ isAdmin, v2 = false }): JSX.Element => {
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handlerBack = (): void => {
-    navigate(RoutesList.HomePage);
+    navigate(RoutesList.AdminHub);
   };
 
   return (
@@ -23,7 +26,9 @@ export const Header: FunctionComponent<HeaderProps> = ({ isAdmin, v2 = false }):
       <Logo />
       {!v2 &&
         (isAdmin ? (
-          <HeaderTextS onClick={handlerBack}>Перейти на главную</HeaderTextS>
+          <IconButton onClick={handlerBack}>
+            <HomeIcon fontSize='large' htmlColor={theme.palette.primary.main} />
+          </IconButton>
         ) : (
           <Search />
         ))}
