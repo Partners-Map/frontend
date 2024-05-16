@@ -1,18 +1,8 @@
-import { CSSProperties, FunctionComponent, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { NewPlaceState } from '../../__data__/slices/new-place';
-import {
-  AddedItemTitleS,
-  AdderContainerS,
-  AdderHelperTextS,
-  AdderLabelS,
-  ListS
-} from '../../styles/adder';
-import TrashIcon from '/public/icons/trash.svg?react';
-import WhitePlusIcon from '/public/icons/white-plus-icon.svg?react';
-import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
+import { CSSProperties, FunctionComponent, useState } from 'react';
+import { AdderContainerS, ListS } from '../../styles/adder';
+import TrashIcon from '/public/icons/trash.svg?react';
 
 type AdderProps = {
   label: string;
@@ -40,10 +30,6 @@ export const Adder: FunctionComponent<AdderProps> = ({
   onDeleteItem
 }): JSX.Element => {
   const [addedTitle, setAddedTitle] = useState<string>('');
-  const dispatch = useDispatch();
-  const addresses = useSelector(
-    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.addresses
-  );
 
   const handlerAdd = (): void => {
     const clearAddedTitle = addedTitle.trimStart().trimEnd();
@@ -68,6 +54,7 @@ export const Adder: FunctionComponent<AdderProps> = ({
           title={''}
           type='text'
           size='small'
+          error={error}
           onChange={e => setAddedTitle(e.target.value as string)}
           value={addedTitle}
           placeholder={placeholder}
