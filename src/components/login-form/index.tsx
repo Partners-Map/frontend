@@ -36,6 +36,7 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
       })
         .unwrap()
         .then(() => {
+          sessionStorage.setItem('auht-user', 'true');
           navigate(RoutesList.AdminHub);
         });
     }
