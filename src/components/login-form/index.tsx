@@ -6,6 +6,8 @@ import { RoutesList } from '../../routers';
 import { LoginButtonS, LoginFormS, LoginInputWrapperS } from '../../styles/login-form';
 import { AuthIcon } from '../auth-icon';
 import { LoginInput } from '../login-input';
+import { Button, FormControl, TextField, useFormControl } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 type TFormData = {
   email: string;
@@ -15,6 +17,7 @@ type TFormData = {
 export const LoginForm: FunctionComponent = (): JSX.Element => {
   const [login, { error: loginError }] = useLoginMutation();
   const navigate = useNavigate();
+  const formData = useFormControl();
   const {
     register,
     handleSubmit,
@@ -24,6 +27,7 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
   const onSubmit: SubmitHandler<TFormData> = async (data: TFormData): Promise<void> => {
     const clearEmail = data.email.trim();
     const clearPassword = data.password.trim();
+    console.log(formData);
 
     if (clearEmail.length > 0 && clearPassword.length > 0) {
       await login({
@@ -32,34 +36,44 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
       })
         .unwrap()
         .then(() => {
-          navigate(RoutesList.PlacesPage);
+          navigate(RoutesList.AdminHub);
         });
     }
   };
 
   return (
     <LoginFormS onSubmit={handleSubmit(onSubmit)}>
-      <AuthIcon />
+      <LockOutlinedIcon fontSize='large' />
       <LoginInputWrapperS>
-        <LoginInput
+        <TextField
           type='text'
-          name={'email'}
-          register={register}
+          label='Email'
+          {...register('email')}
           placeholder='Email'
-          errorStatus={Boolean(errors.email) || Boolean(loginError)}
+          fullWidth
+          size='small'
+          error={Boolean(errors.email) || Boolean(loginError)}
         />
-        <LoginInput
+        <TextField
           type='password'
-          name={'password'}
-          register={register}
+          label='Пароль'
+          {...register('password')}
           placeholder='Пароль'
-          style={{
-            marginTop: '2vh'
-          }}
-          errorStatus={Boolean(errors.password) || Boolean(loginError)}
+          fullWidth
+          size='small'
+          error={Boolean(errors.password) || Boolean(loginError)}
         />
       </LoginInputWrapperS>
-      <LoginButtonS type='submit'>Войти</LoginButtonS>
+      <Button
+        type='submit'
+        variant='contained'
+        size='large'
+        sx={{
+          margin: '10% 0 0 0'
+        }}
+      >
+        Войти
+      </Button>
     </LoginFormS>
   );
 };

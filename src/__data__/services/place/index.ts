@@ -5,7 +5,7 @@ import {
   TPlaceWithFullInfo,
   TPlacesWithCategorie
 } from '../../../@types/models/place';
-import { baseQuery } from '../../config';
+import { baseQuery } from '../../../configs/api';
 import { NewPlaceState } from '../../slices/new-place';
 
 export const placeApi = createApi({
@@ -17,6 +17,9 @@ export const placeApi = createApi({
     }),
     getPlacesWithCategories: builder.query<TPlacesWithCategorie[], void>({
       query: () => '/places/with-category'
+    }),
+    getPlaceByIdWithCategory: builder.query<TPlacesWithCategorie[], string>({
+      query: id => `/place/${id}/with-category`
     }),
     getPlacesWithFullInfo: builder.query<TPlaceWithFullInfo[], void>({
       query: () => '/places/full-info'
@@ -39,6 +42,19 @@ export const placeApi = createApi({
         method: 'POST',
         body: data
       })
+    }),
+    updatePlaceWithFullInfo: builder.mutation<TPlace, { id: string; data: NewPlaceState }>({
+      query: ({ id, data }) => ({
+        url: `place/${id}/full`,
+        method: 'PUT',
+        body: data
+      })
+    }),
+    deletePlaceById: builder.mutation<TPlace, string>({
+      query: id => ({
+        url: `/place/${id}`,
+        method: 'DELETE'
+      })
     })
   })
 });
@@ -51,5 +67,8 @@ export const {
   useGetPlaceByIdQuery,
   useGetPlaceByIdWithAddressQuery,
   useGetPlaceByIdWithFullInfoQuery,
-  useCreateFullPlaceMutation
+  useCreateFullPlaceMutation,
+  useDeletePlaceByIdMutation,
+  useGetPlaceByIdWithCategoryQuery,
+  useUpdatePlaceWithFullInfoMutation
 } = placeApi;

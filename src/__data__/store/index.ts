@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { Middleware, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
 import { persistStore } from 'redux-persist';
 import { persistedEditPlaceReducer, persistedNewPlaceReducer } from '../persist';
@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   editPlaceSlice: persistedEditPlaceReducer
 });
 
-const apiMiddleware = [
+const apiMiddleware: Middleware[] = [
   placeApi.middleware,
   authApi.middleware,
   partnerApi.middleware,
@@ -44,3 +44,5 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 setupListeners(store.dispatch);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

@@ -11,20 +11,22 @@ import {
   PlaceCardTitleS
 } from '../../styles/place-card';
 import { useGetAvgPriceByIdQuery } from '../../__data__/services/avg-price';
+import { ListItem, Typography } from '@mui/material';
 
 type PlacesCardProps = {
   data: TPlaceWithAddress;
   isAdmin?: boolean;
+  onClick: (id: string) => void;
 };
 
 export const PlaceCard: FunctionComponent<PlacesCardProps> = ({
   data,
-  isAdmin = false
+  isAdmin = false,
+  onClick
 }): JSX.Element => {
   const navigate = useNavigate();
   const { data: maxAvgPrice } = useGetAvgPriceByIdQuery(data.maxAvgPriceId);
   const { data: minAvgPrice } = useGetAvgPriceByIdQuery(data.minAvgPriceId);
-
   const firstAddress = data.address[0];
 
   const handlerClickPlace = (): void => {
@@ -36,14 +38,28 @@ export const PlaceCard: FunctionComponent<PlacesCardProps> = ({
   };
 
   return (
-    <PlaceCardContainerS onClick={handlerClickPlace}>
-      <PlaceCardTitleS>{data.title}</PlaceCardTitleS>
-      <PlaceCardAddressS>{`${firstAddress?.city}, ${firstAddress?.street}, ${firstAddress?.house}`}</PlaceCardAddressS>
-      <PlaceCardDescriptionS>{data.description}</PlaceCardDescriptionS>
-      <PlaceCardOtherInfoContainerS>
-        <PlaceCardOtherInfoTextS>{'Время работы: 09:00 - 23:00'}</PlaceCardOtherInfoTextS>
-        <PlaceCardOtherInfoTextS>{`Ср. чек: ${minAvgPrice?.symbol} ${maxAvgPrice ? `- ${maxAvgPrice?.symbol}` : ''}`}</PlaceCardOtherInfoTextS>
-      </PlaceCardOtherInfoContainerS>
-    </PlaceCardContainerS>
+    <ListItem onClick={() => onClick(data.id!)}>
+      <PlaceCardContainerS>
+        <Typography variant='subtitle1' color='primary'>
+          {data.title}
+        </Typography>
+        {firstAddress?.city ? (
+          <Typography variant='caption'>
+            {`${firstAddress.city}, ${firstAddress.street}, ${firstAddress.house}`}
+          </Typography>
+        ) : (
+          <></>
+        )}
+        <Typography variant='caption'>{data.description}</Typography>
+        <PlaceCardOtherInfoContainerS>
+          <Typography variant='caption'>
+            {data.openingTime !== ''
+              ? `Время работы: ${data.openingTime} - ${data.closingTime}`
+              : ''}
+          </Typography>
+          <Typography variant='caption'>{`Ср. чек: ${minAvgPrice?.symbol} ${maxAvgPrice ? `- ${maxAvgPrice?.symbol}` : ''}`}</Typography>
+        </PlaceCardOtherInfoContainerS>
+      </PlaceCardContainerS>
+    </ListItem>
   );
 };

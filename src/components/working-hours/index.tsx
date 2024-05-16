@@ -1,78 +1,75 @@
-import { UnknownAction } from '@reduxjs/toolkit';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormControl, TextField } from '@mui/material';
+import { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  NewPlaceState,
-  setPlaceClosingTime,
-  setPlaceOpeningTime
+  setPlaceClosingTime as setEditPlaceClosingTime,
+  setPlaceOpeningTime as setEditPlaceOpeningTime
+} from '../../__data__/slices/edit-place';
+import {
+  setPlaceClosingTime as setNewPlaceClosingTime,
+  setPlaceOpeningTime as setNewPlaceOpeningTime
 } from '../../__data__/slices/new-place';
-import { Input } from '../input';
+import { RootState } from '../../__data__/store';
 
 type TWorkingHoursData = {
   from: string;
   to: string;
 };
 
-export const WorkingHours = (): JSX.Element => {
-  const currentPlace = useSelector(
-    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.place
+type WorkingHoursProps = {
+  isEditing?: boolean;
+};
+
+export const WorkingHours: FunctionComponent<WorkingHoursProps> = ({
+  isEditing = false
+}): JSX.Element => {
+  const { newPlaceSlice: newPlaceState, editPlaceSlice: editPlaceState } = useSelector(
+    (state: RootState) => state
   );
-  const {
-    setValue,
-    getValues,
-    watch,
-    formState: { errors }
-  } = useForm<TWorkingHoursData>({
-    defaultValues: {
-      from: currentPlace.openingTime,
-      to: currentPlace.closingTime
-    }
-  });
   const dispatch = useDispatch();
 
-  const setValueToRedux = (
-    fieldName: keyof TWorkingHoursData,
-    actionCreator: (data: string) => UnknownAction
-  ): void => {
-    const value = getValues(fieldName);
-    if (value) {
-      dispatch(actionCreator(value));
-    }
+  const handlerOpeningTimeChange = (value: Pick<TWorkingHoursData, 'from'>): void => {
+    dispatch(isEditing ? setEditPlaceOpeningTime(value.from) : setNewPlaceOpeningTime(value.from));
   };
 
-  useEffect(() => {
-    setValueToRedux('from', setPlaceOpeningTime);
-    setValueToRedux('to', setPlaceClosingTime);
-  }, [watch()]);
+  const handlerClosingTimeChange = (value: Pick<TWorkingHoursData, 'to'>): void => {
+    dispatch(isEditing ? setEditPlaceClosingTime(value.to) : setNewPlaceClosingTime(value.to));
+  };
 
   return (
-    <div
+    <FormControl
       style={{
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        gap: '5px'
+        gap: '6px'
       }}
+      size='small'
     >
-      <Input
+      <TextField
         type='text'
-        onChange={value => {
-          setValue('from', value);
+        onChange={e => {
+          handlerOpeningTimeChange({ from: e.target.value as string });
         }}
-        value={getValues('from')}
-        placeholder='От'
-        title={''}
+        value={isEditing ? editPlaceState.place.openingTime : newPlaceState.place.openingTime}
+        placeholder='C'
+        fullWidth
+        size='small'
+        label='C'
+        helperText='в формате 00:00'
       />
-      <Input
+      <TextField
         type='text'
-        onChange={value => {
-          setValue('to', value);
+        onChange={e => {
+          handlerClosingTimeChange({ to: e.target.value as string });
         }}
-        value={getValues('to')}
+        value={isEditing ? editPlaceState.place.closingTime : newPlaceState.place.closingTime}
         placeholder='До'
-        title={''}
+        fullWidth
+        size='small'
+        label='До'
+        helperText='в формате 00:00'
       />
-    </div>
+    </FormControl>
   );
 };

@@ -1,154 +1,165 @@
-import { UnknownAction } from '@reduxjs/toolkit';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { FunctionComponent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetDiscountTypesQuery } from '../../__data__/services/discount-type';
 import {
-  NewPlaceState,
-  setDiscountAmount,
-  setDiscountConditions,
-  setDiscountDiscountTypeId,
-  setDiscountInformation
-} from '../../__data__/slices/new-place';
-import { DiscountInfoContainerS, TitleS } from '../../styles/discount-form';
-import { InputS } from '../../styles/input';
+  setDiscountAmount as setEditPlaceDiscountAmount,
+  setDiscountConditions as setEditPlaceDiscountConditions,
+  setDiscountDiscountTypeId as setEditPlaceDiscountDiscountTypeId,
+  setDiscountInformation as setEditPlaceDiscountInformation
+} from '../../__data__/slices/edit-place';
 import {
-  DiscountCreationBlockContainerS,
-  FieldContainerS,
-  FieldLabelS,
-  InputWrapperS
-} from '../../styles/place-form';
-import { Adder, TAdderData } from '../adder';
-import { Select, SelectOption } from '../select';
-import { Textarea } from '../textarea';
-import { Input } from '../input';
+  setDiscountAmount as setNewPlaceDiscountAmount,
+  setDiscountConditions as setNewPlaceDiscountConditions,
+  setDiscountDiscountTypeId as setNewPlaceDiscountDiscountTypeId,
+  setDiscountInformation as setNewPlaceDiscountInformation
+} from '../../__data__/slices/new-place';
+
+import { TNewDiscount } from '../../@types/models/discount';
+import { RootState } from '../../__data__/store';
+import { DiscountCreationBlockContainerS } from '../../styles/place-form';
+import { Adder } from '../adder';
 
 export type TDiscountData = {
   amount: number;
   type: string;
   information: string;
+  conditions: string[];
 };
 
-export const DiscountCreationBlock: FunctionComponent = (): JSX.Element => {
-  const currentDiscount = useSelector(
-    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.discount
+type DiscountCreationBlockProps = {
+  isEditing?: boolean;
+};
+
+export const DiscountCreationBlock: FunctionComponent<DiscountCreationBlockProps> = ({
+  isEditing
+}): JSX.Element => {
+  const { newPlaceSlice: newPlaceState, editPlaceSlice: editPlaceState } = useSelector(
+    (state: RootState) => state
   );
-  const { watch, setValue, getValues } = useForm<TDiscountData>({
-    defaultValues: {
-      amount: currentDiscount.amount,
-      type: currentDiscount.discountTypeId,
-      information: currentDiscount.information
-    }
-  });
   const { data: discountTypes } = useGetDiscountTypesQuery();
-  const [transformedArray, setTransformedArray] = useState<SelectOption[]>([]);
   const [addetingError, setAddetingError] = useState<boolean>(false);
-  const [addedConditions, setAddedConditions] = useState<TAdderData[]>(
-    currentDiscount.conditions.map(condition => ({ label: condition }))
-  );
   const dispatch = useDispatch();
-  const conditions = useSelector(
-    (state: { newPlaceSlice: NewPlaceState }) => state.newPlaceSlice.discount.conditions
-  );
 
-  const handlerDiscountTypeSelect = (option: SelectOption): void => {
-    setValue('type', option.value);
+  const handlerAmountChange = (value: Pick<TDiscountData, 'amount'>): void => {
+    dispatch(
+      isEditing ? setEditPlaceDiscountAmount(value.amount) : setNewPlaceDiscountAmount(value.amount)
+    );
   };
 
-  const handlerInfoChange = (value: string): void => {
-    setValue('information', value);
+  const handlerTypeChange = (value: Pick<TDiscountData, 'type'>): void => {
+    dispatch(
+      isEditing
+        ? setEditPlaceDiscountDiscountTypeId(value.type)
+        : setNewPlaceDiscountDiscountTypeId(value.type)
+    );
   };
 
-  const setValueToRedux = (
-    fieldName: keyof TDiscountData,
-    actionCreator: (data: string) => UnknownAction
-  ): void => {
-    const value = getValues(fieldName);
-    if (value && typeof value === 'string') {
-      dispatch(actionCreator(value));
-    }
+  const handlerInformationChange = (value: Pick<TDiscountData, 'information'>): void => {
+    dispatch(
+      isEditing
+        ? setEditPlaceDiscountInformation(value.information)
+        : setNewPlaceDiscountInformation(value.information)
+    );
   };
 
-  const handlerConditionsAdder = (value: string): void => {
-    if (value.length < 1) {
+  const handlerConditionsChange = (value: string): void => {
+    const clearValue = value.trimStart().trimEnd();
+    if (clearValue.length < 1) {
       setAddetingError(true);
       return;
     }
-    setAddetingError(false);
-    dispatch(setDiscountConditions([...conditions, value]));
-    setAddedConditions([...addedConditions, { label: value }]);
+    dispatch(
+      isEditing
+        ? setEditPlaceDiscountConditions([...editPlaceState.discount.conditions, clearValue])
+        : setNewPlaceDiscountConditions([...newPlaceState.discount.conditions, clearValue])
+    );
   };
 
-  const handlerDeleteCondition = (value: string): void => {
-    dispatch(setDiscountConditions(conditions.filter(condition => condition !== value)));
-    setAddedConditions(addedConditions.filter(condition => condition.label !== value));
+  const handlerConditionsDelete = (value: string): void => {
+    dispatch(
+      isEditing
+        ? setEditPlaceDiscountConditions(
+            editPlaceState.discount.conditions.filter(item => item !== value)
+          )
+        : setNewPlaceDiscountConditions(
+            newPlaceState.discount.conditions.filter(item => item !== value)
+          )
+    );
   };
 
-  useEffect(() => {
-    dispatch(setDiscountAmount(getValues('amount')));
-    setValueToRedux('type', setDiscountDiscountTypeId);
-    setValueToRedux('information', setDiscountInformation);
-  }, [watch()]);
-
-  useEffect(() => {
-    if (discountTypes) {
-      const newTransformedArray = discountTypes.map(discountType => ({
-        value: discountType.id,
-        label: discountType.title
-      }));
-      setTransformedArray(newTransformedArray);
-    }
-  }, [discountTypes]);
+  const getDiscountAmount = (discountState: TNewDiscount): number | null => {
+    return discountState.amount !== 0 ? discountState.amount : null;
+  };
 
   return (
     <DiscountCreationBlockContainerS>
-      <TitleS>Добавить скидку</TitleS>
-      <DiscountInfoContainerS>
-        <FieldContainerS>
-          <Input
-            title={'Количество'}
-            type='text'
-            onChange={value => {
-              setValue('amount', Number(value));
-            }}
-            value={getValues('amount')}
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px'
-            }}
-            placeholder='Количество'
-          />
-        </FieldContainerS>
-        <FieldContainerS>
-          <FieldLabelS>Тип скидки</FieldLabelS>
-          <InputWrapperS>
-            <Select
-              styleContainer={{
-                maxWidth: '400px',
-                minWidth: '40vw',
-                width: '38vw',
-                height: '2vh'
-              }}
-              options={transformedArray}
-              placeholder={'Выберите'}
-              onChange={handlerDiscountTypeSelect}
-            />
-          </InputWrapperS>
-        </FieldContainerS>
-      </DiscountInfoContainerS>
+      <Typography variant='h4' color={'primary'}>
+        Cкидка
+      </Typography>
+      <FormControl
+        fullWidth
+        size='small'
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '6px'
+        }}
+      >
+        <TextField
+          label={'Размер'}
+          type='number'
+          size='small'
+          fullWidth
+          onChange={e => {
+            handlerAmountChange({ amount: Number(e.target.value) });
+          }}
+          value={
+            isEditing
+              ? getDiscountAmount(editPlaceState.discount)
+              : getDiscountAmount(newPlaceState.discount)
+          }
+          placeholder='Размер'
+        />
+        <FormControl fullWidth size='small'>
+          <InputLabel id='disType'>Тип скидки</InputLabel>
+          <Select
+            labelId='disType'
+            label='Тип скидки'
+            placeholder={'Тип скидки'}
+            value={
+              isEditing
+                ? editPlaceState.discount.discountTypeId
+                : newPlaceState.discount.discountTypeId
+            }
+            onChange={e => handlerTypeChange({ type: e.target.value as string })}
+          >
+            {discountTypes?.map(discountType => (
+              <MenuItem value={discountType.id}>{discountType.title}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </FormControl>
       <Adder
-        label={'Условие'}
+        label={'Условия'}
         placeholder={'Условие'}
-        onAdding={handlerConditionsAdder}
-        addedElements={addedConditions}
-        helperText='пример: "Предъявить карту резидента "Сберпорт""'
+        onAdding={handlerConditionsChange}
+        addedElements={
+          isEditing ? editPlaceState.discount.conditions : newPlaceState.discount.conditions
+        }
+        helperText='пример: "Предъявить карту "Сберпорт""'
         error={addetingError}
-        onDeleteItem={handlerDeleteCondition}
+        onDeleteItem={handlerConditionsDelete}
       />
-
-      <Textarea title='Дополнительная информация' onChange={handlerInfoChange} />
+      <TextField
+        label='Дополнительная информация'
+        placeholder='Дополнительная информация'
+        multiline
+        maxRows={6}
+        minRows={4}
+        value={isEditing ? editPlaceState.discount.information : newPlaceState.discount.information}
+        onChange={e => handlerInformationChange({ information: e.target.value as string })}
+      />
     </DiscountCreationBlockContainerS>
   );
 };

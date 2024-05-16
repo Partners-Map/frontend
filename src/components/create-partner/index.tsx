@@ -1,29 +1,23 @@
-import { useForm } from 'react-hook-form';
+import { Button, FormControl, TextField } from '@mui/material';
+import { FunctionComponent, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useCreatePartnerMutation } from '../../__data__/services/partners';
-import { setPartner as setNewPartner } from '../../__data__/slices/new-place';
-import { Button } from '../button';
-import { Input } from '../input';
-import { useNavigate, useParams } from 'react-router-dom';
-import { RoutesList } from '../../routers';
-import { FunctionComponent } from 'react';
 import { setPartner as setEditPartner } from '../../__data__/slices/edit-place';
+import { setPartner as setNewPartner } from '../../__data__/slices/new-place';
+import { PlaceSteps } from '../../configs/place';
+import { RoutesList } from '../../routers';
 
-type CreatePartnerProps = {
-  isEditing?: boolean;
-};
-
-export const CreatePartner: FunctionComponent<CreatePartnerProps> = ({
-  isEditing = false
-}): JSX.Element => {
+export const CreatePartner: FunctionComponent = (): JSX.Element => {
+  const { id } = useParams();
+  const isEditing = useLocation().pathname.startsWith(RoutesList.EditPlace);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
-  const { getValues, setValue } = useForm<{ partner: string }>();
+  const [partner, setPartner] = useState<string>('');
   const [createPartner] = useCreatePartnerMutation();
 
   const handlerCreatePartner = (): void => {
-    const clearPartnerName = getValues('partner').trimStart().trimEnd();
+    const clearPartnerName = partner.trimStart().trimEnd();
 
     if (clearPartnerName.length < 1) {
       return;
@@ -34,16 +28,16 @@ export const CreatePartner: FunctionComponent<CreatePartnerProps> = ({
       .then((data): void => {
         if (!isEditing) {
           dispatch(setNewPartner(data.id));
-          navigate(RoutesList.NewPlace + 'CreatePlace');
+          navigate(RoutesList.NewPlace + Object.keys(PlaceSteps)[2]);
           return;
         }
         dispatch(setEditPartner(data.id));
-        navigate(RoutesList.EditPlace + id + '/CreatePlace');
+        navigate(`${RoutesList.EditPlace + id}/${Object.keys(PlaceSteps)[2]}`);
       });
   };
 
   return (
-    <div
+    <FormControl
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -52,28 +46,25 @@ export const CreatePartner: FunctionComponent<CreatePartnerProps> = ({
         margin: '2vh 0 0 0'
       }}
     >
-      <Input
+      <TextField
         type='text'
-        title={'Название партнера'}
-        placeholder='Название партнера...'
-        style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '4px'
+        label={'Название партнера'}
+        placeholder='Название партнера'
+        fullWidth
+        onChange={e => {
+          setPartner(e.target.value as string);
         }}
-        onChange={value => {
-          setValue('partner', value);
-        }}
-        value={getValues('partner')}
+        value={partner}
       />
       <Button
-        title='Создать партнера'
-        style={{
+        variant='contained'
+        onClick={handlerCreatePartner}
+        sx={{
           margin: '2vh 0 0 0'
         }}
-        onClick={handlerCreatePartner}
-      />
-    </div>
+      >
+        Создать партнера
+      </Button>
+    </FormControl>
   );
 };

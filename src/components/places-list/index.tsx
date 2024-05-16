@@ -7,17 +7,19 @@ type PlacesListProps = {
   data: TPlaceWithFullInfo[];
   style?: CSSProperties;
   isAdmin?: boolean;
+  onClick: (id: string) => void;
 };
 
 export const PlacesList: FunctionComponent<PlacesListProps> = ({
   data,
   style,
-  isAdmin = false
+  isAdmin = false,
+  onClick
 }): JSX.Element => {
   return (
     <PlaceListContainerS style={style}>
       {data.map(place => (
-        <PlaceCard data={place} isAdmin={isAdmin} />
+        <PlaceCard data={place} isAdmin={isAdmin} onClick={onClick} />
       ))}
     </PlaceListContainerS>
   );
