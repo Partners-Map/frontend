@@ -5,12 +5,12 @@ import {
   TPlaceWithFullInfo,
   TPlacesWithCategorie
 } from '../../../@types/models/place';
-import { baseQuery } from '../../../configs/api';
+import { baseQueryWithReauth } from '../../../configs/api';
 import { NewPlaceState } from '../../slices/new-place';
 
 export const placeApi = createApi({
   reducerPath: 'placeApi',
-  baseQuery,
+  baseQuery: baseQueryWithReauth,
   endpoints: builder => ({
     getPlaces: builder.query<TPlace[], void>({
       query: () => '/places'

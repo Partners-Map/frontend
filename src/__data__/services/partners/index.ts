@@ -1,11 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { TPartner } from '../../../@types/models/partner';
-import { baseQuery } from '../../../configs/api';
-import { CreatePartner } from '../../../components/create-partner';
+import type { TPartner } from '../../../@types/models/partner';
+import { baseQueryWithReauth } from '../../../configs/api';
 
 export const partnerApi = createApi({
   reducerPath: 'partnerApi',
-  baseQuery,
+  baseQuery: baseQueryWithReauth,
   endpoints: builder => ({
     getPartners: builder.query<TPartner[], void>({
       query: () => '/partners'
