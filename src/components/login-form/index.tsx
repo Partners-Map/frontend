@@ -17,7 +17,6 @@ type TFormData = {
 export const LoginForm: FunctionComponent = (): JSX.Element => {
   const [login, { error: loginError }] = useLoginMutation();
   const navigate = useNavigate();
-  const formData = useFormControl();
   const {
     register,
     handleSubmit,
@@ -27,7 +26,6 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
   const onSubmit: SubmitHandler<TFormData> = async (data: TFormData): Promise<void> => {
     const clearEmail = data.email.trim();
     const clearPassword = data.password.trim();
-    console.log(formData);
 
     if (clearEmail.length > 0 && clearPassword.length > 0) {
       await login({
@@ -36,6 +34,7 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
       })
         .unwrap()
         .then(() => {
+          sessionStorage.setItem('auth-user', 'true');
           navigate(RoutesList.AdminHub);
         });
     }

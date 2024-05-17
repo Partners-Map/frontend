@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { PrivateRouter } from './components/private-router';
 import { AdminHub } from './pages/admin-hub';
 import { СategoriesPage } from './pages/categories';
 import { EditCategoryPage } from './pages/edit-category';
@@ -27,13 +28,19 @@ export function App(): JSX.Element {
           <Route path={'admin'}>
             <Route index element={<Navigate to={RoutesList.LoginPage} />} />
             <Route path='login' element={<LoginPage />} />
-            <Route path='admin-hub' element={<AdminHub />} />
-            <Route path='places' element={<PlacesPage />} />
-            <Route path='categories' element={<СategoriesPage />} />
-            <Route path='new-category' element={<NewCategoryPage />} />
-            <Route path='edit-category/:id' element={<EditCategoryPage />} />
-            <Route path='new-place/:step' element={<CreatePage />} />
-            <Route path='edit-place/:id/:step' element={<EditPlacePage />} />
+            <Route path='admin-hub' element={<PrivateRouter element={<AdminHub />} />} />
+            <Route path='places' element={<PrivateRouter element={<PlacesPage />} />} />
+            <Route path='categories' element={<PrivateRouter element={<СategoriesPage />} />} />
+            <Route path='new-category' element={<PrivateRouter element={<NewCategoryPage />} />} />
+            <Route
+              path='edit-category/:id'
+              element={<PrivateRouter element={<EditCategoryPage />} />}
+            />
+            <Route path='new-place/:step' element={<PrivateRouter element={<CreatePage />} />} />
+            <Route
+              path='edit-place/:id/:step'
+              element={<PrivateRouter element={<EditPlacePage />} />}
+            />
             <Route path='*' element={<Navigate to={RoutesList.AdminHub} replace={true} />} />
           </Route>
           <Route path='service-unavailable' element={<ServiceUnavailablePage />} />
