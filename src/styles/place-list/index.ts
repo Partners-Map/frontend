@@ -8,4 +8,8 @@ export const PlaceListContainerS = styled(List)`
   width: 100%;
   max-height: 40vh;
   overflow-y: auto;
+
+  @media screen, (min-height: 768px) {
+    max-height: 58vh;
+  }
 `;
