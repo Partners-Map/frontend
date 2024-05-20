@@ -4,6 +4,8 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_KEY: string;
+  readonly CLIENT_DOMAIN: string;
+  readonly API_VERSION: string;
 }
 
 interface ImportMeta {
