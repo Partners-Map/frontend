@@ -13,7 +13,7 @@ import { PageContainerS } from '../../styles/pages';
 export const EditCategoryPage = (): JSX.Element => {
   const [editCategory] = useEditCategoryByIdMutation();
   const { id } = useParams();
-  const { data } = useGetCategoryByIdQuery(id!);
+  const { data, refetch } = useGetCategoryByIdQuery(id!);
   const [editCategoryTitle, setEditCategoryTitle] = useState<string>(data?.title || '');
   const navigate = useNavigate();
 
@@ -32,6 +32,10 @@ export const EditCategoryPage = (): JSX.Element => {
       setEditCategoryTitle(data.title);
     }
   }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <PageContainerS>
@@ -56,19 +60,14 @@ export const EditCategoryPage = (): JSX.Element => {
           margin: '8vh 0 0 0'
         }}
       >
-        {data && data.title ? (
-          <TextField
-            type='text'
-            value={editCategoryTitle}
-            label='Категория'
-            size='small'
-            fullWidth
-            defaultValue={data.title}
-            onChange={e => setEditCategoryTitle(e.target.value)}
-          />
-        ) : (
-          <div></div>
-        )}
+        <TextField
+          type='text'
+          value={editCategoryTitle}
+          label='Категория'
+          size='small'
+          fullWidth
+          onChange={e => setEditCategoryTitle(e.target.value)}
+        />
 
         <Button
           onClick={handlerCreate}
@@ -78,7 +77,7 @@ export const EditCategoryPage = (): JSX.Element => {
             maxWidth: '50vw'
           }}
         >
-          Создать категорию
+          Сохранить изменения
         </Button>
       </Box>
     </PageContainerS>
