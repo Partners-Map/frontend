@@ -77,7 +77,7 @@ export const EditCategoryPage = (): JSX.Element => {
             maxWidth: '50vw'
           }}
         >
-          Создать категорию
+          Сохранить изменения
         </Button>
       </Box>
     </PageContainerS>
