@@ -85,6 +85,7 @@ export const PlacesPage: FunctionComponent = () => {
     }
   };
 
+  // TODO донастройка eslint
   useEffect(() => {
     dispatch(clearNewPlace());
     dispatch(clearEditPlace());
