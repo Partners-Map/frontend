@@ -1,10 +1,13 @@
+import { Box, Paper } from '@mui/material';
 import styled from 'styled-components';
 
-export const PlaceCardContainerS = styled.div`
+export const PlaceCardContainerS = styled(Paper)`
   display: flex;
   flex-direction: column;
+  border-radius: 4px;
+  width: 100%;
   gap: 4px;
-  margin: 1.4vh 0 0 0;
+  padding: 8px;
 `;
 
 export const PlaceCardTitleS = styled.h1`
@@ -20,11 +23,12 @@ export const PlaceCardDescriptionS = styled.p`
   color: #a9a9a9;
 `;
 
-export const PlaceCardOtherInfoContainerS = styled.div`
+export const PlaceCardOtherInfoContainerS = styled(Box)`
   display: flex;
   flex-direction: row;
+  gap: 4px;
 `;
 
-export const PlaceCardOtherInfoTextS = styled.p`
+export const PlaceCardOtherInfoTextS = styled.h2`
   font-size: 8px;
 `;

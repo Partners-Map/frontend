@@ -1,5 +1,5 @@
-import { CSSProperties, FunctionComponent, HTMLInputTypeAttribute } from 'react';
-import { FieldValues, UseFormRegister } from 'react-hook-form';
+import { CSSProperties, HTMLInputTypeAttribute } from 'react';
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import { LoginInputS } from '../../styles/login-form';
 
 type TLoginInputProps<T extends FieldValues> = {
@@ -8,21 +8,22 @@ type TLoginInputProps<T extends FieldValues> = {
   placeholder: string;
   register: UseFormRegister<T>;
   style?: CSSProperties;
+  errorStatus: boolean;
 };
 
-export const LoginInput: FunctionComponent<TLoginInputProps<any>> = ({
+export const LoginInput = <T extends FieldValues>({
   type,
   name,
   placeholder,
   register,
-  style
-}): JSX.Element => (
+  style,
+  errorStatus
+}: TLoginInputProps<T>): JSX.Element => (
   <LoginInputS
     type={type}
-    {...register(name as string, { required: true })}
-    style={{
-      ...style
-    }}
+    {...register(name as Path<T>, { required: true })}
+    style={style}
     placeholder={placeholder}
+    error={Boolean(errorStatus)}
   />
 );

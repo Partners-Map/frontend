@@ -8,9 +8,11 @@ export const CategoryCloudContainerS = styled.div`
   justify-items: center;
 `;
 
-export const TagS = styled.span`
+export const TagS = styled.span<{ selected?: boolean }>`
   cursor: pointer;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
   padding: 1vh 4vw 1vh 4vw;
+  background-color: ${({ selected }): string => (selected ? '#010837' : '#fff')};
+  color: ${({ selected }): string => (selected ? '#fff' : '#010837')};
 `;

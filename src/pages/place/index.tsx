@@ -1,15 +1,15 @@
 import { FunctionComponent, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdWithAddressQuery } from '../../__data__/services/place';
+import { useGetPlaceByIdWithFullInfoQuery } from '../../__data__/services/place';
 import { Header } from '../../components/header';
 import { MapWrapper } from '../../components/map-wrapper';
 import { PlaceInfo } from '../../components/place-info';
 import { useMap } from '../../hooks/map';
-import { PageContainerS } from '../../styles/page-container';
+import { PageContainerS } from '../../styles/pages';
 
 export const PlacePage: FunctionComponent = (): JSX.Element => {
   const { id } = useParams();
-  const { data: place } = useGetPlaceByIdWithAddressQuery(id ?? '');
+  const { data: place } = useGetPlaceByIdWithFullInfoQuery(id ?? '');
   const baseLongitude = 39.7257;
   const baseLatitude = 43.5992;
 
@@ -36,7 +36,7 @@ export const PlacePage: FunctionComponent = (): JSX.Element => {
       {place && <PlaceInfo data={place} />}
       <div
         style={{
-          height: '20vh',
+          height: '40vh',
           margin: '4vh 0 0 0'
         }}
       >

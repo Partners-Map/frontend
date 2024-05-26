@@ -6,6 +6,8 @@ import { RoutesList } from '../../routers';
 import { LoginButtonS, LoginFormS, LoginInputWrapperS } from '../../styles/login-form';
 import { AuthIcon } from '../auth-icon';
 import { LoginInput } from '../login-input';
+import { Button, FormControl, TextField, useFormControl } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 type TFormData = {
   email: string;
@@ -13,7 +15,7 @@ type TFormData = {
 };
 
 export const LoginForm: FunctionComponent = (): JSX.Element => {
-  const [login] = useLoginMutation();
+  const [login, { error: loginError }] = useLoginMutation();
   const navigate = useNavigate();
   const {
     register,
@@ -22,33 +24,55 @@ export const LoginForm: FunctionComponent = (): JSX.Element => {
   } = useForm<TFormData>();
 
   const onSubmit: SubmitHandler<TFormData> = async (data: TFormData): Promise<void> => {
-    if (data.email.trim().length > 0 && data.password.trim().length > 0) {
-      await login(data)
+    const clearEmail = data.email.trim();
+    const clearPassword = data.password.trim();
+
+    if (clearEmail.length > 0 && clearPassword.length > 0) {
+      await login({
+        email: clearEmail,
+        password: clearPassword
+      })
         .unwrap()
         .then(() => {
-          navigate(RoutesList.DashboardPage);
+          sessionStorage.setItem('auth-user', 'true');
+          navigate(RoutesList.AdminHub);
         });
     }
   };
 
   return (
     <LoginFormS onSubmit={handleSubmit(onSubmit)}>
-      <AuthIcon />
+      <LockOutlinedIcon fontSize='large' />
       <LoginInputWrapperS>
-        <LoginInput type='text' name={'email'} register={register} placeholder='Email' />
-        {errors.email && <p>Это поле обязательно</p>}
-        <LoginInput
-          type='password'
-          name={'password'}
-          register={register}
-          placeholder='Пароль'
-          style={{
-            marginTop: '4vh'
-          }}
+        <TextField
+          type='text'
+          label='Email'
+          {...register('email')}
+          placeholder='Email'
+          fullWidth
+          size='small'
+          error={Boolean(errors.email) || Boolean(loginError)}
         />
-        {errors.password && <p>Это поле обязательно</p>}
+        <TextField
+          type='password'
+          label='Пароль'
+          {...register('password')}
+          placeholder='Пароль'
+          fullWidth
+          size='small'
+          error={Boolean(errors.password) || Boolean(loginError)}
+        />
       </LoginInputWrapperS>
-      <LoginButtonS type='submit'>Отправить</LoginButtonS>
+      <Button
+        type='submit'
+        variant='contained'
+        size='large'
+        sx={{
+          margin: '10% 0 0 0'
+        }}
+      >
+        Войти
+      </Button>
     </LoginFormS>
   );
 };

@@ -12,7 +12,10 @@ export type useMapProps = {
   containerId?: string;
 };
 
-export const useMap = ({ options, containerId = 'map-container' }: useMapProps): MapInstance | null => {
+export const useMap = ({
+  options,
+  containerId = 'map-container'
+}: useMapProps): MapInstance | null => {
   const [mapInstance, setMapInstance] = useState<MapInstance | null>(null);
 
   useEffect(() => {

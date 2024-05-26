@@ -1,7 +1,8 @@
+import { Box } from '@mui/material';
 import styled from 'styled-components';
 
-export const PlaceInfoContainer = styled.div`
-  margin: 4vh 0 0 0;
+export const PlaceInfoContainer = styled(Box)`
+  margin: 2vh 0 0 0;
   display: flex;
   flex-direction: column;
 `;
@@ -10,18 +11,20 @@ export const PlaceInfoTitle = styled.h1`
   font-size: 20px;
 `;
 
-export const PlaceInfoCategory = styled.h2`
-  font-size: 8px;
+export const PlaceInfoCategory = styled.h1`
+  font-size: 14px;
 `;
 
-export const PlaceInfoExtraContainer = styled.div`
+export const PlaceInfoExtraContainer = styled(Box)`
   display: flex;
   flex-direction: row;
+  align-items: center;
   margin: 0.4vh 0 0 0;
+  gap: 4px;
 `;
 
 export const PlaceInfoExtraText = styled.h1`
-  font-size: 8px;
+  font-size: 12px;
 `;
 
 export const PlaceInfoDescription = styled.h1`

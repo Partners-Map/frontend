@@ -1,25 +1,20 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { TLoginData } from '../../../@types/api/auth';
-import { useAuth } from '../../../hooks/auth';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { TLoginData, TLoginParams } from '../../../@types/api/auth';
+import { baseQuery } from '../../../configs/api';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3002/api/v1/auth' }),
+  baseQuery,
   endpoints: builder => ({
-    login: builder.mutation<TLoginData, any>({
+    login: builder.mutation<TLoginData, TLoginParams>({
       query: loginData => ({
-        url: '/login',
+        url: '/auth/login',
         method: 'POST',
         body: {
           email: loginData.email,
           password: loginData.password
         }
-      }),
-      transformResponse: (response: TLoginData): TLoginData => {
-        const { initSetup } = useAuth();
-        initSetup(response.accessToken);
-        return response;
-      }
+      })
     })
   })
 });

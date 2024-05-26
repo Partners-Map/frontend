@@ -1,6 +1,7 @@
+import { Box } from '@mui/material';
 import styled from 'styled-components';
 
-export const BunnerContainerS = styled.div`
+export const BunnerContainerS = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
